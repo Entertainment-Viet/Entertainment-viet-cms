@@ -1,0 +1,35 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Footer /> should render and match the snapshot 1`] = `
+<footer
+  className="Wrapper-wcfdfo-0 dPvBog"
+>
+  <section>
+    <span>
+      Copyright ©  2021.
+    </span>
+  </section>
+  <section>
+    <div
+      className="Wrapper-xnjoq9-0 dNmQIR"
+    >
+      <select
+        className="Select-sc-1sm01tk-0 wIjFa"
+        onChange={[Function]}
+        value="vi"
+      >
+        <option
+          value="vi"
+        >
+          vi
+        </option>
+        <option
+          value="en"
+        >
+          en
+        </option>
+      </select>
+    </div>
+  </section>
+</footer>
+`;

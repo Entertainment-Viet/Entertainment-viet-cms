@@ -1,0 +1,6 @@
+eval "$(ssh-agent -s)"
+ssh-add ~/.ssh/id_rsa
+git add .
+git commit -m "Autoupdate at `date`"
+git push origin master
+

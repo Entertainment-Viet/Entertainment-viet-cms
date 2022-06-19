@@ -1,0 +1,24 @@
+{
+  "loginPage": {
+    "header": "Xin chào",
+    "email": "email",
+    "password": "password",
+    "login": "login",
+    "register": "register",
+    "forgot": "forgot",
+    "error": "error",
+    "success": "success",
+    "errorUser": "errorUser",
+    "errorEmail": "errorEmail",
+    "resendActive": "resendActive",
+    "resendSuccess": "resendSuccess",
+    "resendError": "resendError"
+  },
+  "controls": {
+    "email": "email",
+    "password": "password",
+    "required": "required",
+    "btn_register": "Đăng ký",
+    "btn_login": "Đăng nhập"
+  }
+}
