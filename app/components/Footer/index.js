@@ -7,6 +7,7 @@ import { getCookie } from 'utils/cookie';
 // import { DEFAULT_LOCALE } from 'i18n';
 // import Icon, { IconWhite } from './Icon';
 // import messages from './messages';
+import { Flex, HStack, VStack, Box } from '@chakra-ui/react';
 import icoFacebook from './img/facebook.svg';
 import icoInstagram from './img/instagram.svg';
 import icoTwitter from './img/twitter.svg';
@@ -29,61 +30,60 @@ import {
 } from './styles';
 function Footer() {
   // const lang = getCookie('lang') || DEFAULT_LOCALE;
-  const localStoreFilter = async filter => {
-    localStorage.setItem('filter', filter);
-  };
 
   return (
-    <Wrapper>
-      <Inner>
-        <CenterElement>
-          {/* <Logo /> */}
-        </CenterElement>
-        {FooterData.map((value, i) => (
-          <UL key={`${i}_ul`}>
-            <H1Element>
-              <b>{value.h1}</b>
-            </H1Element>
-            {value.subtitle.map((sub, index) => (
-              <LI key={`${index}_li`}>
-                {sub.isExternal ? (
-                  <CustomExternalLink href={sub.url}>
-                    {sub.h2}
-                  </CustomExternalLink>
-                ) : (
-                  <CustomLink
-                    exact
-                    to={sub.url}
-                    onClick={() =>
-                      sub.filter ? localStoreFilter(sub.filter) : null
-                    }
-                  >
-                    {sub.h2}
-                  </CustomLink>
-                )}
-              </LI>
-            ))}
-          </UL>
-        ))}
-      </Inner>
-      <Inner style={{ marginBottom: '15px' }}>
-        <FullCenterElement isTop>
-          {/* <FormattedMessage {...messages.license} /> */}
-        </FullCenterElement>
-        <FullCenterElement>
-          <CustomLink
-            to="/term-of-service"
+    <Flex>
+      <HStack px={6}>
+        <VStack mr="24vw">
+          <Box
             color="white"
-            style={{ marginRight: '70px' }}
+            fontWeight="900"
+            as="h1"
+            lineHeight="tight"
+            noOfLines={1}
+            mb={6}
+            fontSize="18px"
           >
-            {/* <FormattedMessage {...messages.term} /> */}
-          </CustomLink>
-          <CustomLink to="/privacy-policy" color="white">
-            {/* <FormattedMessage {...messages.policy} /> */}
-          </CustomLink>
-        </FullCenterElement>
-      </Inner>
-    </Wrapper>
+            Title
+          </Box>
+          <Box color="white" fontWeight="500" lineHeight="tight" noOfLines={1}>
+            Test
+          </Box>
+          <Box color="white" fontWeight="500" lineHeight="tight" noOfLines={1}>
+            Test
+          </Box>
+        </VStack>
+        <VStack>
+          <Box
+            color="red.500"
+            fontWeight="500"
+            as="h1"
+            lineHeight="tight"
+            noOfLines={1}
+          >
+            Test
+          </Box>
+          <Box
+            color="red.500"
+            fontWeight="500"
+            as="h1"
+            lineHeight="tight"
+            noOfLines={1}
+          >
+            Test
+          </Box>
+          <Box
+            color="red.500"
+            fontWeight="500"
+            as="h1"
+            lineHeight="tight"
+            noOfLines={1}
+          >
+            Test
+          </Box>
+        </VStack>
+      </HStack>
+    </Flex>
   );
 }
 

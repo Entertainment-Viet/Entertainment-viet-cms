@@ -1,35 +1,25 @@
-// /*
-//  * HomePage Messages
-//  *
-//  * This contains all the text for the HomePage component.
-//  */
+/*
+ * LoginPage Messages
+ *
+ * This contains all the text for the LoginPage container.
+ */
 // import { defineMessages } from 'react-intl';
 
-// export const scope = 'app.components.Header';
+import { translations } from 'locales/translations';
+import { t } from 'utils/messages';
 
-// export default defineMessages({
-//   hlink1: {
-//     id: `${scope}.hlink1`,
-//     defaultMessage: 'Về chúng tôi',
-//   },
-//   hlink2: {
-//     id: `${scope}.hlink2`,
-//     defaultMessage: 'Skygate Gallery',
-//   },
-//   hlink3: {
-//     id: `${scope}.hlink3`,
-//     defaultMessage: 'Marketplace',
-//   },
-//   hlink4: {
-//     id: `${scope}.hlink4`,
-//     defaultMessage: 'Tin Tức',
-//   },
-//   hlink5: {
-//     id: `${scope}.hlink5`,
-//     defaultMessage: 'Liên Hệ',
-//   },
-//   hlink6: {
-//     id: `${scope}.hlink6`,
-//     defaultMessage: 'Nghệ sĩ',
-//   },
-// });
+export const messages = {
+  header: () => t(translations.loginPage.header),
+  email: () => t(translations.loginPage.email),
+  password: () => t(translations.loginPage.password),
+  login: () => t(translations.loginPage.login),
+  register: () => t(translations.loginPage.register),
+  forgot: () => t(translations.loginPage.forgot),
+  error: () => t(translations.loginPage.error),
+  success: () => t(translations.loginPage.success),
+  errorUser: () => t(translations.loginPage.errorUser),
+  errorEmail: () => t(translations.loginPage.errorEmail),
+  resendActive: () => t(translations.loginPage.resendActive),
+  resendSuccess: () => t(translations.loginPage.resendSuccess),
+  resendError: () => t(translations.loginPage.resendError),
+};

@@ -24,7 +24,7 @@ function Card(props) {
         zIndex={99}
       />
       <Box
-        maxW="sm"
+        minW="280px"
         borderWidth="1px"
         borderRadius="lg"
         overflow="hidden"
@@ -37,9 +37,7 @@ function Card(props) {
           <Box mt="1" fontWeight="500" as="h4" lineHeight="tight" noOfLines={1}>
             {property.name}
           </Box>
-
           <Box>{property.title}</Box>
-
           <Box display="flex" mt="2" alignItems="center">
             <StarIcon color="#E53E3E" />
             <Box as="span" ml="2" color="white" fontSize="sm">

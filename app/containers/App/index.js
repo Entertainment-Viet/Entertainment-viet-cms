@@ -71,13 +71,13 @@ export default function App() {
         >
           <LoginPage />
         </PublicRoute>
-        <PublicRoute
+        <CommonRoute
           exact
           path={Paths.ROUTE_HOME}
           // isAuthenticated={isAuthenticated}
         >
           <HomePage />
-        </PublicRoute>
+        </CommonRoute>
         <Route path="*" component={NotFoundPage} />
       </Switch>
       <GlobalStyle />

@@ -20,11 +20,14 @@ function CardListHorizontal() {
     {
       id: '5',
     },
+    {
+      id: '6',
+    },
   ];
 
   return (
     <Container maxW="100%" centerContent>
-      <SimpleGrid maxW="100%" columns={[1, 3, 5]}>
+      <SimpleGrid maxW="100%" columns={[1, 3, 6]} spacing="50px">
         {dataList.map(function(data) {
           const { id } = data;
           return <Card key={id} />;

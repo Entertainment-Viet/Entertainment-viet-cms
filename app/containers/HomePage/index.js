@@ -10,13 +10,13 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { createStructuredSelector } from 'reselect';
-import { SimpleGrid, Container, Box, HStack, Button } from '@chakra-ui/react';
+import { SimpleGrid, Container, Box, HStack, Button, Divider } from '@chakra-ui/react';
 
 import { useInjectReducer } from 'utils/injectReducer';
 import { useInjectSaga } from 'utils/injectSaga';
 import { CardListHorizontal } from 'components/Cards';
 import ImageSlider from 'components/Carousel';
-
+import Buttons from 'components/Buttons';
 // import { loadNFTFilter } from 'containers/NFTFilterProvider/actions';
 
 import { isAuthor } from 'utils/auth';
@@ -101,9 +101,10 @@ export function HomePage({}) {
               <Box as="span" color="gray.400">
                 Looking for talent for your event ?
               </Box>
-              <Button mt="12" colorScheme="orange">
+              {/* <Button mt="12" colorScheme="orange">
                 Post a job
-              </Button>
+              </Button> */}
+              <Buttons mt="12">buscu</Buttons>
             </Box>
           </Box>
         </Container>
@@ -146,6 +147,7 @@ export function HomePage({}) {
         Editor’s Choices
       </Box>
       <CardListHorizontal />
+      <Divider />
     </div>
   );
 }
