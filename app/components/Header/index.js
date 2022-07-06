@@ -23,10 +23,10 @@ function Header() {
       {/* <Logo /> */}
       <RightBar>
         {/* <LocaleToggle /> */}
-        <Notification />
-        <UserDropdown />
+        {/* <Notification />
+        <UserDropdown /> */}
       </RightBar>
-      <NavBar>
+      {/* <NavBar>
         <HeaderLink exact to={ROUTE_ABOUT}>
           
         </HeaderLink>
@@ -40,7 +40,7 @@ function Header() {
         </HeaderLink>
         <HeaderLink to={ROUTE_ALL_AUTHOR}>
         </HeaderLink>
-      </NavBar>
+      </NavBar> */}
     </Wrapper>
   );
 }
