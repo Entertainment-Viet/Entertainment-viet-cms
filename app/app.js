@@ -18,6 +18,7 @@ import 'sanitize.css/sanitize.css';
 import './locales/i18n';
 import { ChakraProvider } from '@chakra-ui/react';
 import FontFaceObserver from 'fontfaceobserver';
+import theme from 'utils/theme';
 
 // Import root app
 import App from 'containers/App';
@@ -36,21 +37,21 @@ import configureStore from './configureStore';
 const initialState = {};
 const store = configureStore(initialState, history);
 const MOUNT_NODE = document.getElementById('app');
-const myFontObserver = new FontFaceObserver('MyFont');
-const myFontBoldObserver = new FontFaceObserver('MyFont-Bold');
+// const myFontObserver = new FontFaceObserver('MyFont');
+// const myFontBoldObserver = new FontFaceObserver('MyFont-Bold');
 
-Promise.all([myFontObserver.load(), myFontBoldObserver.load()]).then(
-  () => {
-    document.body.classList.add('fontLoaded');
-  },
-  function() {
-    console.log('Font is not available');
-  },
-);
+// Promise.all([myFontObserver.load(), myFontBoldObserver.load()]).then(
+//   () => {
+//     document.body.classList.add('fontLoaded');
+//   },
+//   function() {
+//     console.log('Font is not available');
+//   },
+// );
 
 const render = () => {
   ReactDOM.render(
-    <ChakraProvider>
+    <ChakraProvider theme={theme}>
       <Provider store={store}>
         <ConnectedRouter history={history}>
           {/* <WalletListener /> */}

@@ -1,0 +1,11 @@
+.carousel.carousel-slider .dot.selected{
+    background:#E53E3E;
+}
+.carousel.carousel-slider{
+    display: block;
+    height: 17.5rem;
+    width: 50rem !important;
+}
+.thumbs-wrapper.axis-vertical{
+    margin: 0;
+}

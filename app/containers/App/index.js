@@ -21,6 +21,7 @@ import * as Paths from 'constants/routes';
 // Page
 import NotFoundPage from 'containers/NotFoundPage/Loadable';
 import LoginPage from 'containers/LogInPage/Loadable';
+import HomePage from 'containers/HomePage/Loadable';
 
 // Components
 import GlobalFonts from 'components/GlobalFonts';
@@ -66,11 +67,18 @@ export default function App() {
         <PublicRoute
           exact
           path={Paths.ROUTE_LOGIN}
-          isAuthenticated={isAuthenticated}
+          // isAuthenticated={isAuthenticated}
         >
           <LoginPage />
         </PublicRoute>
-        <Route path="*" component={LoginPage} />
+        <PublicRoute
+          exact
+          path={Paths.ROUTE_HOME}
+          // isAuthenticated={isAuthenticated}
+        >
+          <HomePage />
+        </PublicRoute>
+        <Route path="*" component={NotFoundPage} />
       </Switch>
       <GlobalStyle />
       <ToastContainer limit={5} autoClose={1500} />
