@@ -109,6 +109,42 @@ export function HomePage({}) {
         </Container>
         <ImageSlider slides={SlideData} />
       </HStack>
+      <Box
+        color="white"
+        mt="6"
+        mb="6"
+        fontWeight="500"
+        as="h1"
+        lineHeight="tight"
+        noOfLines={1}
+      >
+        Most popular Talents in Entertainment Viet
+      </Box>
+      <CardListHorizontal />
+      <Box
+        color="white"
+        mt="6"
+        mb="6"
+        fontWeight="500"
+        as="h1"
+        lineHeight="tight"
+        noOfLines={1}
+      >
+        Recent Talents
+      </Box>
+      <CardListHorizontal />
+      <ImageSlider slides={SlideData} />
+      <Box
+        color="white"
+        mt="6"
+        mb="6"
+        fontWeight="500"
+        as="h1"
+        lineHeight="tight"
+        noOfLines={1}
+      >
+        Editor’s Choices
+      </Box>
       <CardListHorizontal />
     </div>
   );

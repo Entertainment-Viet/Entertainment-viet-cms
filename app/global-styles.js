@@ -32,7 +32,7 @@ const GlobalStyle = createGlobalStyle`
   }
   .nomargin{margin:0;}
   #app {
-    background-color: #F8F8F8;
+    background-color: #1A202C;
     min-height: 100%;
     min-width: 100%;
     overflow: hidden;

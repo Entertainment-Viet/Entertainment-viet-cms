@@ -4,7 +4,7 @@
 .carousel.carousel-slider{
     display: block;
     height: 17.5rem;
-    width: 50rem !important;
+    /* width: 50rem !important; */
 }
 .thumbs-wrapper.axis-vertical{
     margin: 0;
