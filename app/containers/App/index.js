@@ -44,7 +44,7 @@ const AppWrapper = styled.div`
 
 export default function App() {
   const { i18n } = useTranslation();
-  const isAuthenticated = isLoggedIn();
+  // const isAuthenticated = isLoggedIn();
   requestFirebaseNotificationPermission()
     .then(firebaseToken => {
       // eslint-disable-next-line no-console
@@ -56,11 +56,11 @@ export default function App() {
     <AppWrapper>
       <GlobalFonts />
       <Helmet
-        titleTemplate="%s - Cổng Trời"
-        defaultTitle="Cổng Trời"
+        titleTemplate="%s - Viet entertainment"
+        defaultTitle="Viet entertainment"
         htmlAttributes={{ lang: i18n.language }}
       >
-        <meta name="description" content="Cổng Trời - congtroi.org" />
+        <meta name="description" content="Viet entertainment" />
       </Helmet>
       <ScrollToTop />
       <Switch>

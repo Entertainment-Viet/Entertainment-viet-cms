@@ -1,4 +1,11 @@
-import { getAuthCookie, eraseAuthCookie, setAuthCookie, getCookie, setCookie, eraseCookie } from 'utils/cookie';
+import {
+  getAuthCookie,
+  eraseAuthCookie,
+  setAuthCookie,
+  getCookie,
+  setCookie,
+  eraseCookie,
+} from 'utils/cookie';
 import { redirectLogin, isEmptyObject } from 'utils/helpers';
 import { COOKIE_USER, COOKIE_TOKEN, COOKIE_LOGINSTATE } from 'constants/cookie';
 import { ENUM_USER_ROLE } from 'constants/enums';
@@ -53,17 +60,21 @@ export const getUserData = () => {
   return user || '';
 };
 
-export const updateUser = (data) => {
+export const updateUser = data => {
   const mUser = getUser();
   setUser(Object.assign(data, mUser));
 };
 
-export const setUser = user => isEmptyObject(user) ? setCookie(COOKIE_USER, JSON.stringify(user)) : eraseCookie(COOKIE_USER);
-export const setUserLoginStat = user => user ? setCookie(COOKIE_LOGINSTATE, user) : eraseCookie(COOKIE_LOGINSTATE);
+export const setUser = user =>
+  isEmptyObject(user)
+    ? setCookie(COOKIE_USER, JSON.stringify(user))
+    : eraseCookie(COOKIE_USER);
+export const setUserLoginStat = user =>
+  user ? setCookie(COOKIE_LOGINSTATE, user) : eraseCookie(COOKIE_LOGINSTATE);
 const getToken = () => getAuthCookie();
-const setToken = accessToken => accessToken ? setAuthCookie(accessToken) : eraseCookie(COOKIE_TOKEN);
+const setToken = accessToken =>
+  accessToken ? setAuthCookie(accessToken) : eraseCookie(COOKIE_TOKEN);
 export const getUserState = () => getCookie(COOKIE_LOGINSTATE);
-
 
 export const isLoggedIn = () => {
   if (!isBrowser) return false;
@@ -71,20 +82,18 @@ export const isLoggedIn = () => {
   const Token = getToken();
 
   return !!Token;
-}
+};
 
 export const isAuthor = () => {
   if (!isBrowser) return false;
 
   const mUser = getUser();
-  return mUser.role == ENUM_USER_ROLE.AUT
-}
+  return mUser.role === ENUM_USER_ROLE.AUT;
+};
 
+export const getCurrentUser = () => isBrowser && getUser();
 
-
-export const getCurrentUser = () => isBrowser && getUser()
-
-export const getCurrentToken = () => isBrowser && getToken()
+export const getCurrentToken = () => isBrowser && getToken();
 
 export const logout = () => {
   if (!isBrowser) return;
@@ -99,4 +108,4 @@ export const setUserData = res => {
 
   setUser(user);
   setToken(token, user.access_token_expire);
-}
+};

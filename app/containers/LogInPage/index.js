@@ -28,8 +28,7 @@ import {
 import { API_LOGIN } from 'constants/api';
 import { ENUM_USER_ROLE, ENUM_LOGINSTATE } from 'constants/enums';
 
-// import KardiachainLogin from 'components/KardiachainLogin';
-// import MetamaskLogin from 'components/MetamaskLogin';
+import Metadata from 'components/Metadata';
 import ContentWrapper from 'components/ContentWrapper';
 import Form from 'components/Form';
 import { Line, H1 } from 'components/Elements';
@@ -101,6 +100,7 @@ function LoginPage(props) {
 
   return (
     <ContentWrapper>
+      <Metadata />
       <H1>{t(messages.header())}</H1>
       <Form mySubmit={handleSubmit}>
         <InputCustom

@@ -1,37 +1,46 @@
-import {COOKIE_TOKEN,COOKIE_LOGINSTATE, COOKIE_EXPIRESDAYS} from 'constants/cookie';
+import {
+  COOKIE_TOKEN,
+  COOKIE_LOGINSTATE,
+  COOKIE_EXPIRESDAYS,
+} from 'constants/cookie';
 
 // Cookie
-export const setSecureCookie = (name,value, days = COOKIE_EXPIRESDAYS) => {
-    setCookie(name,value, days, {secure: true, sameSite: true,});
-}
+export const setSecureCookie = (name, value, days = COOKIE_EXPIRESDAYS) => {
+  setCookie(name,value, days, {secure: true, sameSite: true,});
+};
 
-export const  setCookie = (name,value, days = COOKIE_EXPIRESDAYS, options = {}) => {
-    let date = new Date();
-    date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
-    const expires = "expires=" + date.toUTCString();
+export const setCookie = (
+  name,
+  value,
+  days = COOKIE_EXPIRESDAYS,
+  options = {},
+) => {
+  const date = new Date();
+  date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+  const expires = `expires=${  date.toUTCString()}`;
 
-    options = {
-        path: '/',
-        expires: expires,
-        ...options
-    };
+  options = {
+    path: '/',
+    expires,
+    ...options
+  };
 
-    if (options.expires instanceof Date) {
-        options.expires = options.expires.toUTCString();
+  if (options.expires instanceof Date) {
+    options.expires = options.expires.toUTCString();
+  }
+
+  let updatedCookie = `${encodeURIComponent(name)  }=${  encodeURIComponent(value)}`;
+
+  for (const optionKey in options) {
+    updatedCookie += `; ${  optionKey}`;
+    const optionValue = options[optionKey];
+    if (optionValue !== true) {
+      updatedCookie += `=${  optionValue}`;
     }
+  }
 
-    let updatedCookie = encodeURIComponent(name) + "=" + encodeURIComponent(value);
-
-    for (let optionKey in options) {
-        updatedCookie += "; " + optionKey;
-        let optionValue = options[optionKey];
-        if (optionValue !== true) {
-            updatedCookie += "=" + optionValue;
-        }
-    }
-
-    document.cookie = updatedCookie;
-}
+  document.cookie = updatedCookie;
+};
 
 export const getCookie = (name) => {
     let matches = document.cookie.match(new RegExp(
@@ -40,31 +49,28 @@ export const getCookie = (name) => {
     return matches ? decodeURIComponent(matches[1]) : undefined;
 }
 
-export const eraseCookie = (name) => {
-    setCookie(name, "", {
-      'max-age': -999
-    })
-}
+export const eraseCookie = name => {
+  setCookie(name, "", {
+    'max-age': -999
+  })
+};
 
 // Access Token
 export const setAuthCookie = (value, days = COOKIE_EXPIRESDAYS) => {
-    if(value){
-        setCookie(COOKIE_TOKEN,value, days
-        // ,{   
-        //     httpOnly: true, 
-        //     secure: true,
-        //     sameSite: true,
-        // }
+  if(value){
+    setCookie(COOKIE_TOKEN,value, days
+      // ,{   
+      //     httpOnly: true, 
+      //     secure: true,
+      //     sameSite: true,
+      // }
     );
-    }
-}
+  }
+};
 
-export const getAuthCookie = () => {
-    return getCookie(COOKIE_TOKEN);
-}
+export const getAuthCookie = () => getCookie(COOKIE_TOKEN);
 
 export const eraseAuthCookie = () => {
-    eraseCookie(COOKIE_TOKEN);
-    eraseCookie(COOKIE_LOGINSTATE);
-    
-}
+  eraseCookie(COOKIE_TOKEN);
+  eraseCookie(COOKIE_LOGINSTATE);
+};

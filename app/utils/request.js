@@ -1,6 +1,6 @@
 import cRequest from 'utils/server';
 import { removeEmptyObj } from 'utils/helpers';
-import axios from 'axios'
+import axios from 'axios';
 function parseJSON(response) {
   if (response.status === 204 || response.status === 205) {
     return null;
@@ -21,13 +21,15 @@ function checkStatus(response) {
 
 export function get(url, params) {
   removeEmptyObj(params);
-  return cRequest.get(url, { params })
+  return cRequest
+    .get(url, { params })
     .then(checkStatus)
     .then(parseJSON);
 }
 
 export function post(url, params) {
-  return cRequest.post(url, params)
+  return cRequest
+    .post(url, params)
     .then(checkStatus)
     .then(parseJSON);
 }
