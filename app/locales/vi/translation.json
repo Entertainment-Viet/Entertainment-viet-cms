@@ -20,5 +20,43 @@
     "required": "required",
     "btn_register": "Đăng ký",
     "btn_login": "Đăng nhập"
+  },
+  "header": {
+    "findTalent": "Find talent",
+    "postJob": "Post a job",
+    "openJob": "Openning job",
+    "soloSinger": "Solo Singer",
+    "band": "Band",
+    "dancer": "Dancer",
+    "instru": "Instrument",
+    "dj": "DJ",
+    "stylish": "Stylish",
+    "makeup": "Make-up",
+    "bartender": "Bartender"
+  },
+  "footer": {
+    "findTalent": "Find talent",
+    "postJob": "Post a job",
+    "openJob": "Openning job",
+    "soloSinger": "Solo Singer",
+    "band": "Band",
+    "dancer": "Dancer",
+    "instru": "Instrument",
+    "dj": "DJ",
+    "stylish": "Stylish",
+    "makeup": "Make-up",
+    "bartender": "Bartender",
+    "about": "About",
+    "career": "Career",
+    "news": "News & Annoucement",
+    "partner": "Partnership",
+    "privacy": "Privacy Policy",
+    "service": "Term of Service",
+    "support": "Support",
+    "help": "Help & Support",
+    "trust": "Trust & Safety",
+    "becomeTalent": "Become Talent",
+    "becomeBuyer": "Become Buyer",
+    "faq": "FAQ"
   }
 }

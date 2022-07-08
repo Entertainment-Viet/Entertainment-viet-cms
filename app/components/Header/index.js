@@ -1,39 +1,29 @@
 import React, { useState } from 'react';
-// import { FormattedMessage } from 'react-intl';
+import { useTranslation } from 'react-i18next';
 
 // import LocaleToggle from 'containers/LocaleToggle';
 // import UserDropdown from 'containers/UserDropdown';
 // import Notification from '../Notification';
 // import Logo from 'components/Logo';
 import {
-  ROUTE_ABOUT,
-  ROUTE_NFT,
-  ROUTE_NEWS,
-  ROUTE_METAVERSE,
-  ROUTE_CONTACT,
-  ROUTE_ALL_AUTHOR,
-} from 'constants/routes';
-import {
   Flex,
   Box,
   Input,
-  Center,
-  Spacer,
   HStack,
   Link,
   Avatar,
   Divider,
   InputGroup,
   InputRightElement,
-  FormControl,
 } from '@chakra-ui/react';
 import { SearchIcon } from '@chakra-ui/icons';
-import { RightBar, NavBar, Wrapper } from './styles';
-import HeaderLink from './HeaderLink';
-// import messages from './messages';
+import { messages } from './messages';
+import { Wrapper } from './styles';
+import { HeaderData } from './HeaderData';
 
 function Header() {
   const [searchTerm, setSearchTerm] = useState('');
+  const { t } = useTranslation();
   return (
     <Wrapper>
       <Flex justify="space-between">
@@ -63,9 +53,9 @@ function Header() {
                   bg="white"
                   placeholder="Basic usage"
                 />
-                <InputRightElement
-                  children={<SearchIcon color="green.500" />}
-                />
+                <InputRightElement>
+                  <SearchIcon color="green.500" />
+                </InputRightElement>
               </InputGroup>
             </form>
           </Box>
@@ -73,32 +63,32 @@ function Header() {
         <Box>
           <HStack spacing={4}>
             <Box
-              color="red.500"
+              color="white"
               fontWeight="500"
               as="h1"
               lineHeight="tight"
               noOfLines={1}
             >
-              sao ko cách ra
+              {t(messages.findTalent())}
             </Box>
             <Box
-              color="red.500"
+              color="white"
               fontWeight="500"
               as="h1"
               lineHeight="tight"
               noOfLines={1}
             >
-              sao ko cách ra
+              {t(messages.postJob())}
             </Box>
             <Link href="https://google.com" isExternal>
               <Box
-                color="red.500"
+                color="white"
                 fontWeight="500"
                 as="h1"
                 lineHeight="tight"
                 noOfLines={1}
               >
-                sao ko cách ra
+                {t(messages.openJob())}
               </Box>
             </Link>
             <Avatar name="Dan Abrahmov" src="https://bit.ly/dan-abramov" />
@@ -107,51 +97,22 @@ function Header() {
       </Flex>
       <Divider my={4} />
       <HStack spacing={4}>
-        <Box
-          color="red.500"
-          fontWeight="500"
-          as="h1"
-          lineHeight="tight"
-          noOfLines={1}
-        >
-          sao ko cách ra
-        </Box>
-        <Box
-          color="red.500"
-          fontWeight="500"
-          as="h1"
-          lineHeight="tight"
-          noOfLines={1}
-        >
-          sao ko cách ra
-        </Box>
-        <Box
-          color="red.500"
-          fontWeight="500"
-          as="h1"
-          lineHeight="tight"
-          noOfLines={1}
-        >
-          sao ko cách ra
-        </Box>
-        <Box
-          color="red.500"
-          fontWeight="500"
-          as="h1"
-          lineHeight="tight"
-          noOfLines={1}
-        >
-          sao ko cách ra
-        </Box>
-        <Box
-          color="red.500"
-          fontWeight="500"
-          as="h1"
-          lineHeight="tight"
-          noOfLines={1}
-        >
-          sao ko cách ra
-        </Box>
+        {HeaderData.map(value => (
+          <>
+            <Link href={value.url}>
+              <Box
+                color="white"
+                fontWeight="500"
+                as="h1"
+                lineHeight="tight"
+                noOfLines={1}
+                key={`header_${value.url}`}
+              >
+                {t(messages[value.title]())}
+              </Box>
+            </Link>
+          </>
+        ))}
       </HStack>
     </Wrapper>
   );

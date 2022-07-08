@@ -7,19 +7,28 @@
 
 import { translations } from 'locales/translations';
 import { t } from 'utils/messages';
+import {} from 'constants/routes';
 
 export const messages = {
-  header: () => t(translations.loginPage.header),
-  email: () => t(translations.loginPage.email),
-  password: () => t(translations.loginPage.password),
-  login: () => t(translations.loginPage.login),
-  register: () => t(translations.loginPage.register),
-  forgot: () => t(translations.loginPage.forgot),
-  error: () => t(translations.loginPage.error),
-  success: () => t(translations.loginPage.success),
-  errorUser: () => t(translations.loginPage.errorUser),
-  errorEmail: () => t(translations.loginPage.errorEmail),
-  resendActive: () => t(translations.loginPage.resendActive),
-  resendSuccess: () => t(translations.loginPage.resendSuccess),
-  resendError: () => t(translations.loginPage.resendError),
+  categories: () => t(translations.header.categories),
+  soloSinger: () => t(translations.header.soloSinger),
+  band: () => t(translations.header.band),
+  dancer: () => t(translations.header.dancer),
+  instru: () => t(translations.header.instru),
+  dj: () => t(translations.header.dj),
+  stylish: () => t(translations.header.stylish),
+  makeup: () => t(translations.header.makeup),
+  bartender: () => t(translations.header.bartender),
+  about: () => t(translations.footer.about),
+  career: () => t(translations.footer.career),
+  news: () => t(translations.footer.news),
+  partner: () => t(translations.footer.partner),
+  privacy: () => t(translations.footer.privacy),
+  service: () => t(translations.footer.service),
+  support: () => t(translations.footer.support),
+  help: () => t(translations.footer.help),
+  trust: () => t(translations.footer.trust),
+  becomeTalent: () => t(translations.footer.becomeTalent),
+  becomeBuyer: () => t(translations.footer.becomeBuyer),
+  faq: () => t(translations.footer.faq),
 };

@@ -7,25 +7,30 @@ import styled from 'styled-components';
 import { device } from 'constants/styles';
 
 const Wrapper = styled.div`
-  @media ${device.mob}  {
+  @media ${device.mob} {
     padding: 0px 2rem;
     margin: 0 auto;
   }
-  @media ${device.tab}  {
+  @media ${device.tab} {
     padding: 0px 2rem;
     margin: 4rem auto;
   }
   @media ${device.lap} {
-    margin: 0px 1rem 2rem 1rem;
+    margin: 0px 1rem 1.5rem 1rem;
   }
 `;
 
 function PageWrapper(props) {
-  return <Wrapper className={props.className}>{Children.toArray(props.children)}</Wrapper>;
+  return (
+    <Wrapper className={props.className}>
+      {Children.toArray(props.children)}
+    </Wrapper>
+  );
 }
 
 PageWrapper.propTypes = {
   children: PropTypes.node.isRequired,
+  className: PropTypes.any,
 };
 
 export default PageWrapper;
