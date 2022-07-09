@@ -15,7 +15,7 @@ import { Container, Box, HStack, Divider } from '@chakra-ui/react';
 import { useInjectReducer } from 'utils/injectReducer';
 import { useInjectSaga } from 'utils/injectSaga';
 import { CardListHorizontal } from 'components/Cards';
-import { ImageSlider } from 'components/Carousel';
+import ImageSlider from 'components/Carousel';
 import Buttons from 'components/Buttons';
 import Metadata from 'components/Metadata';
 // import { loadNFTFilter } from 'containers/NFTFilterProvider/actions';
@@ -32,8 +32,8 @@ import saga from './saga';
 import reducer from './reducer';
 import {} from './selectors';
 
-const key = 'HomePage';
-export function HomePage({}) {
+const key = 'CreateJobOfferPage';
+export function CreateJobOfferPage({}) {
   useInjectReducer({ key, reducer });
   useInjectSaga({ key, saga });
 
@@ -147,7 +147,7 @@ export function HomePage({}) {
   );
 }
 
-HomePage.propTypes = {};
+CreateJobOfferPage.propTypes = {};
 
 const mapStateToProps = createStructuredSelector({});
 
@@ -163,4 +163,4 @@ const withConnect = connect(
 export default compose(
   withConnect,
   memo,
-)(HomePage);
+)(CreateJobOfferPage);

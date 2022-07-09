@@ -6,18 +6,29 @@
  */
 
 import React, { useEffect, memo } from 'react';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { createStructuredSelector } from 'reselect';
-import { Container, Box, HStack, Divider } from '@chakra-ui/react';
+import {
+  Container,
+  Box,
+  VStack,
+  HStack,
+  Divider,
+  Grid,
+  GridItem,
+  Text,
+  Link,
+} from '@chakra-ui/react';
 
 import { useInjectReducer } from 'utils/injectReducer';
 import { useInjectSaga } from 'utils/injectSaga';
 import { CardListHorizontal } from 'components/Cards';
-import { ImageSlider } from 'components/Carousel';
+import { ImageSliderWithPreview, CommentCarousel } from 'components/Carousel';
 import Buttons from 'components/Buttons';
 import Metadata from 'components/Metadata';
+import { NormalProfile } from 'components/Profile';
 // import { loadNFTFilter } from 'containers/NFTFilterProvider/actions';
 
 // import { isAuthor } from 'utils/auth';
@@ -32,12 +43,14 @@ import saga from './saga';
 import reducer from './reducer';
 import {} from './selectors';
 
-const key = 'HomePage';
-export function HomePage({}) {
+const key = 'ArtistDetailPage';
+export function ArtistDetailPage({ match }) {
   useInjectReducer({ key, reducer });
   useInjectSaga({ key, saga });
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    console.log(match.params.id);
+  }, [match.params.id]);
 
   const SlideData = [
     {
@@ -63,91 +76,51 @@ export function HomePage({}) {
   ];
 
   return (
-    <div style={{ width: '100%' }}>
+    <div>
       <Metadata />
-      <HStack mb={10}>
-        <Container>
-          <Box
-            width="sm"
-            height="17.5rem"
-            borderWidth="1px"
-            borderRadius="lg"
-            bg="#2D3748"
-            color="white"
-            position="relative"
-          >
-            <Box
-              p={6}
-              display="flex"
-              flexDirection="column"
-              alignItems="baseline"
-              position="absolute"
-              top="25%"
+      <Grid templateColumns="repeat(5, 1fr)">
+        <GridItem colSpan={3}>
+          <VStack align="flex-start">
+            <ImageSliderWithPreview slides={SlideData} />
+            <HStack
+              justifyContent="space-between"
+              w="100%"
+              style={{ marginTop: '2rem', marginBottom: '1rem' }}
             >
-              <Box
-                mt="1"
-                fontWeight="500"
-                as="h1"
-                lineHeight="tight"
-                noOfLines={1}
-              >
-                Welcome back
-              </Box>
-              <Box as="span" color="gray.400">
-                Looking for talent for your event ?
-              </Box>
-              {/* <Button mt="12" colorScheme="orange">
-                Post a job
-              </Button> */}
-              <Buttons mt="12">buscu</Buttons>
-            </Box>
-          </Box>
-        </Container>
-        <ImageSlider slides={SlideData} />
-      </HStack>
-      <Box
-        color="white"
-        mt="6"
-        mb="6"
-        fontWeight="500"
-        as="h1"
-        lineHeight="tight"
-        noOfLines={1}
-      >
-        Most popular Talents in Entertainment Viet
-      </Box>
-      <CardListHorizontal />
-      <Box
-        color="white"
-        mt="6"
-        mb="6"
-        fontWeight="500"
-        as="h1"
-        lineHeight="tight"
-        noOfLines={1}
-      >
-        Recent Talents
-      </Box>
-      <CardListHorizontal />
-      <ImageSlider slides={SlideData} />
-      <Box
-        color="white"
-        mt="6"
-        mb="6"
-        fontWeight="500"
-        as="h1"
-        lineHeight="tight"
-        noOfLines={1}
-      >
-        Editor’s Choices
-      </Box>
-      <CardListHorizontal />
+              <Text color="white" as="h1" fontWeight={700}>
+                Nhận xét của khách hàng về talent
+              </Text>
+              <Link href={`/all-comment/${match.params.id}`}>
+                <Text color="red.500" as="h1" fontWeight={700}>
+                  Nhận xét của khách hàng về talent
+                </Text>
+              </Link>
+            </HStack>
+            <CommentCarousel />
+            <Text color="white" as="h1" fontWeight={700} py="6">
+              Thông tin dịch vụ cung cấp
+            </Text>
+            <Container color="white">
+              This is for the rich text field <b>vloz</b>
+            </Container>
+            <Text color="white" as="h1" fontWeight={700} py="6">
+              Thông tin cơ bản về talent
+            </Text>
+            <NormalProfile />
+            <Text color="white" as="h1" fontWeight={700} py="6">
+              Câu hỏi thường gặp
+            </Text>
+          </VStack>
+        </GridItem>
+      </Grid>
       <Divider />
     </div>
   );
 }
 
-HomePage.propTypes = {};
+ArtistDetailPage.propTypes = {
+  match: PropTypes.object,
+};
 
 const mapStateToProps = createStructuredSelector({});
 
@@ -163,4 +136,4 @@ const withConnect = connect(
 export default compose(
   withConnect,
   memo,
-)(HomePage);
+)(ArtistDetailPage);

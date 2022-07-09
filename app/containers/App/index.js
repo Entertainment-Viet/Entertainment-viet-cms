@@ -22,6 +22,7 @@ import * as Paths from 'constants/routes';
 import NotFoundPage from 'containers/NotFoundPage/Loadable';
 import LoginPage from 'containers/LogInPage/Loadable';
 import HomePage from 'containers/HomePage/Loadable';
+import ArtistDetailPage from 'containers/ArtistDetailPage/Loadable';
 
 // Components
 import GlobalFonts from 'components/GlobalFonts';
@@ -77,6 +78,13 @@ export default function App() {
           // isAuthenticated={isAuthenticated}
         >
           <HomePage />
+        </CommonRoute>
+        <CommonRoute
+          exact
+          path={Paths.ROUTE_ARTIST_DETAIL}
+          // isAuthenticated={isAuthenticated}
+        >
+          <ArtistDetailPage />
         </CommonRoute>
         <Route path="*" component={NotFoundPage} />
       </Switch>

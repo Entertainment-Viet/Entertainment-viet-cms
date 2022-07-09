@@ -1,7 +1,7 @@
 import { createSelector } from 'reselect';
 import { initialState } from './reducer';
 
-const selectState = state => state.HomePage || initialState;
+const selectState = state => state.ArtistDetailPage || initialState;
 
 const makeSelectNFTLoading = () =>
   createSelector(
