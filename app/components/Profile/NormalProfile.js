@@ -24,7 +24,7 @@ import PropTypes from 'prop-types';
 const ImageSlider = ({ profile }) => (
   <Container>
     <HStack>
-      <Avatar name="Dan Abrahmov" src="https://bit.ly/dan-abramov" size="2xl"/>
+      <Avatar name="Dan Abrahmov" src="https://bit.ly/dan-abramov" size="2xl" />
       <Center>
         <VStack>
           <Link href="google">

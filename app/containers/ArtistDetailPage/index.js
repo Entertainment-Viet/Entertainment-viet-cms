@@ -20,6 +20,10 @@ import {
   GridItem,
   Text,
   Link,
+  Tab,
+  TabList,
+  Tabs,
+  Progress,
 } from '@chakra-ui/react';
 
 import { useInjectReducer } from 'utils/injectReducer';
@@ -29,6 +33,8 @@ import { ImageSliderWithPreview, CommentCarousel } from 'components/Carousel';
 import Buttons from 'components/Buttons';
 import Metadata from 'components/Metadata';
 import { NormalProfile } from 'components/Profile';
+import Dropdown from 'components/Accordian';
+import CommentBox from 'components/Comment';
 // import { loadNFTFilter } from 'containers/NFTFilterProvider/actions';
 
 // import { isAuthor } from 'utils/auth';
@@ -78,6 +84,18 @@ export function ArtistDetailPage({ match }) {
   return (
     <div>
       <Metadata />
+      <Divider />
+      <Tabs mb="12">
+        <TabList
+          color="red.500"
+          _hover={{ fontWeight: '900' }}
+          _selected={{ fontWeight: '900' }}
+        >
+          <Tab>One</Tab>
+          <Tab>Two</Tab>
+          <Tab>Three</Tab>
+        </TabList>
+      </Tabs>
       <Grid templateColumns="repeat(5, 1fr)">
         <GridItem colSpan={3}>
           <VStack align="flex-start">
@@ -110,6 +128,36 @@ export function ArtistDetailPage({ match }) {
             <Text color="white" as="h1" fontWeight={700} py="6">
               Câu hỏi thường gặp
             </Text>
+            <Dropdown />
+            <Text color="white" as="h1" fontWeight={700} py="6">
+              120 Reviews
+            </Text>
+            <Container color="white">
+              5 sao <Progress value={50} size="xs" colorScheme="pink" /> 100
+            </Container>
+            <Container color="white">
+              4 sao <Progress value={50} size="xs" colorScheme="pink" /> 100
+            </Container>
+            <Container color="white">
+              3 sao <Progress value={50} size="xs" colorScheme="pink" /> 100
+            </Container>
+            <Container color="white">
+              2 sao <Progress value={50} size="xs" colorScheme="pink" /> 100
+            </Container>
+            <Container color="white">
+              1 sao <Progress value={50} size="xs" colorScheme="pink" /> 100
+            </Container>
+            <Text color="white" as="h1" fontWeight={700} py="6">
+              Review
+            </Text>
+            <CommentBox />
+            <CommentBox />
+            <CommentBox />
+            <Container>
+              <Text color="red" fontSize="18px">
+                + See more
+              </Text>
+            </Container>
           </VStack>
         </GridItem>
       </Grid>
