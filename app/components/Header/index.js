@@ -20,6 +20,7 @@ import { SearchIcon } from '@chakra-ui/icons';
 import { messages } from './messages';
 import { Wrapper } from './styles';
 import { HeaderData } from './HeaderData';
+import { PRI_TEXT_COLOR } from 'constants/styles';
 
 function Header() {
   const [searchTerm, setSearchTerm] = useState('');
@@ -63,7 +64,7 @@ function Header() {
         <Box>
           <HStack spacing={4}>
             <Box
-              color="white"
+              color={PRI_TEXT_COLOR}
               fontWeight="500"
               as="h1"
               lineHeight="tight"
@@ -72,7 +73,7 @@ function Header() {
               {t(messages.findTalent())}
             </Box>
             <Box
-              color="white"
+              color={PRI_TEXT_COLOR}
               fontWeight="500"
               as="h1"
               lineHeight="tight"
@@ -82,7 +83,7 @@ function Header() {
             </Box>
             <Link href="https://google.com" isExternal>
               <Box
-                color="white"
+                color={PRI_TEXT_COLOR}
                 fontWeight="500"
                 as="h1"
                 lineHeight="tight"
@@ -101,7 +102,7 @@ function Header() {
           <>
             <Link href={value.url}>
               <Box
-                color="white"
+                color={PRI_TEXT_COLOR}
                 fontWeight="500"
                 as="h1"
                 lineHeight="tight"

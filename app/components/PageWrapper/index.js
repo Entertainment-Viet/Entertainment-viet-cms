@@ -17,6 +17,9 @@ const Wrapper = styled.div`
   }
   @media ${device.lap} {
     margin: 0px 1rem 1.5rem 1rem;
+    max-width: 1440px;
+    margin-left: auto;
+    margin-right: auto;
   }
 `;
 

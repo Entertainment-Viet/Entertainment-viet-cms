@@ -21,8 +21,8 @@ function CommonRoute({ children, ...rest }) {
             })
           }
         />
+        <Footer />
       </PageWrapper>
-      <Footer />
     </Fragment>
   );
 }

@@ -18,6 +18,8 @@ import { CardListHorizontal } from 'components/Cards';
 import ImageSlider from 'components/Carousel';
 import Buttons from 'components/Buttons';
 import Metadata from 'components/Metadata';
+import { PRI_TEXT_COLOR } from 'constants/styles';
+
 // import { loadNFTFilter } from 'containers/NFTFilterProvider/actions';
 
 // import { isAuthor } from 'utils/auth';
@@ -73,7 +75,7 @@ export function CreateJobOfferPage({}) {
             borderWidth="1px"
             borderRadius="lg"
             bg="#2D3748"
-            color="white"
+            color={PRI_TEXT_COLOR}
             position="relative"
           >
             <Box
@@ -106,7 +108,7 @@ export function CreateJobOfferPage({}) {
         <ImageSlider slides={SlideData} />
       </HStack>
       <Box
-        color="white"
+        color={PRI_TEXT_COLOR}
         mt="6"
         mb="6"
         fontWeight="500"
@@ -118,7 +120,7 @@ export function CreateJobOfferPage({}) {
       </Box>
       <CardListHorizontal />
       <Box
-        color="white"
+        color={PRI_TEXT_COLOR}
         mt="6"
         mb="6"
         fontWeight="500"
@@ -131,7 +133,7 @@ export function CreateJobOfferPage({}) {
       <CardListHorizontal />
       <ImageSlider slides={SlideData} />
       <Box
-        color="white"
+        color={PRI_TEXT_COLOR}
         mt="6"
         mb="6"
         fontWeight="500"

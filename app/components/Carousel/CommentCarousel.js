@@ -13,6 +13,7 @@ import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import './style.css';
 import PropTypes from 'prop-types';
+import { PRI_TEXT_COLOR ,LIGHT_GRAY } from 'constants/styles';
 
 // If you want to use your own Selectors look up the Advancaed Story book examples
 const arrowStyles = {
@@ -59,19 +60,24 @@ const CommentCarousel = ({ slides }) => (
     {/* {slides.map(slide => (
       <Image src={slide.image} height="auto" width="800px" />
     ))} */}
-    <Box bg="gray.700" p="8">
+    <Box bg={LIGHT_GRAY} p="8">
       <VStack align="flex-start">
         <HStack align="flex-start">
           <Center>
             <Avatar name="Dan Abrahmov" src="https://bit.ly/dan-abramov" />
-            <Text color="white" ml="2" fontSize="18px" fontWeight={700}>
+            <Text
+              color={PRI_TEXT_COLOR}
+              ml="2"
+              fontSize="18px"
+              fontWeight={700}
+            >
               Anna 212
             </Text>
             <Box display="flex" ml="2" alignItems="center">
               <Box
                 as="span"
                 mr="2"
-                color="white"
+                color={PRI_TEXT_COLOR}
                 fontSize="18px"
                 fontWeight={700}
               >
@@ -81,26 +87,31 @@ const CommentCarousel = ({ slides }) => (
             </Box>
           </Center>
         </HStack>
-        <Container color="white" maxW="100%" p={0} textAlign="start">
+        <Container color={PRI_TEXT_COLOR} maxW="100%" p={0} textAlign="start">
           “Lorem Ipsum is simply dummy text of the printing and typesetting
           industry. Lorem Ipsum has been the industry's standard dummy text ever
           since the 1500s, when an unknown printer ...”
         </Container>
       </VStack>
     </Box>
-    <Box bg="gray.700" p="8">
+    <Box bg={LIGHT_GRAY} p="8">
       <VStack align="flex-start">
         <HStack align="flex-start">
           <Center>
             <Avatar name="Dan Abrahmov" src="https://bit.ly/dan-abramov" />
-            <Text color="white" ml="2" fontSize="18px" fontWeight={700}>
+            <Text
+              color={PRI_TEXT_COLOR}
+              ml="2"
+              fontSize="18px"
+              fontWeight={700}
+            >
               Anna 212
             </Text>
             <Box display="flex" ml="2" alignItems="center">
               <Box
                 as="span"
                 mr="2"
-                color="white"
+                color={PRI_TEXT_COLOR}
                 fontSize="18px"
                 fontWeight={700}
               >
@@ -110,7 +121,7 @@ const CommentCarousel = ({ slides }) => (
             </Box>
           </Center>
         </HStack>
-        <Container color="white" maxW="100%" p={0} textAlign="start">
+        <Container color={PRI_TEXT_COLOR} maxW="100%" p={0} textAlign="start">
           “Lorem Ipsum is simply dummy text of the printing and typesetting
           industry. Lorem Ipsum has been the industry's standard dummy text ever
           since the 1500s, when an unknown printer ...”

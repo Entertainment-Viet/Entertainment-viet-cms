@@ -8,6 +8,7 @@ import { Flex, HStack, VStack, Box, Link } from '@chakra-ui/react';
 // import icoTwitter from './img/twitter.svg';
 // import icoYouTube from './img/youTube.svg';
 import { useTranslation } from 'react-i18next';
+import { PRI_TEXT_COLOR, SEC_TEXT_COLOR } from 'constants/styles';
 import { FooterData } from './FooterData';
 import { messages } from './messages';
 
@@ -16,11 +17,17 @@ function Footer() {
   return (
     <>
       <Flex alignItems="flex-start" justify="flex-start">
-        <HStack px={6} align="flex-start" justify="flex-start" spacing="20vw">
+        <HStack
+          pr={6}
+          pt={6}
+          align="flex-start"
+          justify="flex-start"
+          spacing="20vw"
+        >
           {FooterData.map(value => (
             <VStack align="flex-start">
               <Box
-                color="white"
+                color={PRI_TEXT_COLOR}
                 fontWeight="900"
                 as="h1"
                 lineHeight="tight"
@@ -36,7 +43,7 @@ function Footer() {
                     fontWeight="500"
                     lineHeight="tight"
                     noOfLines={1}
-                    color="gray.400"
+                    color={SEC_TEXT_COLOR}
                   >
                     {t(messages[subVal.h2]())}
                   </Box>
@@ -46,9 +53,9 @@ function Footer() {
           ))}
         </HStack>
       </Flex>
-      <HStack px={6} mt={20} mb={6}>
+      <HStack pr={6} mt={20} mb={6}>
         <Box
-          color="white"
+          color={PRI_TEXT_COLOR}
           mr="36"
           fontWeight="500"
           as="h1"
@@ -57,7 +64,7 @@ function Footer() {
         >
           Entertainment Viet
         </Box>
-        <Box as="span" color="gray.400">
+        <Box as="span" color={SEC_TEXT_COLOR}>
           Entertainment Viet Ltd. 2022
         </Box>
       </HStack>

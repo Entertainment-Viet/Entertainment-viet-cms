@@ -35,6 +35,8 @@ import Metadata from 'components/Metadata';
 import { NormalProfile } from 'components/Profile';
 import Dropdown from 'components/Accordian';
 import CommentBox from 'components/Comment';
+import { PRI_TEXT_COLOR } from 'constants/styles';
+
 // import { loadNFTFilter } from 'containers/NFTFilterProvider/actions';
 
 // import { isAuthor } from 'utils/auth';
@@ -105,7 +107,7 @@ export function ArtistDetailPage({ match }) {
               w="100%"
               style={{ marginTop: '2rem', marginBottom: '1rem' }}
             >
-              <Text color="white" as="h1" fontWeight={700}>
+              <Text color={PRI_TEXT_COLOR} as="h1" fontWeight={700}>
                 Nhận xét của khách hàng về talent
               </Text>
               <Link href={`/all-comment/${match.params.id}`}>
@@ -115,39 +117,39 @@ export function ArtistDetailPage({ match }) {
               </Link>
             </HStack>
             <CommentCarousel />
-            <Text color="white" as="h1" fontWeight={700} py="6">
+            <Text color={PRI_TEXT_COLOR} as="h1" fontWeight={700} py="6">
               Thông tin dịch vụ cung cấp
             </Text>
-            <Container color="white">
+            <Container color={PRI_TEXT_COLOR}>
               This is for the rich text field <b>vloz</b>
             </Container>
-            <Text color="white" as="h1" fontWeight={700} py="6">
+            <Text color={PRI_TEXT_COLOR} as="h1" fontWeight={700} py="6">
               Thông tin cơ bản về talent
             </Text>
             <NormalProfile />
-            <Text color="white" as="h1" fontWeight={700} py="6">
+            <Text color={PRI_TEXT_COLOR} as="h1" fontWeight={700} py="6">
               Câu hỏi thường gặp
             </Text>
             <Dropdown />
-            <Text color="white" as="h1" fontWeight={700} py="6">
+            <Text color={PRI_TEXT_COLOR} as="h1" fontWeight={700} py="6">
               120 Reviews
             </Text>
-            <Container color="white">
+            <Container color={PRI_TEXT_COLOR}>
               5 sao <Progress value={50} size="xs" colorScheme="pink" /> 100
             </Container>
-            <Container color="white">
+            <Container color={PRI_TEXT_COLOR}>
               4 sao <Progress value={50} size="xs" colorScheme="pink" /> 100
             </Container>
-            <Container color="white">
+            <Container color={PRI_TEXT_COLOR}>
               3 sao <Progress value={50} size="xs" colorScheme="pink" /> 100
             </Container>
-            <Container color="white">
+            <Container color={PRI_TEXT_COLOR}>
               2 sao <Progress value={50} size="xs" colorScheme="pink" /> 100
             </Container>
-            <Container color="white">
+            <Container color={PRI_TEXT_COLOR}>
               1 sao <Progress value={50} size="xs" colorScheme="pink" /> 100
             </Container>
-            <Text color="white" as="h1" fontWeight={700} py="6">
+            <Text color={PRI_TEXT_COLOR} as="h1" fontWeight={700} py="6">
               Review
             </Text>
             <CommentBox />

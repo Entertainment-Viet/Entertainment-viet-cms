@@ -7,21 +7,22 @@ import {
   AccordionIcon,
   Box,
 } from '@chakra-ui/react';
+import { PRI_TEXT_COLOR, LIGHT_GRAY } from 'constants/styles';
 import PropTypes from 'prop-types';
 
 // If you want to use your own Selectors look up the Advancaed Story book examples
 const Dropdown = ({ slides }) => (
-  <Accordion defaultIndex={[0]} allowMultiple w="100%" bg="gray.700" p="6">
+  <Accordion defaultIndex={[0]} allowMultiple w="100%" bg={LIGHT_GRAY} p="6">
     <AccordionItem>
       <h2>
-        <AccordionButton color="white">
-          <Box flex="1" textAlign="left" color="white">
+        <AccordionButton color={PRI_TEXT_COLOR}>
+          <Box flex="1" textAlign="left" color={PRI_TEXT_COLOR}>
             Section 1 title
           </Box>
           <AccordionIcon />
         </AccordionButton>
       </h2>
-      <AccordionPanel pb={4} color="white">
+      <AccordionPanel pb={4} color={PRI_TEXT_COLOR}>
         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
         tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
         veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
@@ -31,14 +32,14 @@ const Dropdown = ({ slides }) => (
 
     <AccordionItem>
       <h2>
-        <AccordionButton color="white">
+        <AccordionButton color={PRI_TEXT_COLOR}>
           <Box flex="1" textAlign="left">
             Section 2 title
           </Box>
           <AccordionIcon />
         </AccordionButton>
       </h2>
-      <AccordionPanel pb={4} color="white">
+      <AccordionPanel pb={4} color={PRI_TEXT_COLOR}>
         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
         tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
         veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea

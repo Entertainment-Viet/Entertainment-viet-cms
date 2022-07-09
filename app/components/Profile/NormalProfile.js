@@ -17,6 +17,7 @@ import {
   Button,
 } from '@chakra-ui/react';
 import { StarIcon } from '@chakra-ui/icons';
+import { PRI_TEXT_COLOR } from 'constants/styles';
 
 import PropTypes from 'prop-types';
 
@@ -28,7 +29,12 @@ const ImageSlider = ({ profile }) => (
       <Center>
         <VStack>
           <Link href="google">
-            <Text color="white" ml="2" fontSize="18px" fontWeight={700}>
+            <Text
+              color={PRI_TEXT_COLOR}
+              ml="2"
+              fontSize="18px"
+              fontWeight={700}
+            >
               Anna 212
             </Text>
           </Link>
@@ -36,7 +42,7 @@ const ImageSlider = ({ profile }) => (
             <Box
               as="span"
               mr="2"
-              color="white"
+              color={PRI_TEXT_COLOR}
               fontSize="18px"
               fontWeight={700}
             >
