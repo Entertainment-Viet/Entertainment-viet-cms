@@ -58,5 +58,16 @@
     "becomeTalent": "Become Talent",
     "becomeBuyer": "Become Buyer",
     "faq": "FAQ"
+  },
+  "createEventPage": {
+    "createEvent": "Đăng việc tuyển talent",
+    "title": "Tiêu đề",
+    "desc": "Mô tả công việc cụ thể đang cần tìm talent - Vui lòng mô tả đầy đủ nội dung",
+    "category": "Danh mục",
+    "subCategory": "Danh mục con",
+    "skills": "Các kỹ năng yêu cầu",
+    "skillsDesc": "Vui lòng mô tả cụ thể kỹ năng yêu cầu",
+    "workType": "Hình thức làm việc",
+    "currency": "Ngân sách"
   }
 }

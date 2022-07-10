@@ -7,6 +7,7 @@ export const ROUTE_FORGOTPASSWORD = '/forgot-password';
 export const ROUTE_CHANGEPASSWORD = '/change-password';
 export const ROUTE_ACCOUNT = '/account';
 export const ROUTE_ARTIST_DETAIL = '/artist/:id';
+export const ROUTE_CREATE_EVENT = '/event/create';
 // ================================================================
 export const ROUTE_PRODUCTS = '/products';
 export const ROUTE_NEWS = '/news';

@@ -23,7 +23,7 @@ import NotFoundPage from 'containers/NotFoundPage/Loadable';
 import LoginPage from 'containers/LogInPage/Loadable';
 import HomePage from 'containers/HomePage/Loadable';
 import ArtistDetailPage from 'containers/ArtistDetailPage/Loadable';
-
+import CreateEventPage from 'containers/CreateEventPage/Loadable';
 // Components
 import GlobalFonts from 'components/GlobalFonts';
 import Banner from 'components/DevelopmentBanner';
@@ -85,6 +85,13 @@ export default function App() {
           // isAuthenticated={isAuthenticated}
         >
           <ArtistDetailPage />
+        </CommonRoute>
+        <CommonRoute
+          exact
+          path={Paths.ROUTE_CREATE_EVENT}
+          // isAuthenticated={isAuthenticated}
+        >
+          <CreateEventPage />
         </CommonRoute>
         <Route path="*" component={NotFoundPage} />
       </Switch>
