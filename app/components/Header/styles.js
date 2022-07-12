@@ -4,7 +4,7 @@ import { device } from 'constants/styles';
 
 export const Wrapper = styled.div`
   display: block;
-  padding: 2rem 0 3rem 0;
+  padding: 2rem 0 1rem 0;
   position: relative;
 `;
 

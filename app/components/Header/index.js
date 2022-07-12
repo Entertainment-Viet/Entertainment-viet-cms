@@ -17,10 +17,10 @@ import {
   InputRightElement,
 } from '@chakra-ui/react';
 import { SearchIcon } from '@chakra-ui/icons';
+import { PRI_TEXT_COLOR } from 'constants/styles';
 import { messages } from './messages';
 import { Wrapper } from './styles';
 import { HeaderData } from './HeaderData';
-import { PRI_TEXT_COLOR } from 'constants/styles';
 
 function Header() {
   const [searchTerm, setSearchTerm] = useState('');
@@ -115,6 +115,7 @@ function Header() {
           </>
         ))}
       </HStack>
+      <Divider mt={4} />
     </Wrapper>
   );
 }

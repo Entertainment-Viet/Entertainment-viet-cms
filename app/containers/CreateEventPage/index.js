@@ -231,7 +231,6 @@ export function CreateEventPage() {
           </Box>
         </GridItem>
       </Grid>
-      <CustomDivider />
     </div>
   );
 }

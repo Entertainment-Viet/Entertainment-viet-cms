@@ -2,7 +2,7 @@ import React from 'react';
 
 // Components
 // import Logo from 'components/Logo';
-import { Flex, HStack, VStack, Box, Link } from '@chakra-ui/react';
+import { Flex, HStack, VStack, Box, Link, Divider } from '@chakra-ui/react';
 // import icoFacebook from './img/facebook.svg';
 // import icoInstagram from './img/instagram.svg';
 // import icoTwitter from './img/twitter.svg';
@@ -16,6 +16,7 @@ function Footer() {
   const { t } = useTranslation();
   return (
     <>
+      <Divider />
       <Flex alignItems="flex-start" justify="flex-start">
         <HStack
           pr={6}

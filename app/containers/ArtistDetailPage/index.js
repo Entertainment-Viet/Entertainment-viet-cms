@@ -87,7 +87,6 @@ export function ArtistDetailPage({ match }) {
   return (
     <div>
       <Metadata />
-      <Divider mt="-6" />
       <Tabs mb="12">
         <TabList
           color="red.500"
@@ -154,7 +153,6 @@ export function ArtistDetailPage({ match }) {
           </VStack>
         </GridItem>
       </Grid>
-      <Divider />
     </div>
   );
 }

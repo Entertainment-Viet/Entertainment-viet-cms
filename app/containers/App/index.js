@@ -24,6 +24,7 @@ import LoginPage from 'containers/LogInPage/Loadable';
 import HomePage from 'containers/HomePage/Loadable';
 import ArtistDetailPage from 'containers/ArtistDetailPage/Loadable';
 import CreateEventPage from 'containers/CreateEventPage/Loadable';
+import SearchResultPage from 'containers/SearchResultPage/Loadable';
 // Components
 import GlobalFonts from 'components/GlobalFonts';
 import Banner from 'components/DevelopmentBanner';
@@ -92,6 +93,13 @@ export default function App() {
           // isAuthenticated={isAuthenticated}
         >
           <CreateEventPage />
+        </CommonRoute>
+        <CommonRoute
+          exact
+          path={Paths.ROUTE_SEARCH_RESULT}
+          // isAuthenticated={isAuthenticated}
+        >
+          <SearchResultPage />
         </CommonRoute>
         <Route path="*" component={NotFoundPage} />
       </Switch>
