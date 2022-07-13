@@ -20,132 +20,177 @@ import {
 import { setUserData, setUserLoginStat } from 'utils/auth';
 import * as Noti from 'utils/notification';
 import { ERROR_PARAMETERS, ERROR_USER_NOT_ACTIVE } from 'constants/errors';
-import {
-  ROUTE_FORGOTPASSWORD,
-  ROUTE_VERIFYCODE,
-  ROUTE_REGISTER,
-} from 'constants/routes';
+
 import { API_LOGIN } from 'constants/api';
 import { ENUM_USER_ROLE, ENUM_LOGINSTATE } from 'constants/enums';
 
 import Metadata from 'components/Metadata';
-import ContentWrapper from 'components/ContentWrapper';
-import Form from 'components/Form';
-import { Line, H1 } from 'components/Elements';
-import { ButtonCustom, LinkCustom, InputCustom } from 'components/Controls';
+import { H1 } from 'components/Elements';
+import {
+  SimpleGrid,
+  Box,
+  Image,
+  FormLabel,
+  Stack,
+  HStack,
+  FormControl,
+  Input,
+  Checkbox,
+  Button,
+  Divider,
+  Text,
+  Center,
+  useBreakpointValue,
+  useColorModeValue,
+} from '@chakra-ui/react';
+import { PRI_TEXT_COLOR, LIGHT_GRAY, RED_COLOR } from 'constants/styles';
+import OAuthButtonGroup from './OAuthButtonGroup';
+import PasswordField from './PasswordField';
 import { messages } from './messages';
 // import { getToken } from '../../firebaseInit';
+import background from './image/image.png';
 
 function LoginPage(props) {
   const { t } = useTranslation();
-  console.log(t(messages.password()));
   // const [isTokenFound, setTokenFound] = useState(false);
 
-  const [email, setEmail] = useState('');
-  const handleEmailChange = val => setEmail(val);
+  // const [email, setEmail] = useState('');
+  // const handleEmailChange = val => setEmail(val);
 
-  const [emailError, setEmailError] = useState(true);
-  const handleEmailError = val => setEmailError(!!val);
+  // const [emailError, setEmailError] = useState(true);
+  // const handleEmailError = val => setEmailError(!!val);
 
-  const [passError, setPassError] = useState(true);
-  const handlePassError = val => setPassError(!!val);
+  // const [passError, setPassError] = useState(true);
+  // const handlePassError = val => setPassError(!!val);
 
-  const handleSubmit = e => {
-    if (!emailError && !passError) {
-      const formData = new FormData(e.currentTarget);
-      formData.append('role', props.role ? props.role : ENUM_USER_ROLE.CUS);
-      const data = Object.fromEntries(formData.entries());
+  // const handleSubmit = e => {
+  //   if (!emailError && !passError) {
+  //     const formData = new FormData(e.currentTarget);
+  //     formData.append('role', props.role ? props.role : ENUM_USER_ROLE.CUS);
+  //     const data = Object.fromEntries(formData.entries());
 
-      return cRequest
-        .post(API_LOGIN, data)
-        .then(async res => {
-          const status = getResStatus(res);
-          if (status === 200) {
-            setUserLoginStat(ENUM_LOGINSTATE.kaibase);
-            setUserData(res);
-            Noti.showNotiSuccess(t(messages.success()), {
-              onClose: () => redirectHome(),
-            });
-            // const deviceToken = await getToken(setTokenFound);
-            // if (deviceToken) {
-            //   const formData1 = new FormData();
-            //   formData1.append('firebase_register_token', deviceToken);
-            //   const fData = Object.fromEntries(formData1.entries());
-            //   cRequest.post(API_SEND_DEVICE_TOKEN, fData).then(res1 => {
-            //     const status1 = getResStatus(res1);
-            //     if (status1 === '200') {
-            //       console.log('sent');
-            //     } else if (status1 === '400') {
-            //       console.log('fail');
-            //     } else {
-            //       cacthResponse(res1);
-            //     }
-            //   });
-            // }
-          } else if (status === 400) {
-            if (getResErrorCode(res) === ERROR_PARAMETERS) {
-              Noti.showNotiError(t(messages.error()));
-            }
-            if (getResErrorCode(res) === ERROR_USER_NOT_ACTIVE) {
-              Noti.showNotiError(t(messages.errorUser()));
-            }
-          } else {
-            cacthResponse(res);
-          }
-        })
-        .catch(err => cacthError(err));
-    }
-    return false;
-  };
+  //     return cRequest
+  //       .post(API_LOGIN, data)
+  //       .then(async res => {
+  //         const status = getResStatus(res);
+  //         if (status === 200) {
+  //           setUserLoginStat(ENUM_LOGINSTATE.kaibase);
+  //           setUserData(res);
+  //           Noti.showNotiSuccess(t(messages.success()), {
+  //             onClose: () => redirectHome(),
+  //           });
+  //           // const deviceToken = await getToken(setTokenFound);
+  //           // if (deviceToken) {
+  //           //   const formData1 = new FormData();
+  //           //   formData1.append('firebase_register_token', deviceToken);
+  //           //   const fData = Object.fromEntries(formData1.entries());
+  //           //   cRequest.post(API_SEND_DEVICE_TOKEN, fData).then(res1 => {
+  //           //     const status1 = getResStatus(res1);
+  //           //     if (status1 === '200') {
+  //           //       console.log('sent');
+  //           //     } else if (status1 === '400') {
+  //           //       console.log('fail');
+  //           //     } else {
+  //           //       cacthResponse(res1);
+  //           //     }
+  //           //   });
+  //           // }
+  //         } else if (status === 400) {
+  //           if (getResErrorCode(res) === ERROR_PARAMETERS) {
+  //             Noti.showNotiError(t(messages.error()));
+  //           }
+  //           if (getResErrorCode(res) === ERROR_USER_NOT_ACTIVE) {
+  //             Noti.showNotiError(t(messages.errorUser()));
+  //           }
+  //         } else {
+  //           cacthResponse(res);
+  //         }
+  //       })
+  //       .catch(err => cacthError(err));
+  //   }
+  //   return false;
+  // };
 
   return (
-    <ContentWrapper>
+    <SimpleGrid columns={2}>
       <Metadata />
-      <H1>{t(messages.header())}</H1>
-      <Form mySubmit={handleSubmit}>
-        <InputCustom
-          template="inp-l"
-          isError={handleEmailError}
-          isChange={handleEmailChange}
-          pressKey={handleSubmit}
-          type="email"
-          name="email"
-          message={t(messages.email())}
-          required
+      <Box>
+        <Image
+          // boxSize="100%"
+          width="100%"
+          height="100vh"
+          objectFit="cover"
+          src={background}
+          alt="Dan Abramov"
         />
-        <InputCustom
-          template="inp-l"
-          isError={handlePassError}
-          pressKey={handleSubmit}
-          type="password"
-          name="password"
-          message={t(messages.password())}
-          required
-          novalidate
-        />
-        <LinkCustom href={ROUTE_FORGOTPASSWORD} title={t(messages.forgot())}>
-          {t(messages.forgot())}
-        </LinkCustom>
-
-        <LinkCustom href={ROUTE_VERIFYCODE + (email ? `?email=${email}` : '')}>
-          {t(messages.resendActive())}
-        </LinkCustom>
-        <ButtonCustom
-          disabled={!(!emailError && !passError)}
-          type="submit"
-          template="btn-pri btn-l btn-icon btn-round btn-spec"
-          name="btn_login"
-        />
-        <ButtonCustom
-          template="btn-sec btn-l btn-icon btn-round btn-spec"
-          name="btn_register"
-          href={ROUTE_REGISTER}
-        />
-      </Form>
-      <Line />
-      {/* <KardiachainLogin />
-      <MetamaskLogin /> */}
-    </ContentWrapper>
+      </Box>
+      <Box
+        py={{ base: '0', sm: '8' }}
+        px={{ base: '4', sm: '10' }}
+        position="relative"
+      >
+        <Stack
+          spacing="6"
+          position="absolute"
+          top="50%"
+          left="50%"
+          transform="translate(-50%, -50%)"
+          width="50%"
+        >
+          <Center>
+            <Box color={RED_COLOR} fontWeight="700" fontSize="36px">
+              Entertainment Viet
+            </Box>
+          </Center>
+          <Center>
+            <Text color="gray.200">
+              Welcome back! Please enter your details.
+            </Text>
+          </Center>
+          <Stack spacing="5">
+            <FormControl>
+              <FormLabel htmlFor="email" color={PRI_TEXT_COLOR}>
+                Email
+              </FormLabel>
+              <Input
+                id="email"
+                type="email"
+                bg="white"
+                placeholder="Enter your email"
+              />
+            </FormControl>
+            <PasswordField />
+          </Stack>
+          <HStack justify="space-between">
+            <Checkbox defaultChecked color={PRI_TEXT_COLOR}>
+              Remember me
+            </Checkbox>
+            <Button variant="link" colorScheme="red" size="sm">
+              Forgot password?
+            </Button>
+          </HStack>
+          <Stack spacing="6">
+            <Button variant="primary" bg={RED_COLOR} color={PRI_TEXT_COLOR}>
+              Sign in
+            </Button>
+            <HStack>
+              <Divider />
+              <Text fontSize="sm" whiteSpace="nowrap" color={PRI_TEXT_COLOR}>
+                or continue with
+              </Text>
+              <Divider />
+            </HStack>
+            <OAuthButtonGroup />
+            <HStack spacing="1" justify="center">
+              <Text color={PRI_TEXT_COLOR}>Don't have an account?</Text>
+              <Button variant="link" color={RED_COLOR}>
+                Sign up
+              </Button>
+            </HStack>
+          </Stack>
+        </Stack>
+      </Box>
+    </SimpleGrid>
   );
 }
 

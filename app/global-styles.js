@@ -62,10 +62,10 @@ const GlobalStyle = createGlobalStyle`
     text-align: left;
   }
   
-.disabled, .disabled *{
-  pointer-events: none;
-  cursor: default;
-}
+  .disabled, .disabled *{
+    pointer-events: none;
+    cursor: default;
+  }
   .header-column, .header-row{
     display: flex;
     min-height: 100vh;
@@ -79,16 +79,17 @@ const GlobalStyle = createGlobalStyle`
   a.disabled {
     background-color: ${INACTIVE_COLOR};
   }
-  
+
   @media screen and (min-width: 993px) {
     .header-row{
       flex-direction: row;
       justify-content: center;
+      max-width: inherit;
     }
     .header-row>div{
       align-self: center;
       align-items: stretch;
-      width: 50%;
+      width: 100%;
     }
   }
   @media screen and (max-width: 992px) {
