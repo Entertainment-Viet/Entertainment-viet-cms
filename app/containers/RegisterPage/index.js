@@ -22,7 +22,7 @@ import * as Noti from 'utils/notification';
 import { ERROR_PARAMETERS, ERROR_USER_NOT_ACTIVE } from 'constants/errors';
 
 import { API_LOGIN } from 'constants/api';
-import { ROUTE_REGISTER } from 'constants/routes';
+import { ROUTE_LOGIN } from 'constants/routes';
 import { ENUM_USER_ROLE, ENUM_LOGINSTATE } from 'constants/enums';
 
 import Metadata from 'components/Metadata';
@@ -48,9 +48,9 @@ import OAuthButtonGroup from './OAuthButtonGroup';
 import PasswordField from './PasswordField';
 import { messages } from './messages';
 // import { getToken } from '../../firebaseInit';
-import background from './image/image.png';
+import background from './image/register-background.png';
 
-function LoginPage(props) {
+function RegisterPage(props) {
   const { t } = useTranslation();
   // const [isTokenFound, setTokenFound] = useState(false);
 
@@ -146,7 +146,18 @@ function LoginPage(props) {
             <Text color="gray.200">{t(messages.welcome())}</Text>
           </Center>
           <Stack spacing="5">
-            <FormControl>
+            <FormControl isRequired>
+              <FormLabel htmlFor="name" color={PRI_TEXT_COLOR}>
+                {t(messages.name())}
+              </FormLabel>
+              <Input
+                id="name"
+                type="name"
+                bg="white"
+                placeholder="Enter your name"
+              />
+            </FormControl>
+            <FormControl isRequired>
               <FormLabel htmlFor="email" color={PRI_TEXT_COLOR}>
                 {t(messages.email())}
               </FormLabel>
@@ -160,16 +171,13 @@ function LoginPage(props) {
             <PasswordField />
           </Stack>
           <HStack justify="space-between">
-            <Checkbox defaultChecked color={PRI_TEXT_COLOR}>
-              {t(messages.remember())}
-            </Checkbox>
             <Button variant="link" colorScheme="red" size="sm">
               {t(messages.forgotPassword())}
             </Button>
           </HStack>
           <Stack spacing="6">
             <Button variant="primary" bg={RED_COLOR} color={PRI_TEXT_COLOR}>
-              {t(messages.signin())}
+              {t(messages.signup())}
             </Button>
             <HStack>
               <Divider />
@@ -182,7 +190,7 @@ function LoginPage(props) {
             <HStack spacing="1" justify="center">
               <Text color={PRI_TEXT_COLOR}>{t(messages.haveAccount())}</Text>
               <Button variant="link" color={RED_COLOR}>
-                <Link href={ROUTE_REGISTER}>{t(messages.signup())}</Link>
+                <Link href={ROUTE_LOGIN}>{t(messages.signin())}</Link>
               </Button>
             </HStack>
           </Stack>
@@ -192,6 +200,6 @@ function LoginPage(props) {
   );
 }
 
-LoginPage.propTypes = { role: PropTypes.any };
+RegisterPage.propTypes = { role: PropTypes.any };
 
-export default LoginPage;
+export default RegisterPage;

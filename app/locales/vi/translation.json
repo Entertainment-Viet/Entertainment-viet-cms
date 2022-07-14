@@ -1,18 +1,24 @@
 {
   "loginPage": {
-    "header": "Xin chào",
-    "email": "email",
-    "password": "password",
-    "login": "login",
-    "register": "register",
-    "forgot": "forgot",
-    "error": "error",
-    "success": "success",
-    "errorUser": "errorUser",
-    "errorEmail": "errorEmail",
-    "resendActive": "resendActive",
-    "resendSuccess": "resendSuccess",
-    "resendError": "resendError"
+    "welcome": "Welcome back! Please enter your details.",
+    "email": "Email",
+    "remember": "Remember me",
+    "forgotPassword": "Forgot password",
+    "signin": "Sign in",
+    "signup": "Sign up",
+    "continueWith": "or continue with",
+    "haveAccount": "Don’t have an account?"
+  },
+  "registerPage": {
+    "welcome": "Hello! Please enter your details.",
+    "email": "Email",
+    "remember": "Remember me",
+    "forgotPassword": "Forgot password",
+    "signin": "Sign in",
+    "signup": "Sign up",
+    "continueWith": "or continue with",
+    "haveAccount": "Already have an account?",
+    "name": "Name"
   },
   "controls": {
     "email": "email",

@@ -9,17 +9,12 @@ import { translations } from 'locales/translations';
 import { t } from 'utils/messages';
 
 export const messages = {
-  header: () => t(translations.loginPage.header),
+  welcome: () => t(translations.loginPage.welcome),
   email: () => t(translations.loginPage.email),
-  password: () => t(translations.loginPage.password),
-  login: () => t(translations.loginPage.login),
-  register: () => t(translations.loginPage.register),
-  forgot: () => t(translations.loginPage.forgot),
-  error: () => t(translations.loginPage.error),
-  success: () => t(translations.loginPage.success),
-  errorUser: () => t(translations.loginPage.errorUser),
-  errorEmail: () => t(translations.loginPage.errorEmail),
-  resendActive: () => t(translations.loginPage.resendActive),
-  resendSuccess: () => t(translations.loginPage.resendSuccess),
-  resendError: () => t(translations.loginPage.resendError),
+  remember: () => t(translations.loginPage.remember),
+  forgotPassword: () => t(translations.loginPage.forgotPassword),
+  signin: () => t(translations.loginPage.signin),
+  continueWith: () => t(translations.loginPage.continueWith),
+  haveAccount: () => t(translations.loginPage.haveAccount),
+  signup: () => t(translations.loginPage.signup),
 };

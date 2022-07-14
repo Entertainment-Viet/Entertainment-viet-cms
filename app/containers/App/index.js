@@ -21,6 +21,7 @@ import * as Paths from 'constants/routes';
 // Page
 import NotFoundPage from 'containers/NotFoundPage/Loadable';
 import LoginPage from 'containers/LogInPage/Loadable';
+import RegisterPage from 'containers/RegisterPage/Loadable';
 import HomePage from 'containers/HomePage/Loadable';
 import ArtistDetailPage from 'containers/ArtistDetailPage/Loadable';
 import CreateEventPage from 'containers/CreateEventPage/Loadable';
@@ -66,6 +67,13 @@ export default function App() {
       </Helmet>
       <ScrollToTop />
       <Switch>
+        <PublicRoute
+          exact
+          path={Paths.ROUTE_REGISTER}
+          // isAuthenticated={isAuthenticated}
+        >
+          <RegisterPage />
+        </PublicRoute>
         <PublicRoute
           exact
           path={Paths.ROUTE_LOGIN}
