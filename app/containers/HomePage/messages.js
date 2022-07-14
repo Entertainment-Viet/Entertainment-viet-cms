@@ -9,17 +9,11 @@ import { translations } from 'locales/translations';
 import { t } from 'utils/messages';
 
 export const messages = {
-  header: () => t(translations.loginPage.header),
-  email: () => t(translations.loginPage.email),
-  password: () => t(translations.loginPage.password),
-  login: () => t(translations.loginPage.login),
-  register: () => t(translations.loginPage.register),
-  forgot: () => t(translations.loginPage.forgot),
-  error: () => t(translations.loginPage.error),
-  success: () => t(translations.loginPage.success),
-  errorUser: () => t(translations.loginPage.errorUser),
-  errorEmail: () => t(translations.loginPage.errorEmail),
-  resendActive: () => t(translations.loginPage.resendActive),
-  resendSuccess: () => t(translations.loginPage.resendSuccess),
-  resendError: () => t(translations.loginPage.resendError),
+  welcome: () => t(translations.homePage.welcome),
+  lookingTalent: () => t(translations.homePage.lookingTalent),
+  postJob: () => t(translations.homePage.postJob),
+  createPackage: () => t(translations.homePage.createPackage),
+  popularTalent: () => t(translations.homePage.popularTalent),
+  recentTalent: () => t(translations.homePage.recentTalent),
+  editorChoice: () => t(translations.homePage.editorChoice),
 };

@@ -18,4 +18,5 @@ export const messages = {
   skillsDesc: () => t(translations.createEventPage.skillsDesc),
   workType: () => t(translations.createEventPage.workType),
   currency: () => t(translations.createEventPage.currency),
+  submit: () => t(translations.createEventPage.submit),
 };

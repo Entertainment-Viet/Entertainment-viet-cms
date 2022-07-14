@@ -17,24 +17,19 @@ import {
   Button,
 } from '@chakra-ui/react';
 import { StarIcon } from '@chakra-ui/icons';
-import { PRI_TEXT_COLOR } from 'constants/styles';
+import { PRI_TEXT_COLOR, RED_COLOR } from 'constants/styles';
 
 import PropTypes from 'prop-types';
 
 // If you want to use your own Selectors look up the Advancaed Story book examples
-const ImageSlider = ({ profile }) => (
+const NormalProfile = ({ profile }) => (
   <Container>
     <HStack>
       <Avatar name="Dan Abrahmov" src="https://bit.ly/dan-abramov" size="2xl" />
       <Center>
-        <VStack>
+        <VStack align="flex-start" ml="12">
           <Link href="google">
-            <Text
-              color={PRI_TEXT_COLOR}
-              ml="2"
-              fontSize="18px"
-              fontWeight={700}
-            >
+            <Text color={PRI_TEXT_COLOR} fontSize="18px" fontWeight={700}>
               Anna 212
             </Text>
           </Link>
@@ -43,12 +38,12 @@ const ImageSlider = ({ profile }) => (
               as="span"
               mr="2"
               color={PRI_TEXT_COLOR}
-              fontSize="18px"
-              fontWeight={700}
+              fontSize="14px"
+              fontWeight={500}
             >
-              4
+              4 (120)
             </Box>
-            <StarIcon color="#E53E3E" />
+            <StarIcon color={RED_COLOR} />
           </Box>
           <Button>Contact me</Button>
         </VStack>
@@ -57,7 +52,7 @@ const ImageSlider = ({ profile }) => (
   </Container>
 );
 
-ImageSlider.propTypes = {
+NormalProfile.propTypes = {
   slides: PropTypes.any,
 };
-export default ImageSlider;
+export default NormalProfile;

@@ -9,13 +9,12 @@ import React, { useEffect, memo } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
+import { useTranslation } from 'react-i18next';
 import { createStructuredSelector } from 'reselect';
 import {
   Container,
-  Box,
   VStack,
   HStack,
-  Divider,
   Grid,
   GridItem,
   Text,
@@ -24,19 +23,19 @@ import {
   TabList,
   Tabs,
   Progress,
+  chakra,
 } from '@chakra-ui/react';
 
 import { useInjectReducer } from 'utils/injectReducer';
 import { useInjectSaga } from 'utils/injectSaga';
-import { CardListHorizontal } from 'components/Cards';
+import parserHtml from 'utils/html';
 import { ImageSliderWithPreview, CommentCarousel } from 'components/Carousel';
-import Buttons from 'components/Buttons';
 import Metadata from 'components/Metadata';
-import { NormalProfile } from 'components/Profile';
 import Dropdown from 'components/Accordian';
 import CommentBox from 'components/Comment';
 import { H1 } from 'components/Elements';
 import { PRI_TEXT_COLOR, RED_COLOR } from 'constants/styles';
+import NormalProfile from './NormalProfile';
 
 // import { loadNFTFilter } from 'containers/NFTFilterProvider/actions';
 
@@ -46,16 +45,25 @@ import { PRI_TEXT_COLOR, RED_COLOR } from 'constants/styles';
 
 import {} from 'constants/routes';
 import {} from './styles';
-
+import { messages } from './messages';
 import {} from './actions';
 import saga from './saga';
 import reducer from './reducer';
 import {} from './selectors';
-
+const CustomTab = chakra(Tab, {
+  baseStyle: {
+    fontWeight: '500',
+    fontSize: '18px',
+    // mt: '-4',
+    _hover: { color: PRI_TEXT_COLOR },
+    _focus: { color: RED_COLOR },
+  },
+});
 const key = 'ArtistDetailPage';
 export function ArtistDetailPage({ match }) {
   useInjectReducer({ key, reducer });
   useInjectSaga({ key, saga });
+  const { t } = useTranslation();
 
   useEffect(() => {
     console.log(match.params.id);
@@ -88,14 +96,10 @@ export function ArtistDetailPage({ match }) {
     <div>
       <Metadata />
       <Tabs mb="12">
-        <TabList
-          color="red.500"
-          _hover={{ fontWeight: '900' }}
-          _selected={{ fontWeight: '900' }}
-        >
-          <Tab>One</Tab>
-          <Tab>Two</Tab>
-          <Tab>Three</Tab>
+        <TabList color={RED_COLOR}>
+          <CustomTab>{t(messages.overview())}</CustomTab>
+          <CustomTab>{t(messages.about())}</CustomTab>
+          <CustomTab>{t(messages.review())}</CustomTab>
         </TabList>
       </Tabs>
       <Grid templateColumns="repeat(5, 1fr)">
@@ -108,22 +112,22 @@ export function ArtistDetailPage({ match }) {
               style={{ marginTop: '2rem', marginBottom: '1rem' }}
             >
               <Text color={PRI_TEXT_COLOR} as="h1" fontWeight={700}>
-                Nhận xét của khách hàng về talent
+                {t(messages.comment())}
               </Text>
               <Link href={`/all-comment/${match.params.id}`}>
-                <Text color={RED_COLOR} as="h1" fontWeight={700}>
-                  Nhận xét của khách hàng về talent
+                <Text color={RED_COLOR} fontWeight={400}>
+                  {t(messages.allComment())}
                 </Text>
               </Link>
             </HStack>
             <CommentCarousel />
-            <H1>Thông tin dịch vụ cung cấp</H1>
+            <H1>{t(messages.description())}</H1>
             <Container color={PRI_TEXT_COLOR}>
-              This is for the rich text field <b>vloz</b>
+              {parserHtml('This is for the rich text field <b>vloz</b>')}
             </Container>
-            <H1>Thông tin cơ bản về talent</H1>
+            <H1>{t(messages.basicInfo())}</H1>
             <NormalProfile />
-            <H1>Câu hỏi thường gặp</H1>
+            <H1>{t(messages.questions())}</H1>
             <Dropdown />
             <H1>120 Reviews</H1>
             <Container color={PRI_TEXT_COLOR}>
@@ -147,7 +151,7 @@ export function ArtistDetailPage({ match }) {
             <CommentBox />
             <Container>
               <Text color={RED_COLOR} fontSize="18px">
-                + See more
+                {t(messages.seeMore())}
               </Text>
             </Container>
           </VStack>

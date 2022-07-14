@@ -9,17 +9,13 @@ import { translations } from 'locales/translations';
 import { t } from 'utils/messages';
 
 export const messages = {
-  header: () => t(translations.loginPage.header),
-  email: () => t(translations.loginPage.email),
-  password: () => t(translations.loginPage.password),
-  login: () => t(translations.loginPage.login),
-  register: () => t(translations.loginPage.register),
-  forgot: () => t(translations.loginPage.forgot),
-  error: () => t(translations.loginPage.error),
-  success: () => t(translations.loginPage.success),
-  errorUser: () => t(translations.loginPage.errorUser),
-  errorEmail: () => t(translations.loginPage.errorEmail),
-  resendActive: () => t(translations.loginPage.resendActive),
-  resendSuccess: () => t(translations.loginPage.resendSuccess),
-  resendError: () => t(translations.loginPage.resendError),
+  overview: () => t(translations.artistDetailPage.overview),
+  about: () => t(translations.artistDetailPage.about),
+  review: () => t(translations.artistDetailPage.review),
+  comment: () => t(translations.artistDetailPage.comment),
+  description: () => t(translations.artistDetailPage.description),
+  basicInfo: () => t(translations.artistDetailPage.basicInfo),
+  questions: () => t(translations.artistDetailPage.questions),
+  seeMore: () => t(translations.artistDetailPage.seeMore),
+  allComment: () => t(translations.artistDetailPage.allComment),
 };

@@ -10,6 +10,7 @@ import React, { useEffect, memo } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { createStructuredSelector } from 'reselect';
+import { useTranslation } from 'react-i18next';
 import { Container, Box, HStack, Divider } from '@chakra-ui/react';
 
 import { useInjectReducer } from 'utils/injectReducer';
@@ -18,7 +19,7 @@ import { CardListHorizontal } from 'components/Cards';
 import { ImageSlider } from 'components/Carousel';
 import Buttons from 'components/Buttons';
 import Metadata from 'components/Metadata';
-import { PRI_TEXT_COLOR, SEC_TEXT_COLOR } from 'constants/styles';
+import { PRI_TEXT_COLOR, SEC_TEXT_COLOR, LIGHT_GRAY } from 'constants/styles';
 
 // import { loadNFTFilter } from 'containers/NFTFilterProvider/actions';
 
@@ -28,6 +29,7 @@ import { PRI_TEXT_COLOR, SEC_TEXT_COLOR } from 'constants/styles';
 
 import {} from 'constants/routes';
 import {} from './styles';
+import { messages } from './messages';
 
 import {} from './actions';
 import saga from './saga';
@@ -40,6 +42,7 @@ export function HomePage({}) {
   useInjectSaga({ key, saga });
 
   useEffect(() => {}, []);
+  const { t } = useTranslation();
 
   const SlideData = [
     {
@@ -68,13 +71,13 @@ export function HomePage({}) {
     <div style={{ width: '100%' }}>
       <Metadata />
       <HStack mb={10}>
-        <Container>
+        <Container paddingInlineStart="0">
           <Box
             width="sm"
             height="17.5rem"
             borderWidth="1px"
             borderRadius="lg"
-            bg="#2D3748"
+            bg={LIGHT_GRAY}
             color={PRI_TEXT_COLOR}
             position="relative"
           >
@@ -93,7 +96,7 @@ export function HomePage({}) {
                 lineHeight="tight"
                 noOfLines={1}
               >
-                Welcome back
+                {t(messages.welcome())}
               </Box>
               <Box as="span" color={SEC_TEXT_COLOR}>
                 Looking for talent for your event ?
@@ -101,7 +104,7 @@ export function HomePage({}) {
               {/* <Button mt="12" colorScheme="orange">
                 Post a job
               </Button> */}
-              <Buttons mt="12">buscu</Buttons>
+              <Buttons mt="12">{t(messages.postJob())}</Buttons>
             </Box>
           </Box>
         </Container>
@@ -116,7 +119,7 @@ export function HomePage({}) {
         lineHeight="tight"
         noOfLines={1}
       >
-        Most popular Talents in Entertainment Viet
+        {t(messages.popularTalent())}
       </Box>
       <CardListHorizontal />
       <Box
@@ -128,7 +131,7 @@ export function HomePage({}) {
         lineHeight="tight"
         noOfLines={1}
       >
-        Recent Talents
+        {t(messages.recentTalent())}
       </Box>
       <CardListHorizontal />
       <ImageSlider slides={SlideData} />
@@ -141,7 +144,7 @@ export function HomePage({}) {
         lineHeight="tight"
         noOfLines={1}
       >
-        Editor’s Choices
+        {t(messages.editorChoice())}
       </Box>
       <CardListHorizontal />
       <Divider />

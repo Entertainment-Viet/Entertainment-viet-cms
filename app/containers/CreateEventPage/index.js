@@ -225,7 +225,7 @@ export function CreateEventPage() {
                 isLoading={isSubmitting}
                 type="submit"
               >
-                Submit
+                {t(messages.submit())}
               </Button>
             </form>
           </Box>

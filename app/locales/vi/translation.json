@@ -20,6 +20,15 @@
     "haveAccount": "Already have an account?",
     "name": "Name"
   },
+  "homePage": {
+    "welcome": "Welcome back!",
+    "lookingTalent": "Looking for talent for your event?",
+    "postJob": "Post a job",
+    "createPackage": "Create a package",
+    "popularTalent": "Most popular Talents in Entertainment Viet",
+    "recentTalent": "Recent Talents",
+    "editorChoice": "Editor’s Choices"
+  },
   "controls": {
     "email": "email",
     "password": "password",
@@ -74,6 +83,18 @@
     "skills": "Các kỹ năng yêu cầu",
     "skillsDesc": "Vui lòng mô tả cụ thể kỹ năng yêu cầu",
     "workType": "Hình thức làm việc",
-    "currency": "Ngân sách"
+    "currency": "Ngân sách",
+    "submit": "Gửi"
+  },
+  "artistDetailPage": {
+    "overview": "Overview",
+    "about": "About talent",
+    "review": "Review",
+    "comment": "Nhận xét của khách hàng về talent",
+    "allComment": "Xem tất cả nhận xét",
+    "description": "Thông tin dịch vụ công cấp",
+    "basicInfo": "Thông tin cơ bản về talent",
+    "questions": "Câu hỏi thường gặp",
+    "seeMore": "+ See more"
   }
 }
