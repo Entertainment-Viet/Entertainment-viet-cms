@@ -36,6 +36,8 @@ import CommentBox from 'components/Comment';
 import { H1 } from 'components/Elements';
 import { PRI_TEXT_COLOR, RED_COLOR } from 'constants/styles';
 import NormalProfile from './NormalProfile';
+import Header from './Header';
+import PackagesBox from './PackagesBox';
 
 // import { loadNFTFilter } from 'containers/NFTFilterProvider/actions';
 
@@ -103,8 +105,9 @@ export function ArtistDetailPage({ match }) {
         </TabList>
       </Tabs>
       <Grid templateColumns="repeat(5, 1fr)">
-        <GridItem colSpan={3}>
+        <GridItem>
           <VStack align="flex-start">
+            <Header />
             <ImageSliderWithPreview slides={SlideData} />
             <HStack
               justifyContent="space-between"
@@ -155,6 +158,9 @@ export function ArtistDetailPage({ match }) {
               </Text>
             </Container>
           </VStack>
+        </GridItem>
+        <GridItem colSpan={2}>
+          <PackagesBox />
         </GridItem>
       </Grid>
     </div>

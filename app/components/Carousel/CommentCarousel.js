@@ -13,7 +13,7 @@ import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import './style.css';
 import PropTypes from 'prop-types';
-import { PRI_TEXT_COLOR ,LIGHT_GRAY } from 'constants/styles';
+import { PRI_TEXT_COLOR, LIGHT_GRAY } from 'constants/styles';
 
 // If you want to use your own Selectors look up the Advancaed Story book examples
 const arrowStyles = {
