@@ -6,7 +6,7 @@
  */
 
 import React, { useEffect, memo } from 'react';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { createStructuredSelector } from 'reselect';
@@ -31,18 +31,26 @@ import {} from 'constants/routes';
 import {} from './styles';
 import { messages } from './messages';
 
-import {} from './actions';
+import { loadInfo } from './actions';
 import saga from './saga';
 import reducer from './reducer';
-import {} from './selectors';
+import {
+  makeSelectDetailLoading,
+  makeSelectDetailError,
+  makeSelectDetail,
+} from './selectors';
+// import { propTypes } from 'qrcode.react';
 
 const key = 'HomePage';
-export function HomePage({}) {
+export function HomePage({ loading, error, data, onLoadData }) {
   useInjectReducer({ key, reducer });
   useInjectSaga({ key, saga });
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    onLoadData();
+  }, []);
   const { t } = useTranslation();
+  console.log(data, loading, error);
 
   const SlideData = [
     {
@@ -152,12 +160,25 @@ export function HomePage({}) {
   );
 }
 
-HomePage.propTypes = {};
+HomePage.propTypes = {
+  onLoadData: PropTypes.func,
+  loading: PropTypes.bool,
+  error: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
+  data: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
+};
 
-const mapStateToProps = createStructuredSelector({});
+const mapStateToProps = createStructuredSelector({
+  loading: makeSelectDetailLoading(),
+  error: makeSelectDetailError(),
+  data: makeSelectDetail(),
+});
 
 export function mapDispatchToProps(dispatch) {
-  return {};
+  return {
+    onLoadData: () => {
+      dispatch(loadInfo());
+    },
+  };
 }
 
 const withConnect = connect(

@@ -1,13 +1,14 @@
 import React, { lazy, Suspense } from 'react';
-import Loading from 'components/LoadingIndicator';
+// import Loading from 'components/LoadingIndicator';
 import styled from 'styled-components';
+import PageSpinner from 'components/PageSpinner';
 
 export const Wrapper = styled.div`
   min-height: 100%;
   min-width: 100%;
   z-index: 99999;
   position: fixed;
-  background-color: rgba(255, 255, 255, 0.5);
+  ${'' /* background-color: rgba(255, 255, 255, 0.5); */}
   display: flex;
   align-items: center;
   justify-content: center;
@@ -21,7 +22,7 @@ const loadable = (importFunc, { fallback = null } = { fallback: null }) => {
       fallback={
         fallback || (
           <Wrapper>
-            <Loading />
+            <PageSpinner />
           </Wrapper>
         )
       }

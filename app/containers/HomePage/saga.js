@@ -4,13 +4,20 @@
 
 import { call, put, select, takeEvery } from 'redux-saga/effects';
 import { get } from 'utils/request';
-import { NFT_LOAD } from './constants';
+import { LOAD_INFO } from './constants';
 import {} from 'constants/api';
-import {} from './actions';
+import { loadInfoSuccess, loadInfoError } from './actions';
 import {} from './selectors';
 
-export function* getData() {}
+export function* getData() {
+  try {
+    const data = yield call(get, '/organizers/1');
+    yield put(loadInfoSuccess(data));
+  } catch (err) {
+    yield put(loadInfoError(err));
+  }
+}
 
 export default function* watchLatestAction() {
-  yield takeEvery(NFT_LOAD, getData);
+  yield takeEvery(LOAD_INFO, getData);
 }
