@@ -9,6 +9,7 @@ export const ROUTE_ACCOUNT = '/account';
 export const ROUTE_ARTIST_DETAIL = '/artist/:id';
 export const ROUTE_CREATE_EVENT = '/event/create';
 export const ROUTE_SEARCH_RESULT = '/search';
+export const ROUTE_CALENDAR = '/calendar';
 // ================================================================
 export const ROUTE_PRODUCTS = '/products';
 export const ROUTE_NEWS = '/news';

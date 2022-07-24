@@ -2,7 +2,7 @@ import axios from 'axios';
 import { API_SERVER, API_DEL_DEVICE_TOKEN } from 'constants/api';
 import { getAuthCookie, eraseAuthCookie } from 'utils/cookie';
 import { logout } from 'utils/auth';
-import { getToken } from '../firebaseInit';
+// import { getToken } from '../firebaseInit';
 
 const cRequest = axios.create({
   baseURL: API_SERVER,
@@ -23,6 +23,7 @@ cRequest.interceptors.request.use(config => {
   const accessToken = getAuthCookie();
   // checking if accessToken exists
   if (accessToken) {
+    // eslint-disable-next-line no-param-reassign
     config.headers.Authorization = accessToken;
   }
   return config;
@@ -32,15 +33,15 @@ cRequest.interceptors.response.use(
   response => response,
   async error => {
     // extracting response and config objects
-    const { response, config } = error;
+    const { response } = error;
     // checking if error is Aunothorized error
     if (response.status === 401) {
       eraseAuthCookie();
-      const deviceToken = await getToken();
-      const formData = new FormData();
-      formData.append('firebase_register_token', deviceToken);
-      const fData = Object.fromEntries(formData.entries());
-      await cRequest.post(API_DEL_DEVICE_TOKEN, fData);
+      // const deviceToken = await getToken();
+      // const formData = new FormData();
+      // formData.append('firebase_register_token', deviceToken);
+      // const fData = Object.fromEntries(formData.entries());
+      // await cRequest.post(API_DEL_DEVICE_TOKEN, fData);
       //   let refreshToken = localStorage.getItem("refreshToken");
       //   if (refreshToken) {
       //     //if refresh token exists in local storage proceed
@@ -65,8 +66,7 @@ cRequest.interceptors.response.use(
       logout();
     }
 
-    if (response.status === 400) {
-    }
+    if (response.status === 400) {}
 
     if (response.status === 500) {
       // setError(response);

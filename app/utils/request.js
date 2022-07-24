@@ -27,9 +27,24 @@ export function get(url, params) {
     .then(parseJSON);
 }
 
+export function del(url, params) {
+  removeEmptyObj(params);
+  return cRequest
+    .delete(url, { params })
+    .then(checkStatus)
+    .then(parseJSON);
+}
+
 export function post(url, params) {
   return cRequest
     .post(url, params)
+    .then(checkStatus)
+    .then(parseJSON);
+}
+
+export function put(url, params) {
+  return cRequest
+    .put(url, params)
     .then(checkStatus)
     .then(parseJSON);
 }

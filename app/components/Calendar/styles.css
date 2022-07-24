@@ -1,0 +1,68 @@
+
+
+.fc-day-future {
+    background-color: #2D3748;
+    position: inherit !important;
+}
+.fc-day-today {
+    background-color: transparent !important;
+    border-top: 2px solid white !important;
+}
+.fc-theme-standard td {
+    border-top: 2px solid #9AE6B4;
+    /* borde    r-left: 10px solid #1A202C; */
+    border-right: 10px solid #1A202C;
+    border-bottom: 1px solid #1A202C;
+}
+.fc-theme-standard th {
+    border: none;
+}
+.fc-theme-standard td:first-child {
+    border-left: 0px solid #1A202C;
+}
+.fc-theme-standard td:last-child {
+    border-right: 0px solid #1A202C;
+}
+.fc-day-past {
+    background-color: #2D3748;
+    position: inherit !important; 
+}
+.fc-theme-standard .fc-scrollgrid {
+    border: none;
+}
+.fc-scrollgrid-sync-inner {
+    text-align: right;
+}
+.fc-button {
+    border: 1px solid white !important;
+}
+.fc-daygrid-day-events{
+    position: relative !important;
+}
+.select_month {
+    background-color: #2D3748;
+    padding: 6px;
+    border-radius: 2px;
+    border: 1px solid white;
+}
+.fc-toolbar-chunk{
+    display: flex;
+}
+.fc-icon-chevron-right{
+    vertical-align: baseline !important;
+}
+.fc-icon-chevron-left{
+    vertical-align: baseline !important;
+}
+.dot::before {
+    content: " ";
+    height: 10px;
+    width: 10px;
+    margin-right: 10px;
+    background-color: red;
+    border-radius: 50%;
+    display: inline-block;
+  }
+  b {
+    display: none;
+  }
