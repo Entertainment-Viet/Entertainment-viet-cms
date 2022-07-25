@@ -19,7 +19,7 @@ import { CardListHorizontal } from 'components/Cards';
 import { ImageSlider } from 'components/Carousel';
 import Buttons from 'components/Buttons';
 import Metadata from 'components/Metadata';
-import Calendar from 'components/Calendar';
+import MyTable from 'components/Table';
 import { PRI_TEXT_COLOR, SEC_TEXT_COLOR, LIGHT_GRAY } from 'constants/styles';
 // import { loadNFTFilter } from 'containers/NFTFilterProvider/actions';
 
@@ -42,7 +42,7 @@ import {
 // import { propTypes } from 'qrcode.react';
 
 const key = 'HomePage';
-export function BookManagementPage({ loading, error, data, onLoadData }) {
+export function CalendarPage({ loading, error, data, onLoadData }) {
   useInjectReducer({ key, reducer });
   useInjectSaga({ key, saga });
 
@@ -53,12 +53,12 @@ export function BookManagementPage({ loading, error, data, onLoadData }) {
 
   return (
     <Box color={PRI_TEXT_COLOR}>
-      <Calendar />
+      <MyTable />
     </Box>
   );
 }
 
-BookManagementPage.propTypes = {
+CalendarPage.propTypes = {
   onLoadData: PropTypes.func,
   loading: PropTypes.bool,
   error: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
@@ -87,4 +87,4 @@ const withConnect = connect(
 export default compose(
   withConnect,
   memo,
-)(BookManagementPage);
+)(CalendarPage);

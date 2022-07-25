@@ -63,6 +63,6 @@
     border-radius: 50%;
     display: inline-block;
   }
-  b {
+.fc-event b {
     display: none;
-  }
+}

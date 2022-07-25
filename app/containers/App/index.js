@@ -27,6 +27,7 @@ import ArtistDetailPage from 'containers/ArtistDetailPage/Loadable';
 import CreateEventPage from 'containers/CreateEventPage/Loadable';
 import SearchResultPage from 'containers/SearchResultPage/Loadable';
 import Calendar from 'containers/Calendar/Loadable';
+import BookManagementPage from 'containers/BookManagementPage/Loadable';
 // Components
 import GlobalFonts from 'components/GlobalFonts';
 import Banner from 'components/DevelopmentBanner';
@@ -116,6 +117,13 @@ export default function App() {
           // isAuthenticated={isAuthenticated}
         >
           <Calendar />
+        </CommonRoute>
+        <CommonRoute
+          exact
+          path={Paths.ROUTE_MANAGER}
+          // isAuthenticated={isAuthenticated}
+        >
+          <BookManagementPage />
         </CommonRoute>
         <Route path="*" component={NotFoundPage} />
       </Switch>
