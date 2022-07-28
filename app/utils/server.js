@@ -2,13 +2,31 @@ import axios from 'axios';
 import { API_SERVER, API_DEL_DEVICE_TOKEN } from 'constants/api';
 import { getAuthCookie, eraseAuthCookie } from 'utils/cookie';
 import { logout } from 'utils/auth';
+import qs from 'qs';
+import jwt from 'jwt-decode';
+
 // import { getToken } from '../firebaseInit';
+
+function getLocalToken() {
+  const token = window.localStorage.getItem('token');
+  return token;
+}
+
+// get token o refreshToken
+function getLocalRefreshToken() {
+  const token = window.localStorage.getItem('refreshToken');
+  return token;
+}
+
+function getLocalAccessTokenExpire() {
+  const expiry = window.localStorage.getItem('exp');
+  return expiry;
+}
 
 const cRequest = axios.create({
   baseURL: API_SERVER,
   headers: {
-    // 'Request-Origin': 'https://congtroi.org',
-    Accept: 'application/json',
+    Accept: '*/*',
   },
 });
 
@@ -18,13 +36,35 @@ cRequest.defaults.headers.get['content-type'] =
 cRequest.defaults.headers.post['Content-Type'] =
   'application/x-www-form-urlencoded; charset=UTF-8';
 
-cRequest.interceptors.request.use(config => {
+cRequest.interceptors.request.use(async config => {
   // console.log('Starting Request', JSON.stringify(config, null, 2));
-  const accessToken = getAuthCookie();
+  if (Date.now() > getLocalAccessTokenExpire() * 1000) {
+    console.log('expired');
+    const data = {
+      client_id: 'backend',
+      grant_type: 'refresh_token',
+      refresh_token: getLocalRefreshToken(),
+      scope: 'openid',
+    };
+    const options = {
+      method: 'POST',
+      headers: { 'content-type': 'application/x-www-form-urlencoded' },
+      data: qs.stringify(data),
+      url: `${
+        process.env.REACT_KEYCLOAK_API
+      }/auth/realms/ve-sso/protocol/openid-connect/token`,
+    };
+    const result = await axios(options);
+    if (result.status === 200) {
+      window.localStorage.setItem('token', result.data.access_token);
+      window.localStorage.setItem('exp', jwt(result.data.access_token).exp);
+    }
+  }
+  const accessToken = getLocalToken();
   // checking if accessToken exists
   if (accessToken) {
     // eslint-disable-next-line no-param-reassign
-    config.headers.Authorization = accessToken;
+    config.headers.Authorization = `Bearer ${accessToken}`;
   }
   return config;
 });
@@ -66,7 +106,8 @@ cRequest.interceptors.response.use(
       logout();
     }
 
-    if (response.status === 400) {}
+    if (response.status === 400) {
+    }
 
     if (response.status === 500) {
       // setError(response);

@@ -11,7 +11,7 @@ import {
   useMergeRefs,
 } from '@chakra-ui/react';
 import { HiEye, HiEyeOff } from 'react-icons/hi';
-import { PRI_TEXT_COLOR, LIGHT_GRAY } from 'constants/styles';
+import { PRI_TEXT_COLOR } from 'constants/styles';
 
 const PasswordField = React.forwardRef((props, ref) => {
   const { isOpen, onToggle } = useDisclosure();

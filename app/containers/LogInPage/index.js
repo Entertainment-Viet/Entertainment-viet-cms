@@ -8,6 +8,10 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
+import jwt from 'jwt-decode';
+import axios from 'axios';
+import qs from 'qs';
+import { useForm } from 'react-hook-form';
 
 import cRequest from 'utils/server';
 import {
@@ -52,6 +56,11 @@ import background from './image/image.png';
 
 function LoginPage(props) {
   const { t } = useTranslation();
+  const {
+    handleSubmit,
+    register,
+    formState: { errors, isSubmitting },
+  } = useForm();
   // const [isTokenFound, setTokenFound] = useState(false);
 
   // const [email, setEmail] = useState('');
@@ -63,53 +72,78 @@ function LoginPage(props) {
   // const [passError, setPassError] = useState(true);
   // const handlePassError = val => setPassError(!!val);
 
-  // const handleSubmit = e => {
-  //   if (!emailError && !passError) {
-  //     const formData = new FormData(e.currentTarget);
-  //     formData.append('role', props.role ? props.role : ENUM_USER_ROLE.CUS);
-  //     const data = Object.fromEntries(formData.entries());
-
-  //     return cRequest
-  //       .post(API_LOGIN, data)
-  //       .then(async res => {
-  //         const status = getResStatus(res);
-  //         if (status === 200) {
-  //           setUserLoginStat(ENUM_LOGINSTATE.kaibase);
-  //           setUserData(res);
-  //           Noti.showNotiSuccess(t(messages.success()), {
-  //             onClose: () => redirectHome(),
-  //           });
-  //           // const deviceToken = await getToken(setTokenFound);
-  //           // if (deviceToken) {
-  //           //   const formData1 = new FormData();
-  //           //   formData1.append('firebase_register_token', deviceToken);
-  //           //   const fData = Object.fromEntries(formData1.entries());
-  //           //   cRequest.post(API_SEND_DEVICE_TOKEN, fData).then(res1 => {
-  //           //     const status1 = getResStatus(res1);
-  //           //     if (status1 === '200') {
-  //           //       console.log('sent');
-  //           //     } else if (status1 === '400') {
-  //           //       console.log('fail');
-  //           //     } else {
-  //           //       cacthResponse(res1);
-  //           //     }
-  //           //   });
-  //           // }
-  //         } else if (status === 400) {
-  //           if (getResErrorCode(res) === ERROR_PARAMETERS) {
-  //             Noti.showNotiError(t(messages.error()));
-  //           }
-  //           if (getResErrorCode(res) === ERROR_USER_NOT_ACTIVE) {
-  //             Noti.showNotiError(t(messages.errorUser()));
-  //           }
-  //         } else {
-  //           cacthResponse(res);
+  // const onSubmit = async e => {
+  // if (!emailError && !passError) {
+  // const formData = new FormData(e.currentTarget);
+  // formData.append('role', props.role ? props.role : ENUM_USER_ROLE.CUS);
+  // const data = Object.fromEntries(formData.entries());
+  //   return cRequest
+  //     .post(API_LOGIN, data)
+  //     .then(async res => {
+  //       const status = getResStatus(res);
+  //       if (status === 200) {
+  //         // setUserLoginStat(ENUM_LOGINSTATE.kaibase);
+  //         // setUserData(res);
+  //         // Noti.showNotiSuccess(t(messages.success()), {
+  //         //   onClose: () => redirectHome(),
+  //         // });
+  //         // const deviceToken = await getToken(setTokenFound);
+  //         // if (deviceToken) {
+  //         //   const formData1 = new FormData();
+  //         //   formData1.append('firebase_register_token', deviceToken);
+  //         //   const fData = Object.fromEntries(formData1.entries());
+  //         //   cRequest.post(API_SEND_DEVICE_TOKEN, fData).then(res1 => {
+  //         //     const status1 = getResStatus(res1);
+  //         //     if (status1 === '200') {
+  //         //       console.log('sent');
+  //         //     } else if (status1 === '400') {
+  //         //       console.log('fail');
+  //         //     } else {
+  //         //       cacthResponse(res1);
+  //         //     }
+  //         //   });
+  //         // }
+  //       } else if (status === 400) {
+  //         if (getResErrorCode(res) === ERROR_PARAMETERS) {
+  //           Noti.showNotiError(t(messages.error()));
   //         }
-  //       })
-  //       .catch(err => cacthError(err));
-  //   }
-  //   return false;
+  //         if (getResErrorCode(res) === ERROR_USER_NOT_ACTIVE) {
+  //           Noti.showNotiError(t(messages.errorUser()));
+  //         }
+  //       } else {
+  //         cacthResponse(res);
+  //       }
+  //     })
+  //     .catch(err => cacthError(err));
+  // }
+  // return false;
   // };
+  const onSubmit = async values => {
+    const data = {
+      client_id: 'backend',
+      username: values.username,
+      password: values.password,
+      grant_type: 'password',
+      scope: 'openid',
+    };
+    const options = {
+      method: 'POST',
+      headers: { 'content-type': 'application/x-www-form-urlencoded' },
+      data: qs.stringify(data),
+      url: `${
+        process.env.REACT_KEYCLOAK_API
+      }/auth/realms/ve-sso/protocol/openid-connect/token`,
+    };
+    const result = await axios(options);
+    console.log(result);
+    console.log('exp: ', jwt(result.data.access_token).exp);
+    if (result.status === 200) {
+      window.localStorage.setItem('token', result.data.access_token);
+      window.localStorage.setItem('refreshToken', result.data.refresh_token);
+      window.localStorage.setItem('exp', jwt(result.data.access_token).exp);
+      window.location.href = '/';
+    }
+  };
 
   return (
     <SimpleGrid columns={2}>
@@ -145,47 +179,70 @@ function LoginPage(props) {
           <Center>
             <Text color="gray.200">{t(messages.welcome())}</Text>
           </Center>
-          <Stack spacing="5">
-            <FormControl>
-              <FormLabel htmlFor="email" color={PRI_TEXT_COLOR}>
-                {t(messages.email())}
-              </FormLabel>
-              <Input
-                id="email"
-                type="email"
-                bg="white"
-                placeholder="Enter your email"
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <Stack spacing="5">
+              <FormControl>
+                <FormLabel htmlFor="email" color={PRI_TEXT_COLOR}>
+                  {t(messages.email())}
+                </FormLabel>
+                <Input
+                  id="email"
+                  type="text"
+                  bg="white"
+                  placeholder="Enter your email"
+                  {...register('username', {
+                    required: 'This is required',
+                    minLength: {
+                      value: 4,
+                      message: 'Minimum length should be 4',
+                    },
+                  })}
+                />
+              </FormControl>
+              <PasswordField
+                {...register('password', {
+                  required: 'This is required',
+                  minLength: {
+                    value: 4,
+                    message: 'Minimum length should be 4',
+                  },
+                })}
               />
-            </FormControl>
-            <PasswordField />
-          </Stack>
-          <HStack justify="space-between">
-            <Checkbox defaultChecked color={PRI_TEXT_COLOR}>
-              {t(messages.remember())}
-            </Checkbox>
-            <Button variant="link" colorScheme="red" size="sm">
-              {t(messages.forgotPassword())}
-            </Button>
-          </HStack>
-          <Stack spacing="6">
-            <Button variant="primary" bg={RED_COLOR} color={PRI_TEXT_COLOR}>
-              {t(messages.signin())}
-            </Button>
-            <HStack>
-              <Divider />
-              <Text fontSize="sm" whiteSpace="nowrap" color={PRI_TEXT_COLOR}>
-                {t(messages.continueWith())}
-              </Text>
-              <Divider />
-            </HStack>
-            <OAuthButtonGroup />
-            <HStack spacing="1" justify="center">
-              <Text color={PRI_TEXT_COLOR}>{t(messages.haveAccount())}</Text>
-              <Button variant="link" color={RED_COLOR}>
-                <Link href={ROUTE_REGISTER}>{t(messages.signup())}</Link>
+            </Stack>
+            <HStack justify="space-between" my={4}>
+              <Checkbox defaultChecked color={PRI_TEXT_COLOR}>
+                {t(messages.remember())}
+              </Checkbox>
+              <Button variant="link" colorScheme="red" size="sm">
+                {t(messages.forgotPassword())}
               </Button>
             </HStack>
-          </Stack>
+            <Stack spacing="6">
+              <Button
+                variant="primary"
+                bg={RED_COLOR}
+                color={PRI_TEXT_COLOR}
+                isLoading={isSubmitting}
+                type="submit"
+              >
+                {t(messages.signin())}
+              </Button>
+              <HStack>
+                <Divider />
+                <Text fontSize="sm" whiteSpace="nowrap" color={PRI_TEXT_COLOR}>
+                  {t(messages.continueWith())}
+                </Text>
+                <Divider />
+              </HStack>
+              <OAuthButtonGroup />
+              <HStack spacing="1" justify="center">
+                <Text color={PRI_TEXT_COLOR}>{t(messages.haveAccount())}</Text>
+                <Button variant="link" color={RED_COLOR}>
+                  <Link href={ROUTE_REGISTER}>{t(messages.signup())}</Link>
+                </Button>
+              </HStack>
+            </Stack>
+          </form>
         </Stack>
       </Box>
     </SimpleGrid>

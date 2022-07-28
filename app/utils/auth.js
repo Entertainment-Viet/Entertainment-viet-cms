@@ -79,10 +79,25 @@ export const getUserState = () => getCookie(COOKIE_LOGINSTATE);
 export const isLoggedIn = () => {
   if (!isBrowser) return false;
 
-  const Token = getToken();
+  const Token = window.localStorage.getItem('refreshToken');
 
   return !!Token;
 };
+
+export function getLocalToken() {
+  const token = window.localStorage.getItem('token');
+  return token;
+}
+
+export function getLocalRefreshToken() {
+  const token = window.localStorage.getItem('refreshToken');
+  return token;
+}
+
+export function getLocalAccessTokenExpire() {
+  const expiry = window.localStorage.getItem('exp');
+  return expiry;
+}
 
 export const isAuthor = () => {
   if (!isBrowser) return false;
@@ -97,8 +112,9 @@ export const getCurrentToken = () => isBrowser && getToken();
 
 export const logout = () => {
   if (!isBrowser) return;
-  setUser({});
-  eraseAuthCookie();
+  window.localStorage.removeItem('token');
+  window.localStorage.removeItem('refreshToken');
+  window.localStorage.removeItem('exp');
   redirectLogin();
 };
 
