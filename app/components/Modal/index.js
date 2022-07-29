@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import { CSSTransition } from 'react-transition-group';
 import './Modal.css';
 import styled from 'styled-components';
-import { HStack, Text, Box, VStack, Container } from '@chakra-ui/react';
+import { HStack, Text, Box, VStack, Container, Link } from '@chakra-ui/react';
 import { PRI_TEXT_COLOR, LIGHT_GRAY, SEC_TEXT_COLOR } from 'constants/styles';
 import { useTranslation } from 'react-i18next';
 import Button from 'components/Buttons';
@@ -64,9 +64,11 @@ const Modal = props => {
                 <Text color={PRI_TEXT_COLOR}>
                   283 Trần Quang Khải, P2, Phú Nhuận, Tp.HCM
                 </Text>
-                <Box as="span" color="red">
-                  {t(messages.googleMap())}
-                </Box>
+                <Link href="https://goo.gl/maps/mXySHagWZn7XxGJz5">
+                  <Box as="span" color="red">
+                    {t(messages.googleMap())}
+                  </Box>
+                </Link>
               </Container>
             </HStack>
             <HStack>
@@ -83,9 +85,9 @@ const Modal = props => {
               Current Sprint review and close Team's Feedback and comment.
               Resolution approach if have any.
             </Box>
-            <Button color={PRI_TEXT_COLOR} alignSelf="flex-end">
-              {t(messages.goToDetail())}
-            </Button>
+            <Link href="/" alignSelf="flex-end">
+              <Button color={PRI_TEXT_COLOR}>{t(messages.goToDetail())}</Button>
+            </Link>
           </VStack>
           <div className="modal-footer" />
         </div>
