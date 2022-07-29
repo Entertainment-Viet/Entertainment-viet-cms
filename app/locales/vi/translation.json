@@ -96,5 +96,11 @@
     "basicInfo": "Thông tin cơ bản về talent",
     "questions": "Câu hỏi thường gặp",
     "seeMore": "+ See more"
+  },
+  "Modal": {
+    "orgInfo": "Thông tin quán",
+    "googleMap": "Google Map",
+    "postDesc": "Mô tả công việc",
+    "goToDetail": "Xem chi tiết"
   }
 }

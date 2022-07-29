@@ -3,15 +3,20 @@ import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
-import { INITIAL_EVENTS, createEventId } from './event-utils';
+import Modal from 'components/Modal';
+import { INITIAL_EVENTS } from './event-utils';
 import '@fullcalendar/common/main.css';
 import '@fullcalendar/daygrid/main.css'; // a dependency of timegrid
 import '@fullcalendar/timegrid/main.css';
 import './styles.css';
-import './addDropdown';
 export default function Calendar() {
   const [currentEvents, setCurrentEvents] = useState([]);
-
+  const [isShowing, setIsShowing] = useState(false);
+  const toggleModal = id => {
+    setIsShowing(!isShowing);
+    setId(id);
+  };
+  const [id, setId] = useState();
   useLayoutEffect(() => {
     function appendHtml(el, str) {
       const div = document.createElement('div');
@@ -38,20 +43,21 @@ export default function Calendar() {
   const calendarComponentRef = React.createRef();
 
   const handleDateSelect = selectInfo => {
-    const title = prompt('Please enter a new title for your event');
+    // const title = prompt('Please enter a new title for your event');
     const calendarApi = selectInfo.view.calendar;
-
+    console.log(selectInfo);
     calendarApi.unselect(); // clear date selection
+    toggleModal(selectInfo.startStr);
 
-    if (title) {
-      calendarApi.addEvent({
-        id: createEventId(),
-        title,
-        start: selectInfo.startStr,
-        end: selectInfo.endStr,
-        allDay: selectInfo.allDay,
-      });
-    }
+    // if (title) {
+    //   calendarApi.addEvent({
+    //     id: createEventId(),
+    //     title,
+    //     start: selectInfo.startStr,
+    //     end: selectInfo.endStr,
+    //     allDay: selectInfo.allDay,
+    //   });
+    // }
   };
 
   const handleEventClick = clickInfo => {
@@ -98,6 +104,12 @@ export default function Calendar() {
             */
         />
       </div>
+      <Modal
+        title="My Modal"
+        onClose={() => toggleModal()}
+        show={isShowing}
+        id={id}
+      />
     </div>
   );
 }
