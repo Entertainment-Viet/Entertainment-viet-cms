@@ -49,7 +49,7 @@ const AppWrapper = styled.div`
 
 export default function App() {
   const { i18n } = useTranslation();
-  // const isAuthenticated = isLoggedIn();
+  const isAuthenticated = isLoggedIn();
   requestFirebaseNotificationPermission()
     .then(firebaseToken => {
       // eslint-disable-next-line no-console
@@ -111,13 +111,14 @@ export default function App() {
         >
           <SearchResultPage />
         </CommonRoute>
-        <CommonRoute
+        <PrivateRoute
           exact
           path={Paths.ROUTE_CALENDAR}
-          // isAuthenticated={isAuthenticated}
+          hasPermission
+          isAuthenticated={isAuthenticated}
         >
           <Calendar />
-        </CommonRoute>
+        </PrivateRoute>
         <CommonRoute
           exact
           path={Paths.ROUTE_MANAGER}
