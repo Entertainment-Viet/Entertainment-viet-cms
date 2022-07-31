@@ -21,6 +21,7 @@ import { PRI_TEXT_COLOR } from 'constants/styles';
 import { messages } from './messages';
 import { Wrapper } from './styles';
 import { HeaderData } from './HeaderData';
+import { Cart, Notification } from '../Icon';
 
 function Header() {
   const [searchTerm, setSearchTerm] = useState('');
@@ -62,7 +63,7 @@ function Header() {
           </Box>
         </Flex>
         <Box>
-          <HStack spacing={4}>
+          <HStack spacing={8}>
             <Box
               color={PRI_TEXT_COLOR}
               fontWeight="500"
@@ -92,7 +93,9 @@ function Header() {
                 {t(messages.openJob())}
               </Box>
             </Link>
+            <Notification />
             <Avatar name="Dan Abrahmov" src="https://bit.ly/dan-abramov" />
+            <Cart />
           </HStack>
         </Box>
       </Flex>
