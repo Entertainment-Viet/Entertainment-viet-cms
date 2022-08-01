@@ -9,7 +9,6 @@ import PageWrapper from 'components/PageWrapper';
 function PublicRoute({ children, isAuthenticated, ...rest }) {
   return (
     <PageWrapper className="header-row">
-      {/* <Logo showSlogan={true}/> */}
       <Route
         {...rest}
         render={({ location, match }) =>

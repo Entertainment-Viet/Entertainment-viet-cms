@@ -135,13 +135,54 @@ function LoginPage(props) {
       }/auth/realms/ve-sso/protocol/openid-connect/token`,
     };
     const result = await axios(options);
-    console.log(result);
-    console.log('exp: ', jwt(result.data.access_token).exp);
+    console.log(jwt(result.data.access_token));
+    const { roles } = jwt(result.data.access_token).realm_access;
+    const talentRole = [
+      'TALENT_READ_ACCESS',
+      'TALENT_WRITE_ACCESS',
+      'TALENT_MODIFY_ACCESS',
+      'TALENT_PAYMENT_ACCESS',
+    ];
+    const orgRole = [
+      'ORGANIZER_READ_ACCESS',
+      'ORGANIZER_WRITE_ACCESS',
+      'ORGANIZER_MODIFY_ACCESS',
+      'ORGANIZER_PAYMENT_ACCESS',
+    ];
+    const adminRole = [
+      'ADMIN_READ_ORGANIZER_ACCESS',
+      'ADMIN_RESOLVE_ORGANIZER_ACCESSS',
+      'ADMIN_ARCHIVE_ORGANIZER_ACCESS',
+      'ADMIN_READ_TALENT_ACCESS',
+      'ADMIN_RESOLVE_TALENT_ACCESS',
+      'ADMIN_ARCHIVE_TALENT_ACCESS',
+    ];
     if (result.status === 200) {
       window.localStorage.setItem('token', result.data.access_token);
       window.localStorage.setItem('refreshToken', result.data.refresh_token);
       window.localStorage.setItem('exp', jwt(result.data.access_token).exp);
-      window.location.href = '/';
+      const role = roles.every(element => {
+        console.log('elements: ', element);
+        if (talentRole.includes(element)) {
+          window.localStorage.setItem('role', 'talent');
+          return false;
+        }
+        if (orgRole.includes(element)) {
+          window.localStorage.setItem('role', 'organizer');
+          return false;
+        }
+        if (adminRole.includes(element)) {
+          window.localStorage.setItem('role', 'admin');
+          window.location.href = '/admin';
+          return false;
+        }
+        console.log('ROLE NOT FOUND');
+
+        return false;
+      });
+      console.log(role);
+      // window.localStorage.setItem('role', role);
+      // window.location.href = '/';
     }
   };
 

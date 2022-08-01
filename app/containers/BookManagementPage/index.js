@@ -41,8 +41,8 @@ import {
 } from './selectors';
 // import { propTypes } from 'qrcode.react';
 
-const key = 'HomePage';
-export function CalendarPage({ loading, error, data, onLoadData }) {
+const key = 'BookManagementPage';
+export function BookManagementPage({ loading, error, data, onLoadData }) {
   useInjectReducer({ key, reducer });
   useInjectSaga({ key, saga });
 
@@ -58,7 +58,7 @@ export function CalendarPage({ loading, error, data, onLoadData }) {
   );
 }
 
-CalendarPage.propTypes = {
+BookManagementPage.propTypes = {
   onLoadData: PropTypes.func,
   loading: PropTypes.bool,
   error: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
@@ -87,4 +87,4 @@ const withConnect = connect(
 export default compose(
   withConnect,
   memo,
-)(CalendarPage);
+)(BookManagementPage);

@@ -90,6 +90,15 @@ export default function App() {
         >
           <HomePage />
         </CommonRoute>
+        {/* bugs 404 not found page always redirect to Book management page */}
+        <PrivateRoute
+          exact
+          path={Paths.ROUTE_MANAGER}
+          isAuthenticated={isAuthenticated}
+          hasPermission
+        >
+          <BookManagementPage />
+        </PrivateRoute>
         <CommonRoute
           exact
           path={Paths.ROUTE_ARTIST_DETAIL}
@@ -119,13 +128,6 @@ export default function App() {
         >
           <Calendar />
         </PrivateRoute>
-        <CommonRoute
-          exact
-          path={Paths.ROUTE_MANAGER}
-          // isAuthenticated={isAuthenticated}
-        >
-          <BookManagementPage />
-        </CommonRoute>
         <Route path="*" component={NotFoundPage} />
       </Switch>
       <GlobalStyle />
