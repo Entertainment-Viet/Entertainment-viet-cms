@@ -5,7 +5,7 @@
  *
  */
 
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
 import jwt from 'jwt-decode';
@@ -21,16 +21,19 @@ import {
   cacthError,
   cacthResponse,
 } from 'utils/helpers';
-import { setUserData, setUserLoginStat } from 'utils/auth';
+import {
+  getLocalRefreshToken,
+  setUserData,
+  setUserLoginStat,
+} from 'utils/auth';
+
 import * as Noti from 'utils/notification';
-import { ERROR_PARAMETERS, ERROR_USER_NOT_ACTIVE } from 'constants/errors';
 
 import { API_LOGIN } from 'constants/api';
 import { ROUTE_REGISTER } from 'constants/routes';
-import { ENUM_USER_ROLE, ENUM_LOGINSTATE } from 'constants/enums';
+import { ENUM_ROLES } from 'constants/enums';
 
 import Metadata from 'components/Metadata';
-import { H1 } from 'components/Elements';
 import {
   SimpleGrid,
   Box,
@@ -46,8 +49,10 @@ import {
   Text,
   Center,
   Link,
+  FormErrorMessage,
 } from '@chakra-ui/react';
-import { PRI_TEXT_COLOR, LIGHT_GRAY, RED_COLOR } from 'constants/styles';
+import { PRI_TEXT_COLOR, RED_COLOR } from 'constants/styles';
+import { talentRole, orgRole, adminRole } from 'constants/roles';
 import OAuthButtonGroup from './OAuthButtonGroup';
 import PasswordField from './PasswordField';
 import { messages } from './messages';
@@ -61,6 +66,11 @@ function LoginPage(props) {
     register,
     formState: { errors, isSubmitting },
   } = useForm();
+  useEffect(() => {
+    if (window.localStorage.getItem('refreshToken')) {
+      window.location.href = '/';
+    }
+  }, []);
   // const [isTokenFound, setTokenFound] = useState(false);
 
   // const [email, setEmail] = useState('');
@@ -130,49 +140,26 @@ function LoginPage(props) {
       method: 'POST',
       headers: { 'content-type': 'application/x-www-form-urlencoded' },
       data: qs.stringify(data),
-      url: `${
-        process.env.REACT_KEYCLOAK_API
-      }/auth/realms/ve-sso/protocol/openid-connect/token`,
+      url: `${process.env.REACT_KEYCLOAK_API}${API_LOGIN}`,
     };
     const result = await axios(options);
     console.log(jwt(result.data.access_token));
     const { roles } = jwt(result.data.access_token).realm_access;
-    const talentRole = [
-      'TALENT_READ_ACCESS',
-      'TALENT_WRITE_ACCESS',
-      'TALENT_MODIFY_ACCESS',
-      'TALENT_PAYMENT_ACCESS',
-    ];
-    const orgRole = [
-      'ORGANIZER_READ_ACCESS',
-      'ORGANIZER_WRITE_ACCESS',
-      'ORGANIZER_MODIFY_ACCESS',
-      'ORGANIZER_PAYMENT_ACCESS',
-    ];
-    const adminRole = [
-      'ADMIN_READ_ORGANIZER_ACCESS',
-      'ADMIN_RESOLVE_ORGANIZER_ACCESSS',
-      'ADMIN_ARCHIVE_ORGANIZER_ACCESS',
-      'ADMIN_READ_TALENT_ACCESS',
-      'ADMIN_RESOLVE_TALENT_ACCESS',
-      'ADMIN_ARCHIVE_TALENT_ACCESS',
-    ];
     if (result.status === 200) {
       window.localStorage.setItem('token', result.data.access_token);
       window.localStorage.setItem('refreshToken', result.data.refresh_token);
       window.localStorage.setItem('exp', jwt(result.data.access_token).exp);
       const role = roles.every(element => {
-        console.log('elements: ', element);
         if (talentRole.includes(element)) {
-          window.localStorage.setItem('role', 'talent');
+          window.localStorage.setItem('role', ENUM_ROLES.TAL);
           return false;
         }
         if (orgRole.includes(element)) {
-          window.localStorage.setItem('role', 'organizer');
+          window.localStorage.setItem('role', ENUM_ROLES.ORG);
           return false;
         }
         if (adminRole.includes(element)) {
-          window.localStorage.setItem('role', 'admin');
+          window.localStorage.setItem('role', ENUM_ROLES.ADMIN);
           window.location.href = '/admin';
           return false;
         }
@@ -268,6 +255,12 @@ function LoginPage(props) {
               >
                 {t(messages.signin())}
               </Button>
+              <FormErrorMessage>
+                {errors.username && errors.username.message}
+              </FormErrorMessage>
+              <FormErrorMessage>
+                {errors.password && errors.password.message}
+              </FormErrorMessage>
               <HStack>
                 <Divider />
                 <Text fontSize="sm" whiteSpace="nowrap" color={PRI_TEXT_COLOR}>

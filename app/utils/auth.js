@@ -89,6 +89,11 @@ export function getLocalToken() {
   return token;
 }
 
+export function getLocalRole() {
+  const token = window.localStorage.getItem('role');
+  return token;
+}
+
 export function getLocalRefreshToken() {
   const token = window.localStorage.getItem('refreshToken');
   return token;

@@ -1,17 +1,5 @@
-export const ENUM_USER_ROLE = {
-  CUS: 'Customer',
-  AUT: 'Author',
-  MAN: 'Manager',
-  SUP: 'SuperAdmin',
-};
 export const ENUM_VERIFY_MODE = {
   REG: 'REGISTER',
-};
-
-export const ENUM_PRICE_RANGE = {
-  MIN: 0,
-  MAX: 100000000,
-  STEP: 100000,
 };
 
 export const ENUM_FILE_TYPE = {
@@ -41,27 +29,10 @@ export const ENUM_PREVIEW_TYPE = {
   audio: 'audio/*',
 };
 
-export const ENUM_PRICE_TYPE = {
-  buy: 'buynow',
-  auc: 'auction',
-  bar: 'bargain',
-  off: 'offer',
-  sal: 'sale',
-};
-
-export const ENUM_NFT_STATUS = {
-  auction: 'auction',
-  sale: 'sale',
-  request: 'request',
-  requestuser: 'requestUser',
-  expired: 'expired',
-  sold: 'sold',
-};
-
-export const ENUM_LOGINSTATE = {
-  metamask: 'ethereum',
-  kaibase: 'kaibase',
-  kardiachain: 'kardiachain',
+export const ENUM_ROLES = {
+  ORG: 'organizer',
+  TAL: 'talent',
+  ADMIN: 'admin',
 };
 
 export const ENUM_PAGGING = {

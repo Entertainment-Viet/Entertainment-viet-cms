@@ -15,8 +15,9 @@ import 'react-toastify/dist/ReactToastify.css';
 import { useTranslation } from 'react-i18next';
 
 // Others
-import { isLoggedIn, isAuthor } from 'utils/auth';
+import { isLoggedIn } from 'utils/auth';
 import * as Paths from 'constants/routes';
+import { ENUM_ROLES } from 'constants/enums';
 
 // Page
 import NotFoundPage from 'containers/NotFoundPage/Loadable';
@@ -95,7 +96,7 @@ export default function App() {
           exact
           path={Paths.ROUTE_MANAGER}
           isAuthenticated={isAuthenticated}
-          hasPermission
+          role={ENUM_ROLES.ORG}
         >
           <BookManagementPage />
         </PrivateRoute>
