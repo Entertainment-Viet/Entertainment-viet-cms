@@ -11,7 +11,14 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { createStructuredSelector } from 'reselect';
 import { useTranslation } from 'react-i18next';
-import { Container, Box, HStack, Divider } from '@chakra-ui/react';
+import {
+  Container,
+  Box,
+  HStack,
+  Divider,
+  Grid,
+  GridItem,
+} from '@chakra-ui/react';
 
 import { useInjectReducer } from 'utils/injectReducer';
 import { useInjectSaga } from 'utils/injectSaga';
@@ -78,46 +85,55 @@ export function HomePage({ loading, error, data, onLoadData }) {
   return (
     <div style={{ width: '100%' }}>
       <Metadata />
-      <HStack mb={10}>
-        <Container paddingInlineStart="0">
+      <Grid templateColumns={{ base: 'repeat(1, 1fr)', lg: 'repeat(4, 1fr)' }}>
+        <GridItem w="100%" pr={{ base: 0, lg: 4 }}>
           <Box
-            width="sm"
-            height="17.5rem"
-            borderWidth="1px"
-            borderRadius="lg"
-            bg={LIGHT_GRAY}
-            color={PRI_TEXT_COLOR}
-            position="relative"
+            w="100%"
+            paddingInlineStart="0"
+            maxW="100%"
+            mb={{ base: '1rem', lg: '0px' }}
           >
             <Box
-              p={6}
-              display="flex"
-              flexDirection="column"
-              alignItems="baseline"
-              position="absolute"
-              top="25%"
+              width="100%"
+              height="17.5rem"
+              borderWidth="1px"
+              borderRadius="lg"
+              bg={LIGHT_GRAY}
+              color={PRI_TEXT_COLOR}
+              position="relative"
             >
               <Box
-                mt="1"
-                fontWeight="500"
-                as="h1"
-                lineHeight="tight"
-                noOfLines={1}
+                p={6}
+                display="flex"
+                flexDirection="column"
+                alignItems="baseline"
+                position="absolute"
+                top="25%"
               >
-                {t(messages.welcome())}
-              </Box>
-              <Box as="span" color={SEC_TEXT_COLOR}>
-                Looking for talent for your event ?
-              </Box>
-              {/* <Button mt="12" colorScheme="orange">
+                <Box
+                  mt="1"
+                  fontWeight="500"
+                  as="h1"
+                  lineHeight="tight"
+                  noOfLines={1}
+                >
+                  {t(messages.welcome())}
+                </Box>
+                <Box as="span" color={SEC_TEXT_COLOR}>
+                  Looking for talent for your event ?
+                </Box>
+                {/* <Button mt="12" colorScheme="orange">
                 Post a job
               </Button> */}
-              <Buttons mt="12">{t(messages.postJob())}</Buttons>
+                <Buttons mt="12">{t(messages.postJob())}</Buttons>
+              </Box>
             </Box>
           </Box>
-        </Container>
-        <ImageSlider slides={SlideData} />
-      </HStack>
+        </GridItem>
+        <GridItem colSpan={3}>
+          <ImageSlider slides={SlideData} />
+        </GridItem>
+      </Grid>
       <Box
         color={PRI_TEXT_COLOR}
         mt="6"
