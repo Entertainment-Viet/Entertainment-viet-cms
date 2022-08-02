@@ -21,11 +21,9 @@ function Card(props) {
         alt={property.imageAlt}
         boxSize="110px"
         borderRadius="10%"
-        // variant="borderRadius"
         zIndex={99}
       />
       <Box
-        minW="280px"
         borderWidth="1px"
         borderRadius="lg"
         overflow="hidden"
@@ -33,9 +31,17 @@ function Card(props) {
         color={PRI_TEXT_COLOR}
         pos="relative"
         bottom="10%"
+        w={[200, 200, 200, 250]}
       >
         <Box p="6">
-          <Box mt="1" fontWeight="500" as="h4" lineHeight="tight" noOfLines={1}>
+          <Box
+            mt="1"
+            fontWeight="500"
+            as="h4"
+            lineHeight="tight"
+            noOfLines={1}
+            w={[200, 200, 200, 250]}
+          >
             {property.name}
           </Box>
           <Box>{property.title}</Box>
