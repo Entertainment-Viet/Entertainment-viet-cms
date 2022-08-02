@@ -28,7 +28,7 @@ import ArtistDetailPage from 'containers/ArtistDetailPage/Loadable';
 import CreateEventPage from 'containers/CreateEventPage/Loadable';
 import SearchResultPage from 'containers/SearchResultPage/Loadable';
 import Calendar from 'containers/Calendar/Loadable';
-import BookManagementPage from 'containers/BookManagementPage/Loadable';
+import ManagementPage from 'containers/ManagementPage/Loadable';
 // Components
 import GlobalFonts from 'components/GlobalFonts';
 import Banner from 'components/DevelopmentBanner';
@@ -91,15 +91,6 @@ export default function App() {
         >
           <HomePage />
         </CommonRoute>
-        {/* bugs 404 not found page always redirect to Book management page */}
-        <PrivateRoute
-          exact
-          path={Paths.ROUTE_MANAGER}
-          isAuthenticated={isAuthenticated}
-          role={ENUM_ROLES.ORG}
-        >
-          <BookManagementPage />
-        </PrivateRoute>
         <CommonRoute
           exact
           path={Paths.ROUTE_ARTIST_DETAIL}
@@ -114,18 +105,28 @@ export default function App() {
         >
           <CreateEventPage />
         </CommonRoute>
-        <CommonRoute
+        <PrivateRoute
           exact
           path={Paths.ROUTE_SEARCH_RESULT}
-          // isAuthenticated={isAuthenticated}
+          isAuthenticated={isAuthenticated}
+          roles={[ENUM_ROLES.ORG, ENUM_ROLES.TAL]}
         >
           <SearchResultPage />
-        </CommonRoute>
+        </PrivateRoute>
+        {/* bugs 404 not found page always redirect to Book management page */}
+        {/* <PrivateRoute
+          exact
+          path={Paths.ROUTE_MANAGER}
+          isAuthenticated={isAuthenticated}
+          roles={[ENUM_ROLES.ORG, ENUM_ROLES.TAL]}
+        >
+          <ManagementPage />
+        </PrivateRoute> */}
         <PrivateRoute
           exact
           path={Paths.ROUTE_CALENDAR}
-          hasPermission
           isAuthenticated={isAuthenticated}
+          roles={[ENUM_ROLES.ORG, ENUM_ROLES.TAL]}
         >
           <Calendar />
         </PrivateRoute>

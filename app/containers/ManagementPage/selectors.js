@@ -1,7 +1,7 @@
 import { createSelector } from 'reselect';
 import { initialState } from './reducer';
 
-const selectState = state => state.BookManagementPage || initialState;
+const selectState = state => state.ManagementPage || initialState;
 
 const makeSelectDetailLoading = () =>
   createSelector(

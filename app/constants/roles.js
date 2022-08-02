@@ -9,6 +9,7 @@ export const orgRole = [
   'ORGANIZER_WRITE_ACCESS',
   'ORGANIZER_MODIFY_ACCESS',
   'ORGANIZER_PAYMENT_ACCESS',
+  'VERIFIED_ORGANIZER',
 ];
 export const adminRole = [
   'ADMIN_READ_ORGANIZER_ACCESS',

@@ -7,7 +7,7 @@ import Footer from 'components/Footer';
 import { getLocalRole } from 'utils/auth';
 
 import PageWrapper from 'components/PageWrapper';
-function PrivateRoute({ children, isAuthenticated, role, ...rest }) {
+function PrivateRoute({ children, isAuthenticated, roles, ...rest }) {
   const getRole = getLocalRole();
   return (
     <>
@@ -17,11 +17,11 @@ function PrivateRoute({ children, isAuthenticated, role, ...rest }) {
           {...rest}
           render={
             ({ location, match }) => {
-              if (role) {
-                if (isAuthenticated && role === getRole) {
+              if (roles) {
+                if (isAuthenticated && roles.includes(getRole)) {
                   return React.cloneElement(children, { match, location });
                 }
-                if (isAuthenticated && role !== getRole) {
+                if (isAuthenticated && roles.includes(getRole)) {
                   return (
                     <Redirect
                       to={{ pathname: '/', state: { from: location } }}
@@ -61,7 +61,7 @@ function PrivateRoute({ children, isAuthenticated, role, ...rest }) {
 PrivateRoute.propTypes = {
   children: PropTypes.any.isRequired,
   isAuthenticated: PropTypes.bool,
-  role: PropTypes.string,
+  role: PropTypes.array,
 };
 
 export default PrivateRoute;

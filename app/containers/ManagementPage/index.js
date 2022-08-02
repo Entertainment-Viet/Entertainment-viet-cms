@@ -1,26 +1,15 @@
-/*
- * NFTPage
- *
- * This is the first thing users see of our App, at the '/' route
- *
- */
-
 import React, { useEffect, memo } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { createStructuredSelector } from 'reselect';
 import { useTranslation } from 'react-i18next';
-import { Container, Box, HStack, Divider } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 
 import { useInjectReducer } from 'utils/injectReducer';
 import { useInjectSaga } from 'utils/injectSaga';
-import { CardListHorizontal } from 'components/Cards';
-import { ImageSlider } from 'components/Carousel';
-import Buttons from 'components/Buttons';
-import Metadata from 'components/Metadata';
 import MyTable from 'components/Table';
-import { PRI_TEXT_COLOR, SEC_TEXT_COLOR, LIGHT_GRAY } from 'constants/styles';
+import { PRI_TEXT_COLOR } from 'constants/styles';
 // import { loadNFTFilter } from 'containers/NFTFilterProvider/actions';
 
 // import { isAuthor } from 'utils/auth';
@@ -41,8 +30,8 @@ import {
 } from './selectors';
 // import { propTypes } from 'qrcode.react';
 
-const key = 'BookManagementPage';
-export function BookManagementPage({ loading, error, data, onLoadData }) {
+const key = 'ManagementPage';
+export function ManagementPage({ loading, error, data, onLoadData }) {
   useInjectReducer({ key, reducer });
   useInjectSaga({ key, saga });
 
@@ -58,7 +47,7 @@ export function BookManagementPage({ loading, error, data, onLoadData }) {
   );
 }
 
-BookManagementPage.propTypes = {
+ManagementPage.propTypes = {
   onLoadData: PropTypes.func,
   loading: PropTypes.bool,
   error: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
@@ -87,4 +76,4 @@ const withConnect = connect(
 export default compose(
   withConnect,
   memo,
-)(BookManagementPage);
+)(ManagementPage);

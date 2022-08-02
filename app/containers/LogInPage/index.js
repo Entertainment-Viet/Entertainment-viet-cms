@@ -150,12 +150,15 @@ function LoginPage(props) {
       window.localStorage.setItem('refreshToken', result.data.refresh_token);
       window.localStorage.setItem('exp', jwt(result.data.access_token).exp);
       const role = roles.every(element => {
+        console.log(element);
         if (talentRole.includes(element)) {
           window.localStorage.setItem('role', ENUM_ROLES.TAL);
+          window.location.href = '/';
           return false;
         }
         if (orgRole.includes(element)) {
           window.localStorage.setItem('role', ENUM_ROLES.ORG);
+          window.location.href = '/';
           return false;
         }
         if (adminRole.includes(element)) {
@@ -227,6 +230,9 @@ function LoginPage(props) {
                   })}
                 />
               </FormControl>
+              <Text color={RED_COLOR}>
+                {errors.username && errors.username.message}
+              </Text>
               <PasswordField
                 {...register('password', {
                   required: 'This is required',
@@ -236,6 +242,9 @@ function LoginPage(props) {
                   },
                 })}
               />
+              <Text color={RED_COLOR}>
+                {errors.password && errors.password.message}
+              </Text>
             </Stack>
             <HStack justify="space-between" my={4}>
               <Checkbox defaultChecked color={PRI_TEXT_COLOR}>
@@ -255,12 +264,7 @@ function LoginPage(props) {
               >
                 {t(messages.signin())}
               </Button>
-              <FormErrorMessage>
-                {errors.username && errors.username.message}
-              </FormErrorMessage>
-              <FormErrorMessage>
-                {errors.password && errors.password.message}
-              </FormErrorMessage>
+              {errors.password && console.log(errors.password.message)}
               <HStack>
                 <Divider />
                 <Text fontSize="sm" whiteSpace="nowrap" color={PRI_TEXT_COLOR}>
