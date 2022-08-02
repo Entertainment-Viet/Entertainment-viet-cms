@@ -27,7 +27,8 @@ import { PRI_TEXT_COLOR } from 'constants/styles';
 import { messages } from './messages';
 import { Wrapper } from './styles';
 import { HeaderData } from './HeaderData';
-import { Cart, Notification } from '../Icon';
+import { Cart, Notification, NumberedCart } from '../Icon';
+import { NumWrapper } from './Wrapper';
 
 function Header() {
   const [searchTerm, setSearchTerm] = useState('');
@@ -117,7 +118,9 @@ function Header() {
                 </MenuOptionGroup>
               </MenuList>
             </Menu>
-            <Cart />
+            {/* <Cart /> */}
+            <NumberedCart />
+            <NumWrapper>{3}</NumWrapper>
           </HStack>
         </Box>
       </Flex>
