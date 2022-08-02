@@ -15,6 +15,12 @@ import {
   Divider,
   InputGroup,
   InputRightElement,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuOptionGroup,
+  MenuItemOption,
+  MenuDivider,
 } from '@chakra-ui/react';
 import { SearchIcon } from '@chakra-ui/icons';
 import { PRI_TEXT_COLOR } from 'constants/styles';
@@ -94,7 +100,23 @@ function Header() {
               </Box>
             </Link>
             <Notification />
-            <Avatar name="Dan Abrahmov" src="https://bit.ly/dan-abramov" />
+            <Menu closeOnSelect={false}>
+              <MenuButton colorScheme="blue">
+                <Avatar name="Dan Abrahmov" src="https://bit.ly/dan-abramov" />
+              </MenuButton>
+              <MenuList minWidth="240px">
+                <MenuOptionGroup defaultValue="asc" title="Order" type="radio">
+                  <MenuItemOption value="asc">Ascending</MenuItemOption>
+                  <MenuItemOption value="desc">Descending</MenuItemOption>
+                </MenuOptionGroup>
+                <MenuDivider />
+                <MenuOptionGroup title="Country" type="checkbox">
+                  <MenuItemOption value="email">Email</MenuItemOption>
+                  <MenuItemOption value="phone">Phone</MenuItemOption>
+                  <MenuItemOption value="country">Country</MenuItemOption>
+                </MenuOptionGroup>
+              </MenuList>
+            </Menu>
             <Cart />
           </HStack>
         </Box>

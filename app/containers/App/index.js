@@ -84,27 +84,30 @@ export default function App() {
         >
           <LoginPage />
         </PublicRoute>
-        <CommonRoute
+        <PrivateRoute
           exact
           path={Paths.ROUTE_HOME}
-          // isAuthenticated={isAuthenticated}
+          isAuthenticated={isAuthenticated}
+          roles={[ENUM_ROLES.ORG, ENUM_ROLES.TAL]}
         >
           <HomePage />
-        </CommonRoute>
-        <CommonRoute
+        </PrivateRoute>
+        <PrivateRoute
           exact
           path={Paths.ROUTE_ARTIST_DETAIL}
-          // isAuthenticated={isAuthenticated}
+          isAuthenticated={isAuthenticated}
+          roles={[ENUM_ROLES.ORG]}
         >
           <ArtistDetailPage />
-        </CommonRoute>
-        <CommonRoute
+        </PrivateRoute>
+        <PrivateRoute
           exact
           path={Paths.ROUTE_CREATE_EVENT}
-          // isAuthenticated={isAuthenticated}
+          isAuthenticated={isAuthenticated}
+          roles={[ENUM_ROLES.ORG]}
         >
           <CreateEventPage />
-        </CommonRoute>
+        </PrivateRoute>
         <PrivateRoute
           exact
           path={Paths.ROUTE_SEARCH_RESULT}

@@ -33,6 +33,8 @@ export const ENUM_ROLES = {
   ORG: 'organizer',
   TAL: 'talent',
   ADMIN: 'admin',
+  GUEST_ORG: 'guest-org',
+  GUEST_TAL: 'guest-tal',
 };
 
 export const ENUM_PAGGING = {

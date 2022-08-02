@@ -15,27 +15,15 @@ function PrivateRoute({ children, isAuthenticated, roles, ...rest }) {
         <Header />
         <Route
           {...rest}
-          render={
-            ({ location, match }) => {
-              if (roles) {
-                if (isAuthenticated && roles.includes(getRole)) {
-                  return React.cloneElement(children, { match, location });
-                }
-                if (isAuthenticated && roles.includes(getRole)) {
-                  return (
-                    <Redirect
-                      to={{ pathname: '/', state: { from: location } }}
-                    />
-                  );
-                }
-                return (
-                  <Redirect
-                    to={{ pathname: '/login', state: { from: location } }}
-                  />
-                );
-              }
-              if (isAuthenticated) {
+          render={({ location, match }) => {
+            if (roles) {
+              if (isAuthenticated && roles.includes(getRole)) {
                 return React.cloneElement(children, { match, location });
+              }
+              if (isAuthenticated && roles.includes(getRole)) {
+                return (
+                  <Redirect to={{ pathname: '/', state: { from: location } }} />
+                );
               }
               return (
                 <Redirect
@@ -43,14 +31,15 @@ function PrivateRoute({ children, isAuthenticated, roles, ...rest }) {
                 />
               );
             }
-            // isAuthenticated ? (
-            //   React.cloneElement(children, { match, location })
-            // ) : (
-            //   <Redirect
-            //     to={{ pathname: '/login', state: { from: location } }}
-            //   />
-            // )
-          }
+            if (isAuthenticated) {
+              return React.cloneElement(children, { match, location });
+            }
+            return (
+              <Redirect
+                to={{ pathname: '/login', state: { from: location } }}
+              />
+            );
+          }}
         />
         <Footer />
       </PageWrapper>
@@ -61,7 +50,7 @@ function PrivateRoute({ children, isAuthenticated, roles, ...rest }) {
 PrivateRoute.propTypes = {
   children: PropTypes.any.isRequired,
   isAuthenticated: PropTypes.bool,
-  role: PropTypes.array,
+  roles: PropTypes.array,
 };
 
 export default PrivateRoute;
