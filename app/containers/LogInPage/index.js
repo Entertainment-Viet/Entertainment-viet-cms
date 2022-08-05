@@ -13,22 +13,6 @@ import axios from 'axios';
 import qs from 'qs';
 import { useForm } from 'react-hook-form';
 
-import cRequest from 'utils/server';
-import {
-  redirectHome,
-  getResErrorCode,
-  getResStatus,
-  cacthError,
-  cacthResponse,
-} from 'utils/helpers';
-import {
-  getLocalRefreshToken,
-  setUserData,
-  setUserLoginStat,
-} from 'utils/auth';
-
-import * as Noti from 'utils/notification';
-
 import { API_LOGIN } from 'constants/api';
 import { ROUTE_REGISTER } from 'constants/routes';
 import { ENUM_ROLES } from 'constants/enums';
@@ -49,7 +33,6 @@ import {
   Text,
   Center,
   Link,
-  FormErrorMessage,
 } from '@chakra-ui/react';
 import { PRI_TEXT_COLOR, RED_COLOR } from 'constants/styles';
 import { talentRole, orgRole, adminRole } from 'constants/roles';
@@ -59,7 +42,7 @@ import { messages } from './messages';
 // import { getToken } from '../../firebaseInit';
 import background from './image/image.png';
 
-function LoginPage(props) {
+function LoginPage() {
   const { t } = useTranslation();
   const {
     handleSubmit,
@@ -150,13 +133,13 @@ function LoginPage(props) {
       window.localStorage.setItem('refreshToken', result.data.refresh_token);
       window.localStorage.setItem('exp', jwt(result.data.access_token).exp);
       const role = roles.every(element => {
-        console.log(element);
-        if (talentRole.includes(element)) {
+        console.log(element, talentRole);
+        if (talentRole === element) {
           window.localStorage.setItem('role', ENUM_ROLES.TAL);
           window.location.href = '/';
           return false;
         }
-        if (orgRole.includes(element)) {
+        if (orgRole === element) {
           window.localStorage.setItem('role', ENUM_ROLES.ORG);
           window.location.href = '/';
           return false;
@@ -166,9 +149,7 @@ function LoginPage(props) {
           window.location.href = '/admin';
           return false;
         }
-        console.log('ROLE NOT FOUND');
-
-        return false;
+        return true;
       });
       console.log(role);
       // window.localStorage.setItem('role', role);
