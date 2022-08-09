@@ -15,6 +15,8 @@ export const RED_COLOR = '#E53E3E';
 export const LIGHT_GRAY = '#2D3748';
 export const PRI_TEXT_COLOR = '#F7FAFC';
 export const SEC_TEXT_COLOR = '#CBD5E0';
+export const THIRD_TEXT_COLOR = '#A0AEC0';
+export const PRI_BACKGROUND = '#1A202C';
 
 export const DARK_PINK_COLOR = '#EE2068';
 export const size = {

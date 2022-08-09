@@ -19,15 +19,25 @@ import {
   MenuOptionGroup,
   MenuItemOption,
   MenuDivider,
+  MenuGroup,
+  MenuItem,
+  Button,
 } from '@chakra-ui/react';
 import { SearchIcon } from '@chakra-ui/icons';
-import { PRI_TEXT_COLOR } from 'constants/styles';
+import {
+  PRI_TEXT_COLOR,
+  RED_COLOR,
+  LIGHT_GRAY,
+  PRI_BACKGROUND,
+} from 'constants/styles';
 import { messages } from './messages';
 import { Wrapper } from './styles';
 import { HeaderData } from './HeaderData';
 import { Notification, NumberedCart } from '../Icon';
 import { NumWrapper } from './Wrapper';
+import PackagesBox from './PackagesBox';
 import { API_LOGOUT } from '../../constants/api';
+import NotificationBox from './NotificationBox';
 
 function Header() {
   const [searchTerm, setSearchTerm] = useState('');
@@ -138,7 +148,61 @@ function Header() {
                 {t(messages.openJob())}
               </Box>
             </Link>
-            <Notification />
+            {/* <Notification /> */}
+            <Menu onCloseSelect={false}>
+              <MenuButton>
+                <Notification />
+                <NumWrapper>{3}</NumWrapper>
+              </MenuButton>
+              <MenuList
+                minWidth="240px"
+                bg={LIGHT_GRAY}
+                h="30rem"
+                overflow="auto"
+                zIndex={999}
+                pt={0}
+              >
+                <MenuGroup>
+                  <MenuItem
+                    bg={PRI_BACKGROUND}
+                    w="100%"
+                    h="100%"
+                    _hover={{ bg: PRI_BACKGROUND }}
+                  >
+                    <Box
+                      as="h1"
+                      color={PRI_TEXT_COLOR}
+                      fontSize="24px"
+                      m="0.4rem"
+                    >
+                      Notification
+                    </Box>
+                    <Link
+                      href="https://google.com"
+                      right="1rem"
+                      position="absolute"
+                      borderBottom="1px solid #F7FAFC"
+                      fontWeight={400}
+                    >
+                      <Box as="span" color={PRI_TEXT_COLOR}>
+                        Mark all as read
+                      </Box>
+                    </Link>
+                  </MenuItem>
+                </MenuGroup>
+                <MenuGroup>
+                  <MenuItem _hover={{ bg: 'black' }}>
+                    <NotificationBox />
+                  </MenuItem>
+                  <Divider w="88%" ml="auto" mr="auto" my="1rem" />
+                </MenuGroup>
+                <MenuGroup>
+                  <MenuItem>
+                    <NotificationBox />
+                  </MenuItem>
+                </MenuGroup>
+              </MenuList>
+            </Menu>
             <Menu closeOnSelect={false}>
               <MenuButton colorScheme="blue">
                 <Avatar name="Dan Abrahmov" src="https://bit.ly/dan-abramov" />
@@ -161,9 +225,43 @@ function Header() {
                 </MenuOptionGroup>
               </MenuList>
             </Menu>
-            {/* <Cart /> */}
-            <NumberedCart />
-            <NumWrapper>{3}</NumWrapper>
+            <Menu onCloseSelect={false}>
+              <MenuButton>
+                {/* <Cart /> */}
+                <NumberedCart />
+                <NumWrapper>{3}</NumWrapper>
+              </MenuButton>
+              <MenuList
+                minWidth="240px"
+                bg={LIGHT_GRAY}
+                h="30rem"
+                overflow="auto"
+                zIndex={999}
+              >
+                <MenuGroup>
+                  <MenuItem _hover={{ bg: 'black' }}>
+                    <PackagesBox />
+                  </MenuItem>
+                </MenuGroup>
+                <MenuGroup>
+                  <MenuItem>
+                    <PackagesBox />
+                  </MenuItem>
+                </MenuGroup>
+                <MenuGroup>
+                  <MenuItem _hover={{ bg: 'none' }}>
+                    <Button
+                      w="100%"
+                      bg={RED_COLOR}
+                      color={PRI_TEXT_COLOR}
+                      _hover={{ bg: 'orange' }}
+                    >
+                      Thanh toán
+                    </Button>
+                  </MenuItem>
+                </MenuGroup>
+              </MenuList>
+            </Menu>
           </HStack>
         </Box>
       </Flex>
