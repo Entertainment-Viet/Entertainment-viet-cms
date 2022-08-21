@@ -12,8 +12,8 @@ export const Control = css`
   color: ${PRI_FONTCOLOR};
   letter-spacing: 0.75px;
 
-  padding: 0.75rem 1.5rem;
-  border-radius: 12px;
+  padding: 0.5rem 1.5rem;
+  border-radius: 0;
 
   border: 0px;
   width: 100%;
@@ -68,7 +68,7 @@ export const Wrapper = styled.div`
     transform: translateY(-50%);
     background-position: center;
     background-repeat: no-repeat;
-    z-index: 2;
+    z-index: 999;
   }
   &.left::before{left: 1.5rem;}
   &.right::before{right: 1.5rem;}

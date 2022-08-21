@@ -8,6 +8,12 @@ export const API_LOGOUT = '/auth/realms/ve-sso/protocol/openid-connect/logout';
 export const API_NEWS_LIST = '/news/list';
 export const API_NEWS_DETAIL = '/news/detail/'; // :id
 
+/* TALENTS */
+export const API_TALENT_LIST = '/talents';
+
+/* MANAGER */
+export const API_JOBOFFER_LIST = 'api/organizers/:id/joboffers';
+
 /* CONTACT FORM */
 export const API_SEND_QNA = '/qna/send';
 

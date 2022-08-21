@@ -20,7 +20,7 @@ import {} from 'constants/routes';
 import {} from './styles';
 import { messages } from './messages';
 
-import { loadInfo } from './actions';
+import { loadInfo, changePage } from './actions';
 import saga from './saga';
 import reducer from './reducer';
 import {
@@ -63,6 +63,10 @@ const mapStateToProps = createStructuredSelector({
 export function mapDispatchToProps(dispatch) {
   return {
     onLoadData: () => {
+      dispatch(loadInfo());
+    },
+    handlePageChange: page => {
+      dispatch(changePage(page));
       dispatch(loadInfo());
     },
   };

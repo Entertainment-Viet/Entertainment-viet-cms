@@ -19,16 +19,26 @@ function checkStatus(response) {
   throw error;
 }
 
-export function get(url, params) {
+export function get(url, params, id) {
   removeEmptyObj(params);
+  let replaceUrl = url;
+  if (id) {
+    // eslint-disable-next-line no-param-reassign
+    replaceUrl = url.replace(':id', id);
+  }
   return cRequest
-    .get(url, { params })
+    .get(replaceUrl, { params })
     .then(checkStatus)
     .then(parseJSON);
 }
 
-export function del(url, params) {
+export function del(url, params, id) {
   removeEmptyObj(params);
+  console.log(url, id);
+  if (id) {
+    // eslint-disable-next-line no-param-reassign
+    url = url.replace(':id', id);
+  }
   return cRequest
     .delete(url, { params })
     .then(checkStatus)

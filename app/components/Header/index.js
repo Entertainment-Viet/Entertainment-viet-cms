@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import qs from 'qs';
 import axios from 'axios';
@@ -30,6 +30,13 @@ import {
   LIGHT_GRAY,
   PRI_BACKGROUND,
 } from 'constants/styles';
+import cRequest from 'utils/server';
+import {
+  getResStatus,
+  redirectTo,
+  cacthError,
+  cacthResponse,
+} from 'utils/helpers';
 import { messages } from './messages';
 import { Wrapper } from './styles';
 import { HeaderData } from './HeaderData';
@@ -41,6 +48,7 @@ import NotificationBox from './NotificationBox';
 
 function Header() {
   const [searchTerm, setSearchTerm] = useState('');
+  const [categories, setCategories] = useState([]);
   const { t } = useTranslation();
 
   const logoutHandle = async () => {
@@ -81,6 +89,25 @@ function Header() {
     //   })
     //   .catch(err => cacthError(err));
   };
+
+  useEffect(() => {
+    cRequest
+      .get('/api/categories')
+      .then(res => {
+        const status = getResStatus(res);
+        if (status === 200) {
+          setCategories(res.data);
+          console.log(res.data);
+        } else if (status === 400) {
+          console.log('error while logging out 400');
+        } else if (status === 500) {
+          console.log('error while logging out 500');
+        } else {
+          cacthResponse(res);
+        }
+      })
+      .catch(err => cacthError(err));
+  }, []);
   return (
     <Wrapper>
       <Flex justify="space-between">
@@ -100,7 +127,7 @@ function Header() {
               style={{}}
               onSubmit={e => {
                 e.preventDefault();
-                window.alert(searchTerm);
+                redirectTo(`/search?search=${searchTerm}`);
               }}
             >
               <InputGroup>
@@ -267,22 +294,25 @@ function Header() {
       </Flex>
       <Divider my={4} />
       <HStack spacing={4}>
-        {HeaderData.map(value => (
-          <>
-            <Link href={value.url}>
-              <Box
-                color={PRI_TEXT_COLOR}
-                fontWeight="500"
-                as="h1"
-                lineHeight="tight"
-                noOfLines={1}
-                key={`header_${value.url}`}
-              >
-                {t(messages[value.title]())}
-              </Box>
-            </Link>
-          </>
-        ))}
+        {categories.length > 0
+          ? categories.map(value => (
+              <>
+                <Link href={`/search?search=${value.uid}`} key={value.uid}>
+                  <Box
+                    color={PRI_TEXT_COLOR}
+                    fontWeight="500"
+                    as="h1"
+                    lineHeight="tight"
+                    noOfLines={1}
+                    key={`header_${value.url}`}
+                  >
+                    {/* {t(messages[value.title]())} */}
+                    {value.name}
+                  </Box>
+                </Link>
+              </>
+            ))
+          : null}
       </HStack>
       <Divider mt={4} />
     </Wrapper>

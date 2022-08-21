@@ -33,7 +33,7 @@ export const INITIAL_EVENTS = [
   {
     id: createEventId(),
     title: 'event 3',
-    start: `2022-07-28T15:00:00`,
+    start: `${todayStr}T15:00:00`,
     end: `${todayStr}T14:00:00`,
     backgroundColor: '#0BC5EA',
     className: 'dot',

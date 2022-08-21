@@ -8,6 +8,11 @@ const makeSelectDetailLoading = () =>
     selectState,
     State => State.loading,
   );
+const makeSelectPage = () =>
+  createSelector(
+    selectState,
+    State => State.paging,
+  );
 
 const makeSelectDetailError = () =>
   createSelector(
@@ -21,4 +26,9 @@ const makeSelectDetail = () =>
     State => State.data,
   );
 
-export { makeSelectDetailLoading, makeSelectDetailError, makeSelectDetail };
+export {
+  makeSelectDetailLoading,
+  makeSelectDetailError,
+  makeSelectDetail,
+  makeSelectPage,
+};

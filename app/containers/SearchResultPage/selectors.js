@@ -3,22 +3,75 @@ import { initialState } from './reducer';
 
 const selectState = state => state.SearchResultPage || initialState;
 
-const makeSelectNFTLoading = () =>
+const makeSelectPage = () =>
+  createSelector(
+    selectState,
+    NewsState => NewsState.page,
+  );
+
+const makeSelectDataLoading = () =>
   createSelector(
     selectState,
     State => State.loading,
   );
 
-const makeSelectNFTError = () =>
+const makeSelectDataError = () =>
   createSelector(
     selectState,
     State => State.error,
   );
 
+const makeSelectData = () =>
+  createSelector(
+    selectState,
+    State => State.data,
+  );
 const makeSelectPaging = () =>
   createSelector(
     selectState,
-    State => State.error,
+    State => State.page,
+  );
+const makeSelectSearch = () =>
+  createSelector(
+    selectState,
+    State => State.search,
+  );
+const makeSelectCategory = () =>
+  createSelector(
+    selectState,
+    State => State.category,
+  );
+const makeSelectCity = () =>
+  createSelector(
+    selectState,
+    State => State.city,
+  );
+const makeSelectStart = () =>
+  createSelector(
+    selectState,
+    State => State.start,
+  );
+const makeSelectEnd = () =>
+  createSelector(
+    selectState,
+    State => State.end,
+  );
+const makeSelectBudget = () =>
+  createSelector(
+    selectState,
+    State => State.budget,
   );
 
-export { makeSelectNFTError, makeSelectNFTLoading, makeSelectPaging };
+export {
+  makeSelectDataLoading,
+  makeSelectDataError,
+  makeSelectData,
+  makeSelectPaging,
+  makeSelectPage,
+  makeSelectSearch,
+  makeSelectCategory,
+  makeSelectCity,
+  makeSelectBudget,
+  makeSelectStart,
+  makeSelectEnd,
+};

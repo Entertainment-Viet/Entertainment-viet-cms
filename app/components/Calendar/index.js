@@ -12,11 +12,11 @@ import './styles.css';
 export default function Calendar() {
   const [currentEvents, setCurrentEvents] = useState([]);
   const [isShowing, setIsShowing] = useState(false);
-  const toggleModal = id => {
-    setIsShowing(!isShowing);
-    setId(id);
-  };
   const [id, setId] = useState();
+  const toggleModal = inputId => {
+    setIsShowing(!isShowing);
+    setId(inputId);
+  };
   useLayoutEffect(() => {
     function appendHtml(el, str) {
       const div = document.createElement('div');
@@ -47,7 +47,7 @@ export default function Calendar() {
     const calendarApi = selectInfo.view.calendar;
     console.log(selectInfo);
     calendarApi.unselect(); // clear date selection
-    toggleModal(selectInfo.startStr);
+    // toggleModal(selectInfo.startStr);
 
     // if (title) {
     //   calendarApi.addEvent({
@@ -61,13 +61,17 @@ export default function Calendar() {
   };
 
   const handleEventClick = clickInfo => {
-    if (
-      prompt(
-        `Are you sure you want to delete the event '${clickInfo.event.title}'`,
-      )
-    ) {
-      clickInfo.event.remove();
-    }
+    // const calendarApi = clickInfo.view.calendar;
+    console.log(clickInfo.view.getCurrentData());
+    console.log(clickInfo.event);
+    // if (
+    //   prompt(
+    //     `Are you sure you want to delete the event '${clickInfo.event.title}'`,
+    //   )
+    // ) {
+    //   clickInfo.event.remove();
+    // }
+    toggleModal(clickInfo.event.title);
   };
 
   const handleEvents = events => {
