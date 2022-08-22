@@ -43,7 +43,11 @@ const PackagesBox = () => {
           <Text color={THIRD_TEXT_COLOR}>Thời gian: 23/08/2022 2pm</Text>
           <Text color={THIRD_TEXT_COLOR}>Địa điểm: nhà hàng</Text>
         </Box>
-        <VStack justify="space-between" height="7rem">
+        <VStack
+          justify="space-between"
+          height="7rem"
+          style={{ marginLeft: 'auto' }}
+        >
           <Text color={PRI_TEXT_COLOR}>{numberWithCommas(400000)} VND</Text>
           <HStack justify="space-between">
             <Button bg="transparent" color={PRI_TEXT_COLOR} fontSize="14px">
@@ -56,7 +60,7 @@ const PackagesBox = () => {
           </HStack>
         </VStack>
       </HStack>
-      <Divider w="100%" ml="auto" mr="auto" mb="1rem" />
+      <Divider w="100%" ml="auto" mr="auto" mb="0.5rem" />
     </Container>
   );
 };

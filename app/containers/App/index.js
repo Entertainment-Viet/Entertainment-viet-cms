@@ -29,6 +29,7 @@ import CreateEventPage from 'containers/CreateEventPage/Loadable';
 import SearchResultPage from 'containers/SearchResultPage/Loadable';
 import Calendar from 'containers/Calendar/Loadable';
 import ManagementPage from 'containers/ManagementPage/Loadable';
+import PreCheckout from 'containers/PreCheckout/Loadable';
 // Components
 import GlobalFonts from 'components/GlobalFonts';
 import Banner from 'components/DevelopmentBanner';
@@ -91,6 +92,14 @@ export default function App() {
           roles={[ENUM_ROLES.ORG, ENUM_ROLES.TAL]}
         >
           <HomePage />
+        </PrivateRoute>
+        <PrivateRoute
+          exact
+          path={Paths.ROUTE_PRECHECKOUT}
+          isAuthenticated={isAuthenticated}
+          roles={[ENUM_ROLES.ORG, ENUM_ROLES.TAL]}
+        >
+          <PreCheckout />
         </PrivateRoute>
         <PrivateRoute
           exact

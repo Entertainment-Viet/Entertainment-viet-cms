@@ -37,12 +37,12 @@ import {
   cacthError,
   cacthResponse,
 } from 'utils/helpers';
+import PackagesBox from 'components/PackageBox';
 import { messages } from './messages';
 import { Wrapper } from './styles';
 import { HeaderData } from './HeaderData';
 import { Notification, NumberedCart } from '../Icon';
 import { NumWrapper } from './Wrapper';
-import PackagesBox from './PackagesBox';
 import { API_LOGOUT } from '../../constants/api';
 import NotificationBox from './NotificationBox';
 
@@ -266,12 +266,12 @@ function Header() {
                 zIndex={999}
               >
                 <MenuGroup>
-                  <MenuItem _hover={{ bg: 'black' }}>
+                  <MenuItem _hover={{ bg: 'none' }}>
                     <PackagesBox />
                   </MenuItem>
                 </MenuGroup>
                 <MenuGroup>
-                  <MenuItem>
+                  <MenuItem _hover={{ bg: 'none' }}>
                     <PackagesBox />
                   </MenuItem>
                 </MenuGroup>
@@ -311,7 +311,7 @@ function Header() {
                   </Box>
                 </Link>
               </>
-            ))
+          ))
           : null}
       </HStack>
       <Divider mt={4} />

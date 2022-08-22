@@ -102,5 +102,13 @@
     "googleMap": "Google Map",
     "postDesc": "Mô tả công việc",
     "goToDetail": "Xem chi tiết"
+  },
+  "preCheckout": {
+    "overview": "Tổng quát",
+    "overviewDesc": "Vui lòng kiểm tra lại đơn của bạn",
+    "method": "Hình thức thanh toán",
+    "methodDesc": "Vui lòng điền đầy đủ thông tin thanh toán để hoàn tất đặt hẹn cho talent",
+    "instantPay": "Thanh toán ngay",
+    "laterPay": "Thanh toán trả sau"
   }
 }
