@@ -29,7 +29,7 @@ const NormalProfile = ({ profile }) => (
       <Center>
         <VStack align="flex-start" ml="12">
           <Link href="google">
-            <Text color={PRI_TEXT_COLOR} fontSize="18px" fontWeight={700}>
+            <Text fontSize="18px" fontWeight={700}>
               Anna 212
             </Text>
           </Link>

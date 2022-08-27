@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { API_SERVER, API_DEL_DEVICE_TOKEN } from 'constants/api';
-import { getAuthCookie, eraseAuthCookie } from 'utils/cookie';
+import { getCookie, setSecureCookie } from 'utils/cookie';
 import { logout } from 'utils/auth';
 import qs from 'qs';
 import jwt from 'jwt-decode';
@@ -8,13 +8,13 @@ import jwt from 'jwt-decode';
 // import { getToken } from '../firebaseInit';
 
 function getLocalToken() {
-  const token = window.localStorage.getItem('token');
+  const token = getCookie('token');
   return token;
 }
 
 // get token o refreshToken
 function getLocalRefreshToken() {
-  const token = window.localStorage.getItem('refreshToken');
+  const token = getCookie('refreshToken');
   return token;
 }
 
@@ -56,7 +56,12 @@ cRequest.interceptors.request.use(async config => {
     };
     const result = await axios(options);
     if (result.status === 200) {
-      window.localStorage.setItem('token', result.data.access_token);
+      setSecureCookie(
+        'token',
+        result.data.access_token,
+        jwt(result.data.access_token).exp,
+      );
+      console.log(jwt(result.data.access_token));
       window.localStorage.setItem('exp', jwt(result.data.access_token).exp);
     }
   }
@@ -76,7 +81,6 @@ cRequest.interceptors.response.use(
     const { response } = error;
     // checking if error is Aunothorized error
     if (response.status === 401) {
-      eraseAuthCookie();
       // const deviceToken = await getToken();
       // const formData = new FormData();
       // formData.append('firebase_register_token', deviceToken);

@@ -71,7 +71,7 @@ export function PreCheckout({ loading, error, data, onLoadData }) {
       <Grid templateColumns="repeat(6,1fr)" my={6} gap={12}>
         <GridItem colSpan={3}>
           <H1>{t(messages.overview())}</H1>
-          <Text color={PRI_TEXT_COLOR}>{t(messages.overviewDesc())}</Text>
+          <Text>{t(messages.overviewDesc())}</Text>
           <Box border="1px solid #718096" py={4} my={6}>
             <PackagesBox />
             <PackagesBox />
@@ -80,11 +80,11 @@ export function PreCheckout({ loading, error, data, onLoadData }) {
         </GridItem>
         <GridItem colStart={5} colEnd={7}>
           <H1>{t(messages.method())}</H1>
-          <Text color={PRI_TEXT_COLOR}>{t(messages.methodDesc())}</Text>
+          <Text>{t(messages.methodDesc())}</Text>
           <Box py={4}>
             <Box bg={LIGHT_GRAY} position="relative" p={4}>
               <VStack align="flex-start">
-                <Text color={PRI_TEXT_COLOR}>{t(messages.instantPay())}</Text>
+                <Text>{t(messages.instantPay())}</Text>
                 <Image src={CardImg} alt="card image" pt={2} />
               </VStack>
               <Image
@@ -98,7 +98,7 @@ export function PreCheckout({ loading, error, data, onLoadData }) {
             </Box>
             <Box bg={LIGHT_GRAY} position="relative" p={4} mt={4}>
               <VStack align="flex-start">
-                <Text color={PRI_TEXT_COLOR}>{t(messages.laterPay())}</Text>
+                <Text>{t(messages.laterPay())}</Text>
                 <Image src={CardImg} alt="card image" pt={2} />
               </VStack>
               <Image

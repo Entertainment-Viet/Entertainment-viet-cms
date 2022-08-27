@@ -24,15 +24,8 @@ import { useInjectReducer } from 'utils/injectReducer';
 import { useInjectSaga } from 'utils/injectSaga';
 import { CardListHorizontal } from 'components/Cards';
 import { ImageSlider } from 'components/Carousel';
-import Buttons from 'components/Buttons';
 import Metadata from 'components/Metadata';
 import { PRI_TEXT_COLOR, SEC_TEXT_COLOR, LIGHT_GRAY } from 'constants/styles';
-
-// import { loadNFTFilter } from 'containers/NFTFilterProvider/actions';
-
-// import { isAuthor } from 'utils/auth';
-
-// import { InputCustom, SelectCustom, ButtonCustom } from 'components/Controls';
 
 import {} from 'constants/routes';
 import {} from './styles';
@@ -46,6 +39,7 @@ import {
   makeSelectDetailError,
   makeSelectDetail,
 } from './selectors';
+import WelcomeBox from './WelcomeBox';
 // import { propTypes } from 'qrcode.react';
 
 const key = 'HomePage';
@@ -87,48 +81,7 @@ export function HomePage({ loading, error, data, onLoadData }) {
       <Metadata />
       <Grid templateColumns={{ base: 'repeat(1, 1fr)', lg: 'repeat(4, 1fr)' }}>
         <GridItem w="100%" pr={{ base: 0, lg: 4 }}>
-          <Box
-            w="100%"
-            paddingInlineStart="0"
-            maxW="100%"
-            mb={{ base: '1rem', lg: '0px' }}
-          >
-            <Box
-              width="100%"
-              height="17.5rem"
-              borderWidth="1px"
-              borderRadius="lg"
-              bg={LIGHT_GRAY}
-              color={PRI_TEXT_COLOR}
-              position="relative"
-            >
-              <Box
-                p={6}
-                display="flex"
-                flexDirection="column"
-                alignItems="baseline"
-                position="absolute"
-                top="25%"
-              >
-                <Box
-                  mt="1"
-                  fontWeight="500"
-                  as="h1"
-                  lineHeight="tight"
-                  noOfLines={1}
-                >
-                  {t(messages.welcome())}
-                </Box>
-                <Box as="span" color={SEC_TEXT_COLOR}>
-                  Looking for talent for your event ?
-                </Box>
-                {/* <Button mt="12" colorScheme="orange">
-                Post a job
-              </Button> */}
-                <Buttons mt="12">{t(messages.postJob())}</Buttons>
-              </Box>
-            </Box>
-          </Box>
+          <WelcomeBox />
         </GridItem>
         <GridItem colSpan={3}>
           <ImageSlider slides={SlideData} />

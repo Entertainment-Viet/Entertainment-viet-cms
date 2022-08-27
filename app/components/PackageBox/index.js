@@ -38,7 +38,7 @@ const PackagesBox = () => {
           />
         </Box>
         <Box>
-          <Text color={PRI_TEXT_COLOR}>Gói cơ bản</Text>
+          <Text>Gói cơ bản</Text>
           <Text color={THIRD_TEXT_COLOR}>Lana</Text>
           <Text color={THIRD_TEXT_COLOR}>Thời gian: 23/08/2022 2pm</Text>
           <Text color={THIRD_TEXT_COLOR}>Địa điểm: nhà hàng</Text>

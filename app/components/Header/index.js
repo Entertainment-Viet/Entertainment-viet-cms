@@ -38,6 +38,8 @@ import {
   cacthResponse,
 } from 'utils/helpers';
 import PackagesBox from 'components/PackageBox';
+import { logout } from 'utils/auth';
+import { getCookie } from 'utils/cookie';
 import { messages } from './messages';
 import { Wrapper } from './styles';
 import { HeaderData } from './HeaderData';
@@ -52,9 +54,10 @@ function Header() {
   const { t } = useTranslation();
 
   const logoutHandle = async () => {
+    console.log(getCookie('refreshToken'));
     const data = {
       client_id: 'backend',
-      refresh_token: window.localStorage.getItem('refreshToken'),
+      refresh_token: getCookie('refreshToken'),
     };
     const options = {
       method: 'POST',
@@ -64,10 +67,7 @@ function Header() {
     };
     const result = await axios(options);
     if (result.status === 204) {
-      window.localStorage.removeItem('refreshToken');
-      window.localStorage.removeItem('token');
-      window.localStorage.removeItem('role');
-      window.location.href = '/login';
+      logout();
     } else {
       console.log(`error ${result.status}`);
     }
@@ -311,7 +311,7 @@ function Header() {
                   </Box>
                 </Link>
               </>
-          ))
+            ))
           : null}
       </HStack>
       <Divider mt={4} />

@@ -16,7 +16,7 @@ import { useForm } from 'react-hook-form';
 import { API_LOGIN } from 'constants/api';
 import { ROUTE_REGISTER } from 'constants/routes';
 import { ENUM_ROLES } from 'constants/enums';
-
+import { setSecureCookie, getCookie } from 'utils/cookie';
 import Metadata from 'components/Metadata';
 import {
   SimpleGrid,
@@ -50,7 +50,7 @@ function LoginPage() {
     formState: { errors, isSubmitting },
   } = useForm();
   useEffect(() => {
-    if (window.localStorage.getItem('refreshToken')) {
+    if (getCookie('refreshToken')) {
       window.location.href = '/';
     }
   }, []);
@@ -129,11 +129,14 @@ function LoginPage() {
     console.log(jwt(result.data.access_token));
     const { roles } = jwt(result.data.access_token).realm_access;
     if (result.status === 200) {
-      window.localStorage.setItem('token', result.data.access_token);
-      window.localStorage.setItem('refreshToken', result.data.refresh_token);
       window.localStorage.setItem('exp', jwt(result.data.access_token).exp);
+      setSecureCookie(
+        'token',
+        result.data.access_token,
+        jwt(result.data.access_token).exp,
+      );
+      setSecureCookie('refreshToken', result.data.refresh_token);
       const role = roles.every(element => {
-        console.log(element, talentRole);
         if (talentRole === element) {
           window.localStorage.setItem('role', ENUM_ROLES.TAL);
           window.location.href = '/';

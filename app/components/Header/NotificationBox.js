@@ -38,7 +38,7 @@ const NotificationBox = () => {
           />
         </Box>
         <Box>
-          <Text color={PRI_TEXT_COLOR}>Conor vừa chấp nhận yêu cầu của bạn</Text>
+          <Text>Conor vừa chấp nhận yêu cầu của bạn</Text>
         </Box>
       </HStack>
     </Container>

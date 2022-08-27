@@ -57,7 +57,7 @@ const Modal = props => {
                 </Box>
               </Container>
             </HStack>
-            <Text color={PRI_TEXT_COLOR}>{t(messages.orgInfo())}</Text>
+            <Text>{t(messages.orgInfo())}</Text>
             <HStack>
               <GoogleMap />
               <Container>
@@ -74,7 +74,7 @@ const Modal = props => {
             <HStack>
               <Phone />
               <Container>
-                <Text color={PRI_TEXT_COLOR}>09123 456 782 </Text>
+                <Text>09123 456 782 </Text>
                 <Box as="span" color="gray.500">
                   A Tăng - chủ quán
                 </Box>

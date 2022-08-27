@@ -21,13 +21,13 @@ const CommentBox = ({ slides }) => (
       <VStack justify="flex-start" align="flex-start">
         <Container maxW="100%">
           <Link href="google">
-            <Text color={PRI_TEXT_COLOR} fontSize="18px" fontWeight={700}>
+            <Text fontSize="18px" fontWeight={700}>
               Anna 212
             </Text>
           </Link>
         </Container>
         <Container maxW="100%">
-          <Text color={PRI_TEXT_COLOR} fontSize="14px">
+          <Text fontSize="14px">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque
             hendrerit tortor ac mattis gravida. Nulla quis eleifend nibh.
             Maecenas quis rutrum purus, id ornare turpis. Morbi quis odio

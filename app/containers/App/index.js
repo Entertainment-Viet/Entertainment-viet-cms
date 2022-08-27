@@ -13,7 +13,7 @@ import { Helmet } from 'react-helmet';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useTranslation } from 'react-i18next';
-
+import { useTheme } from '@chakra-ui/react';
 // Others
 import { isLoggedIn } from 'utils/auth';
 import * as Paths from 'constants/routes';
@@ -58,6 +58,7 @@ export default function App() {
       console.log(firebaseToken);
     })
     .catch(err => err);
+  const theme = useTheme();
 
   return (
     <AppWrapper>

@@ -18,10 +18,12 @@ import 'sanitize.css/sanitize.css';
 import './locales/i18n';
 import { ChakraProvider } from '@chakra-ui/react';
 import FontFaceObserver from 'fontfaceobserver';
-import theme from 'utils/theme';
 
 // Import root app
 import App from 'containers/App';
+
+import theme from './theme';
+
 // import WalletListener from 'components/WalletListener';
 
 // Load the favicon and the .htaccess file
@@ -51,7 +53,7 @@ const MOUNT_NODE = document.getElementById('app');
 
 const render = () => {
   ReactDOM.render(
-    <ChakraProvider theme={theme}>
+    <ChakraProvider theme={theme} cssVarsRoot="body">
       <Provider store={store}>
         <ConnectedRouter history={history}>
           {/* <WalletListener /> */}

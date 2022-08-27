@@ -114,7 +114,7 @@ export function ArtistDetailPage({ match }) {
               w="100%"
               style={{ marginTop: '2rem', marginBottom: '1rem' }}
             >
-              <Text color={PRI_TEXT_COLOR} as="h1" fontWeight={700}>
+              <Text as="h1" fontWeight={700}>
                 {t(messages.comment())}
               </Text>
               <Link href={`/all-comment/${match.params.id}`}>
