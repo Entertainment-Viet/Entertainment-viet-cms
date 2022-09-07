@@ -36,80 +36,76 @@ import {
   HStack,
   FormControl,
   Input,
-  Checkbox,
   Button,
   Divider,
   Text,
   Center,
   Link,
+  Select,
+  chakra,
 } from '@chakra-ui/react';
 import { PRI_TEXT_COLOR, LIGHT_GRAY, RED_COLOR } from 'constants/styles';
+import { useForm } from 'react-hook-form';
 import OAuthButtonGroup from './OAuthButtonGroup';
 import PasswordField from './PasswordField';
 import { messages } from './messages';
 // import { getToken } from '../../firebaseInit';
 import background from './image/register-background.png';
-
+const CustomFormLabel = chakra(FormLabel, {
+  baseStyle: {
+    my: '4',
+  },
+});
 function RegisterPage(props) {
   const { t } = useTranslation();
+  const {
+    handleSubmit,
+    register,
+    formState: { errors, isSubmitting },
+  } = useForm();
   // const [isTokenFound, setTokenFound] = useState(false);
 
-  // const [email, setEmail] = useState('');
-  // const handleEmailChange = val => setEmail(val);
-
-  // const [emailError, setEmailError] = useState(true);
-  // const handleEmailError = val => setEmailError(!!val);
-
-  // const [passError, setPassError] = useState(true);
-  // const handlePassError = val => setPassError(!!val);
-
-  // const handleSubmit = e => {
-  //   if (!emailError && !passError) {
-  //     const formData = new FormData(e.currentTarget);
-  //     formData.append('role', props.role ? props.role : ENUM_USER_ROLE.CUS);
-  //     const data = Object.fromEntries(formData.entries());
-
-  //     return cRequest
-  //       .post(API_LOGIN, data)
-  //       .then(async res => {
-  //         const status = getResStatus(res);
-  //         if (status === 200) {
-  //           setUserLoginStat(ENUM_LOGINSTATE.kaibase);
-  //           setUserData(res);
-  //           Noti.showNotiSuccess(t(messages.success()), {
-  //             onClose: () => redirectHome(),
-  //           });
-  //           // const deviceToken = await getToken(setTokenFound);
-  //           // if (deviceToken) {
-  //           //   const formData1 = new FormData();
-  //           //   formData1.append('firebase_register_token', deviceToken);
-  //           //   const fData = Object.fromEntries(formData1.entries());
-  //           //   cRequest.post(API_SEND_DEVICE_TOKEN, fData).then(res1 => {
-  //           //     const status1 = getResStatus(res1);
-  //           //     if (status1 === '200') {
-  //           //       console.log('sent');
-  //           //     } else if (status1 === '400') {
-  //           //       console.log('fail');
-  //           //     } else {
-  //           //       cacthResponse(res1);
-  //           //     }
-  //           //   });
-  //           // }
-  //         } else if (status === 400) {
-  //           if (getResErrorCode(res) === ERROR_PARAMETERS) {
-  //             Noti.showNotiError(t(messages.error()));
-  //           }
-  //           if (getResErrorCode(res) === ERROR_USER_NOT_ACTIVE) {
-  //             Noti.showNotiError(t(messages.errorUser()));
-  //           }
-  //         } else {
-  //           cacthResponse(res);
-  //         }
-  //       })
-  //       .catch(err => cacthError(err));
-  //   }
-  //   return false;
-  // };
+  const onSubmit = values => {
+    console.log(values);
+    alert(values);
+    // return cRequest
+    //   .post(API_LOGIN, data)
+    //   .then(async res => {
+    //     const status = getResStatus(res);
+    //     if (status === 200) {
+    //       setUserData(res);
+    //       // Noti.showNotiSuccess(t(messages.success()), {
+    //       //   onClose: () => redirectHome(),
+    //       // });
+    //       // const deviceToken = await getToken(setTokenFound);
+    //       // if (deviceToken) {
+    //       //   const formData1 = new FormData();
+    //       //   formData1.append('firebase_register_token', deviceToken);
+    //       //   const fData = Object.fromEntries(formData1.entries());
+    //       //   cRequest.post(API_SEND_DEVICE_TOKEN, fData).then(res1 => {
+    //       //     const status1 = getResStatus(res1);
+    //       //     if (status1 === '200') {
+    //       //       console.log('sent');
+    //       //     } else if (status1 === '400') {
+    //       //       console.log('fail');
+    //       //     } else {
+    //       //       cacthResponse(res1);
+    //       //     }
+    //       //   });
+    //       // }
+    //     } else if (status === 400) {
+    //       if (getResErrorCode(res) === ERROR_PARAMETERS) {
+    //         Noti.showNotiError(t(messages.error()));
+    //       }
+    //       if (getResErrorCode(res) === ERROR_USER_NOT_ACTIVE) {
+    //         Noti.showNotiError(t(messages.errorUser()));
+    //       }
+    //     } else {
+    //       cacthResponse(res);
+    //     }
+    //   })
+    //   .catch(err => cacthError(err));
+  };
 
   return (
     <SimpleGrid columns={2}>
@@ -146,49 +142,94 @@ function RegisterPage(props) {
             <Text color="gray.200">{t(messages.welcome())}</Text>
           </Center>
           <Stack spacing="5">
-            <FormControl isRequired>
-              <FormLabel htmlFor="name" color={PRI_TEXT_COLOR}>
-                {t(messages.name())}
-              </FormLabel>
-              <Input
-                id="name"
-                type="name"
-                bg="white"
-                placeholder="Enter your name"
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <FormControl isRequired>
+                <CustomFormLabel htmlFor="name">
+                  {t(messages.name())}
+                </CustomFormLabel>
+                <Select
+                  placeholder="Select your role"
+                  {...register('subcategory')}
+                >
+                  <option value="option1">
+                    Organizer (Restaurant, Event organizer, etc...)
+                  </option>
+                  <option value="option2">
+                    Talent (Singer, DJ, Dancer, etc...)
+                  </option>
+                </Select>
+              </FormControl>
+              <FormControl isRequired>
+                <CustomFormLabel htmlFor="name">
+                  {t(messages.name())}
+                </CustomFormLabel>
+                <Input
+                  id="displayName"
+                  type="displayName"
+                  placeholder="Enter your name"
+                  {...register('displayName', {
+                    required: 'This is required',
+                    minLength: {
+                      value: 4,
+                      message: 'Minimum length should be 4',
+                    },
+                  })}
+                />
+              </FormControl>
+              <FormControl isRequired>
+                <CustomFormLabel htmlFor="email">
+                  {t(messages.email())}
+                </CustomFormLabel>
+                <Input
+                  id="email"
+                  type="email"
+                  placeholder="Enter your email"
+                  {...register('email', {
+                    required: 'This is required',
+                    minLength: {
+                      value: 4,
+                      message: 'Minimum length should be 4',
+                    },
+                  })}
+                />
+              </FormControl>
+              <PasswordField
+                {...register('password', {
+                  required: 'This is required',
+                  minLength: {
+                    value: 4,
+                    message: 'Minimum length should be 4',
+                  },
+                })}
               />
-            </FormControl>
-            <FormControl isRequired>
-              <FormLabel htmlFor="email" color={PRI_TEXT_COLOR}>
-                {t(messages.email())}
-              </FormLabel>
-              <Input
-                id="email"
-                type="email"
-                bg="white"
-                placeholder="Enter your email"
-              />
-            </FormControl>
-            <PasswordField />
+              <HStack justify="space-between">
+                <Button variant="link" colorScheme="red" size="sm">
+                  {t(messages.forgotPassword())}
+                </Button>
+              </HStack>
+              <Button
+                variant="primary"
+                width="100%"
+                mt={4}
+                bg={RED_COLOR}
+                isLoading={isSubmitting}
+                type="submit"
+              >
+                {t(messages.signup())}
+              </Button>
+            </form>
           </Stack>
-          <HStack justify="space-between">
-            <Button variant="link" colorScheme="red" size="sm">
-              {t(messages.forgotPassword())}
-            </Button>
-          </HStack>
           <Stack spacing="6">
-            <Button variant="primary" bg={RED_COLOR} color={PRI_TEXT_COLOR}>
-              {t(messages.signup())}
-            </Button>
             <HStack>
               <Divider />
-              <Text fontSize="sm" whiteSpace="nowrap" color={PRI_TEXT_COLOR}>
+              <Text fontSize="sm" whiteSpace="nowrap">
                 {t(messages.continueWith())}
               </Text>
               <Divider />
             </HStack>
             <OAuthButtonGroup />
             <HStack spacing="1" justify="center">
-              <Text color={PRI_TEXT_COLOR}>{t(messages.haveAccount())}</Text>
+              <Text>{t(messages.haveAccount())}</Text>
               <Button variant="link" color={RED_COLOR}>
                 <Link href={ROUTE_LOGIN}>{t(messages.signin())}</Link>
               </Button>

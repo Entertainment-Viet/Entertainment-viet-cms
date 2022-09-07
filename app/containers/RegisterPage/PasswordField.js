@@ -9,9 +9,16 @@ import {
   InputRightElement,
   useDisclosure,
   useMergeRefs,
+  chakra,
 } from '@chakra-ui/react';
 import { HiEye, HiEyeOff } from 'react-icons/hi';
 import { PRI_TEXT_COLOR, LIGHT_GRAY } from 'constants/styles';
+
+const CustomFormLabel = chakra(FormLabel, {
+  baseStyle: {
+    my: '4',
+  },
+});
 
 const PasswordField = React.forwardRef((props, ref) => {
   const { isOpen, onToggle } = useDisclosure();
@@ -27,9 +34,9 @@ const PasswordField = React.forwardRef((props, ref) => {
 
   return (
     <FormControl isRequired>
-      <FormLabel htmlFor="password" color={PRI_TEXT_COLOR}>
+      <CustomFormLabel htmlFor="password" color={PRI_TEXT_COLOR}>
         Password
-      </FormLabel>
+      </CustomFormLabel>
       <InputGroup>
         <InputRightElement>
           <IconButton

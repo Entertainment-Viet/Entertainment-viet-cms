@@ -130,6 +130,7 @@ function LoginPage() {
     const { roles } = jwt(result.data.access_token).realm_access;
     if (result.status === 200) {
       window.localStorage.setItem('exp', jwt(result.data.access_token).exp);
+      window.localStorage.setItem('uid', jwt(result.data.access_token).sub);
       setSecureCookie(
         'token',
         result.data.access_token,
