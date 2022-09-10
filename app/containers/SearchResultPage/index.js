@@ -13,8 +13,6 @@ import { createStructuredSelector } from 'reselect';
 import {
   Container,
   Box,
-  HStack,
-  Divider,
   SimpleGrid,
   Select,
   NumberInput,
@@ -82,17 +80,18 @@ export function SearchResultPage({
   handleStartChange,
   handleEndChange,
   onLoadData,
+  search,
 }) {
   useInjectReducer({ key, reducer });
   useInjectSaga({ key, saga });
 
   const queryString = window.location.search;
   const urlParams = new URLSearchParams(queryString);
-  const search = urlParams.get('search');
+  const searchParams = urlParams.get('search');
   const category = urlParams.get('category');
   useEffect(() => {
     if (category) handleCategoryChange(category);
-    else if (search) handleSearchChange(search);
+    else if (searchParams) handleSearchChange(searchParams.replace('+', ' '));
     else onLoadData();
   }, []);
 
@@ -138,7 +137,7 @@ export function SearchResultPage({
   return (
     <div style={{ width: '100%' }}>
       <Metadata />
-      <H1>Result for "blablabla"</H1>
+      <H1>Result for "{search}"</H1>
       <SimpleGrid columns={5} spacing={2} maxW="100%">
         <Box>
           <Select

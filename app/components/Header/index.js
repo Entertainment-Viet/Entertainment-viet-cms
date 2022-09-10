@@ -121,7 +121,9 @@ function Header({ handleSubmit }) {
                   // changeSearch(searchTerm);
                   handleSubmit(searchTerm);
                 } else {
-                  redirectTo(`/search?search=${searchTerm}`);
+                  redirectTo(
+                    `/search?search=${searchTerm.replace(/\s/g, '+')}`,
+                  );
                 }
               }}
             >
