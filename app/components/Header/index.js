@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, memo } from 'react';
 import { useTranslation } from 'react-i18next';
 import qs from 'qs';
 import axios from 'axios';
+import PropTypes from 'prop-types';
 
 import {
   Flex,
@@ -40,19 +41,25 @@ import {
 import PackagesBox from 'components/PackageBox';
 import { logout } from 'utils/auth';
 import { getCookie } from 'utils/cookie';
+
+import { changeSearch, loadData } from 'containers/SearchResultPage/actions';
+import { makeSelectSearch } from 'containers/SearchResultPage/selectors';
+import { createStructuredSelector } from 'reselect';
+import { connect } from 'react-redux';
+import { compose } from 'redux';
+
 import { messages } from './messages';
 import { Wrapper } from './styles';
-import { HeaderData } from './HeaderData';
 import { Notification, NumberedCart } from '../Icon';
 import { NumWrapper } from './Wrapper';
 import { API_LOGOUT } from '../../constants/api';
 import NotificationBox from './NotificationBox';
 
-function Header() {
+function Header({ handleSubmit }) {
   const [searchTerm, setSearchTerm] = useState('');
   const [categories, setCategories] = useState([]);
-  const { t } = useTranslation();
 
+  const { t } = useTranslation();
   const logoutHandle = async () => {
     console.log(getCookie('refreshToken'));
     const data = {
@@ -71,23 +78,6 @@ function Header() {
     } else {
       console.log(`error ${result.status}`);
     }
-    // cRequest
-    //   .post(API_LOGOUT, data)
-    //   .then(res => {
-    //     const status = getResStatus(res);
-    //     if (status === 200) {
-    //       window.localStorage.removeItem('refreshToken');
-    //       window.localStorage.removeItem('token');
-    //       window.localStorage.removeItem('role');
-    //     } else if (status === 400) {
-    //       console.log('error while logging out 400');
-    //     } else if (status === 500) {
-    //       console.log('error while logging out 500');
-    //     } else {
-    //       cacthResponse(res);
-    //     }
-    //   })
-    //   .catch(err => cacthError(err));
   };
 
   useEffect(() => {
@@ -127,7 +117,12 @@ function Header() {
               style={{}}
               onSubmit={e => {
                 e.preventDefault();
-                redirectTo(`/search?search=${searchTerm}`);
+                if (window.location.pathname === '/search') {
+                  // changeSearch(searchTerm);
+                  handleSubmit(searchTerm);
+                } else {
+                  redirectTo(`/search?search=${searchTerm}`);
+                }
               }}
             >
               <InputGroup>
@@ -240,12 +235,6 @@ function Header() {
                     <MenuItemOption>My manager</MenuItemOption>
                   </Link>
                 </MenuOptionGroup>
-                {/* <MenuDivider /> */}
-                {/* <MenuOptionGroup title="Country" type="button">
-                  <MenuItemOption value="email">Email</MenuItemOption>
-                  <MenuItemOption value="phone">Phone</MenuItemOption>
-                  <MenuItemOption value="country">Country</MenuItemOption>
-                </MenuOptionGroup> */}
                 <MenuDivider />
                 <MenuOptionGroup title="Logout" type="button">
                   <MenuItemOption onClick={logoutHandle}>Logout</MenuItemOption>
@@ -297,7 +286,7 @@ function Header() {
         {categories.length > 0
           ? categories.map(value => (
               <>
-                <Link href={`/search?search=${value.uid}`} key={value.uid}>
+                <Link href={`/search?category=${value.uid}`} key={value.uid}>
                   <Box
                     color={PRI_TEXT_COLOR}
                     fontWeight="500"
@@ -311,6 +300,7 @@ function Header() {
                   </Box>
                 </Link>
               </>
+              // eslint-disable-next-line indent
             ))
           : null}
       </HStack>
@@ -319,4 +309,29 @@ function Header() {
   );
 }
 
-export default Header;
+Header.propTypes = {
+  handleSubmit: PropTypes.func,
+};
+
+const mapStateToProps = createStructuredSelector({
+  search: makeSelectSearch(),
+});
+
+export function mapDispatchToProps(dispatch) {
+  return {
+    handleSubmit: search => {
+      dispatch(changeSearch(search));
+      dispatch(loadData());
+    },
+  };
+}
+
+const withConnect = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+);
+
+export default compose(
+  withConnect,
+  memo,
+)(Header);

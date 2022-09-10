@@ -54,6 +54,7 @@ const pageReducer = (state = initialState, action) =>
         draft.city = action.city;
         break;
       case CHANGE_SEARCH:
+        console.log(action.search);
         draft.search = action.search;
         break;
     }

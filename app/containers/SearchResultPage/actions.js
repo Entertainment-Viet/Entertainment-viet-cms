@@ -67,6 +67,7 @@ export function changeEnd(end) {
   };
 }
 export function changeSearch(search) {
+  console.log(search);
   return {
     type: CHANGE_SEARCH,
     search,
