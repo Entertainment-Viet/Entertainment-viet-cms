@@ -80,6 +80,26 @@ function Header({ handleSubmit }) {
     }
   };
 
+  const orgId = window.localStorage.getItem('uid');
+
+  useEffect(() => {
+    cRequest
+      .get(`api/organizers/${orgId}/shoppingcart`)
+      .then(res => {
+        const status = getResStatus(res);
+        if (status === 200) {
+          setCategories(res.data);
+          console.log(res.data);
+        } else if (status === 400) {
+          console.log('error while logging out 400');
+        } else if (status === 500) {
+          console.log('error while logging out 500');
+        } else {
+          cacthResponse(res);
+        }
+      })
+      .catch(err => cacthError(err));
+  });
   useEffect(() => {
     cRequest
       .get('/api/categories')
