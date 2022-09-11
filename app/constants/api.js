@@ -15,6 +15,8 @@ export const API_TALENT_PACKAGE = 'api/talents/:id/packages';
 
 /* MANAGER */
 export const API_JOBOFFER_LIST = 'api/organizers/:id/joboffers';
+export const API_BOOKING_LIST = 'api/talents/:id/bookings';
+export const API_PACKAGE_LIST = 'api/talents/:id/packages';
 
 /* CONTACT FORM */
 export const API_SEND_QNA = '/qna/send';

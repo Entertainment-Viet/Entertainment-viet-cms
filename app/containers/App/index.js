@@ -127,14 +127,14 @@ export default function App() {
           <SearchResultPage />
         </PrivateRoute>
         {/* bugs 404 not found page always redirect to Book management page */}
-        {/* <PrivateRoute
+        <PrivateRoute
           exact
           path={Paths.ROUTE_MANAGER}
           isAuthenticated={isAuthenticated}
           roles={[ENUM_ROLES.ORG, ENUM_ROLES.TAL]}
         >
           <ManagementPage />
-        </PrivateRoute> */}
+        </PrivateRoute>
         <PrivateRoute
           exact
           path={Paths.ROUTE_CALENDAR}

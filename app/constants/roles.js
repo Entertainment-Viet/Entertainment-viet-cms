@@ -1,5 +1,5 @@
-export const talentRole = 'VERIFIED_TALENT';
-export const orgRole = 'VERIFIED_ORGANIZER';
+export const talentRole = 'TALENT_READ_ACCESS';
+export const orgRole = 'ORGANIZER_READ_ACCESS';
 export const adminRole = [
   'ADMIN_READ_ORGANIZER_ACCESS',
   'ADMIN_RESOLVE_ORGANIZER_ACCESSS',
