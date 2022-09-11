@@ -26,9 +26,16 @@ const makeSelectDetail = () =>
     State => State.data,
   );
 
+const makeSelectPackage = () =>
+  createSelector(
+    selectState,
+    State => State.packageId,
+  );
+
 export {
   makeSelectDetailLoading,
   makeSelectDetailError,
   makeSelectDetail,
   makeSelectPage,
+  makeSelectPackage,
 };

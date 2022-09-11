@@ -1,13 +1,21 @@
 import {
-  LOAD_INFO,
+  LOAD_PACKAGES,
   CHANGE_PAGE,
   LOAD_INFO_SUCCESS,
   LOAD_INFO_ERROR,
+  LOAD_BOOKING_PACKAGES,
 } from './constants';
 
-export function loadInfo() {
+export function loadPackages() {
   return {
-    type: LOAD_INFO,
+    type: LOAD_PACKAGES,
+  };
+}
+
+export function loadBookingPackages(packageId) {
+  return {
+    type: LOAD_BOOKING_PACKAGES,
+    packageId,
   };
 }
 
