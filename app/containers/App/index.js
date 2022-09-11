@@ -30,6 +30,7 @@ import SearchResultPage from 'containers/SearchResultPage/Loadable';
 import Calendar from 'containers/Calendar/Loadable';
 import ManagementPage from 'containers/ManagementPage/Loadable';
 import PreCheckout from 'containers/PreCheckout/Loadable';
+import BookingDetailPage from 'containers/BookingDetailPage/Loadable';
 // Components
 import GlobalFonts from 'components/GlobalFonts';
 import Banner from 'components/DevelopmentBanner';
@@ -126,7 +127,6 @@ export default function App() {
         >
           <SearchResultPage />
         </PrivateRoute>
-        {/* bugs 404 not found page always redirect to Book management page */}
         <PrivateRoute
           exact
           path={Paths.ROUTE_MANAGER}
@@ -134,6 +134,14 @@ export default function App() {
           roles={[ENUM_ROLES.ORG, ENUM_ROLES.TAL]}
         >
           <ManagementPage />
+        </PrivateRoute>
+        <PrivateRoute
+          exact
+          path={Paths.ROUTE_BOOKING_DETAIL_MANAGER}
+          isAuthenticated={isAuthenticated}
+          roles={[ENUM_ROLES.ORG, ENUM_ROLES.TAL]}
+        >
+          <BookingDetailPage />
         </PrivateRoute>
         <PrivateRoute
           exact

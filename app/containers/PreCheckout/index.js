@@ -11,26 +11,14 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { createStructuredSelector } from 'reselect';
 import { useTranslation } from 'react-i18next';
-import {
-  Container,
-  Box,
-  VStack,
-  Divider,
-  Grid,
-  GridItem,
-  Text,
-  Image,
-} from '@chakra-ui/react';
+import { Box, VStack, Grid, GridItem, Text, Image } from '@chakra-ui/react';
 
 import { useInjectReducer } from 'utils/injectReducer';
 import { useInjectSaga } from 'utils/injectSaga';
-import { CardListHorizontal } from 'components/Cards';
-import { ImageSlider } from 'components/Carousel';
-import Buttons from 'components/Buttons';
 import PackagesBox from 'components/PackageBox';
 import Metadata from 'components/Metadata';
 import { H1 } from 'components/Elements';
-import { PRI_TEXT_COLOR, SEC_TEXT_COLOR, LIGHT_GRAY } from 'constants/styles';
+import { LIGHT_GRAY } from 'constants/styles';
 import CardImg from './assets/payment_card.svg';
 import Arrow from './assets/arrow.svg';
 
@@ -52,7 +40,6 @@ import {
   makeSelectDetailError,
   makeSelectDetail,
 } from './selectors';
-// import { propTypes } from 'qrcode.react';
 
 const key = 'PreCheckout';
 export function PreCheckout({ loading, error, data, onLoadData }) {
