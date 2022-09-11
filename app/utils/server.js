@@ -38,6 +38,7 @@ cRequest.defaults.headers.post['Content-Type'] =
 
 cRequest.interceptors.request.use(async config => {
   // console.log('Starting Request', JSON.stringify(config, null, 2));
+  console.log(Date.now() > getLocalAccessTokenExpire() * 1000);
   if (Date.now() > getLocalAccessTokenExpire() * 1000) {
     console.log('expired');
     const data = {

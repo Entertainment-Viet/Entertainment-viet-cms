@@ -11,6 +11,7 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { useTranslation } from 'react-i18next';
 import { createStructuredSelector } from 'reselect';
+
 import {
   Container,
   VStack,
@@ -23,6 +24,8 @@ import {
   TabList,
   Tabs,
   Progress,
+  SimpleGrid,
+  Button,
   chakra,
 } from '@chakra-ui/react';
 
@@ -35,40 +38,38 @@ import Dropdown from 'components/Accordian';
 import CommentBox from 'components/Comment';
 import { H1 } from 'components/Elements';
 import { PRI_TEXT_COLOR, RED_COLOR } from 'constants/styles';
+
+import PageSpinner from 'components/PageSpinner';
+import { loadData } from './actions';
+
 import NormalProfile from './NormalProfile';
 import Header from './Header';
 import PackagesBox from './PackagesBox';
 
-// import { loadNFTFilter } from 'containers/NFTFilterProvider/actions';
-
-// import { isAuthor } from 'utils/auth';
-
-// import { InputCustom, SelectCustom, ButtonCustom } from 'components/Controls';
-
 import {} from 'constants/routes';
 import {} from './styles';
 import { messages } from './messages';
-import {} from './actions';
+
 import saga from './saga';
 import reducer from './reducer';
-import {} from './selectors';
+import { makeSelectData, makeSelectPackages } from './selectors';
+// import { BasicRating } from '../../components/Rating';
 const CustomTab = chakra(Tab, {
   baseStyle: {
     fontWeight: '500',
     fontSize: '18px',
-    // mt: '-4',
     _hover: { color: PRI_TEXT_COLOR },
     _focus: { color: RED_COLOR },
   },
 });
 const key = 'ArtistDetailPage';
-export function ArtistDetailPage({ match }) {
+export function ArtistDetailPage({ match, onLoadData, data, packages }) {
   useInjectReducer({ key, reducer });
   useInjectSaga({ key, saga });
   const { t } = useTranslation();
 
   useEffect(() => {
-    console.log(match.params.id);
+    onLoadData(match.params.id);
   }, [match.params.id]);
 
   const SlideData = [
@@ -104,77 +105,103 @@ export function ArtistDetailPage({ match }) {
           <CustomTab>{t(messages.review())}</CustomTab>
         </TabList>
       </Tabs>
-      <Grid templateColumns="repeat(5, 1fr)">
-        <GridItem>
-          <VStack align="flex-start">
-            <Header />
-            <ImageSliderWithPreview slides={SlideData} />
-            <HStack
-              justifyContent="space-between"
-              w="100%"
-              style={{ marginTop: '2rem', marginBottom: '1rem' }}
-            >
-              <Text as="h1" fontWeight={700}>
-                {t(messages.comment())}
-              </Text>
-              <Link href={`/all-comment/${match.params.id}`}>
-                <Text color={RED_COLOR} fontWeight={400}>
-                  {t(messages.allComment())}
+      {!data ? (
+        <PageSpinner />
+      ) : (
+        <Grid templateColumns="repeat(5, 1fr)">
+          <GridItem>
+            <VStack align="flex-start">
+              <Header profile={data} />
+              <ImageSliderWithPreview slides={SlideData} />
+              <HStack
+                justifyContent="space-between"
+                w="100%"
+                style={{ marginTop: '2rem', marginBottom: '1rem' }}
+              >
+                <Text as="h1" fontWeight={700}>
+                  {t(messages.comment())}
                 </Text>
-              </Link>
-            </HStack>
-            <CommentCarousel />
-            <H1>{t(messages.description())}</H1>
-            <Container color={PRI_TEXT_COLOR}>
-              {parserHtml('This is for the rich text field <b>vloz</b>')}
-            </Container>
-            <H1>{t(messages.basicInfo())}</H1>
-            <NormalProfile />
-            <H1>{t(messages.questions())}</H1>
-            <Dropdown />
-            <H1>120 Reviews</H1>
-            <Container color={PRI_TEXT_COLOR}>
-              5 sao <Progress value={50} size="xs" colorScheme="pink" /> 100
-            </Container>
-            <Container color={PRI_TEXT_COLOR}>
-              4 sao <Progress value={50} size="xs" colorScheme="pink" /> 100
-            </Container>
-            <Container color={PRI_TEXT_COLOR}>
-              3 sao <Progress value={50} size="xs" colorScheme="pink" /> 100
-            </Container>
-            <Container color={PRI_TEXT_COLOR}>
-              2 sao <Progress value={50} size="xs" colorScheme="pink" /> 100
-            </Container>
-            <Container color={PRI_TEXT_COLOR}>
-              1 sao <Progress value={50} size="xs" colorScheme="pink" /> 100
-            </Container>
-            <H1>Review</H1>
-            <CommentBox />
-            <CommentBox />
-            <CommentBox />
-            <Container>
-              <Text color={RED_COLOR} fontSize="18px">
-                {t(messages.seeMore())}
-              </Text>
-            </Container>
-          </VStack>
-        </GridItem>
-        <GridItem colSpan={2}>
-          <PackagesBox />
-        </GridItem>
-      </Grid>
+                <Link href={`/all-comment/${match.params.id}`}>
+                  <Text color={RED_COLOR} fontWeight={400}>
+                    {t(messages.allComment())}
+                  </Text>
+                </Link>
+              </HStack>
+              <CommentCarousel />
+              <H1>{t(messages.description())}</H1>
+              <Container color={PRI_TEXT_COLOR}>
+                {parserHtml(data.bio)}
+              </Container>
+              <H1>{t(messages.basicInfo())}</H1>
+              <NormalProfile profile={data} />
+              <H1>{t(messages.questions())}</H1>
+              <Dropdown />
+              <SimpleGrid columns={2}>
+                <H1>120 Reviews</H1>
+              </SimpleGrid>
+              <HStack>
+                <Text>5 sao</Text>{' '}
+                <Progress value={50} size="xs" colorScheme="pink" w="20rem" />
+                <Text>100</Text>
+              </HStack>
+              <HStack>
+                <Text>4 sao</Text>{' '}
+                <Progress value={50} size="xs" colorScheme="pink" w="20rem" />
+                <Text>100</Text>
+              </HStack>
+              <HStack>
+                <Text>3 sao</Text>{' '}
+                <Progress value={50} size="xs" colorScheme="pink" w="20rem" />
+                <Text>100</Text>
+              </HStack>
+              <HStack>
+                <Text>2 sao</Text>{' '}
+                <Progress value={50} size="xs" colorScheme="pink" w="20rem" />
+                <Text>100</Text>
+              </HStack>
+              <HStack>
+                <Text>1 sao</Text>{' '}
+                <Progress value={50} size="xs" colorScheme="pink" w="20rem" />
+                <Text>100</Text>
+              </HStack>
+              <H1>Review</H1>
+              <CommentBox />
+              <CommentBox />
+              <CommentBox />
+              <Container>
+                <Button color={RED_COLOR} fontSize="18px" variant="ghost">
+                  {t(messages.seeMore())}
+                </Button>
+              </Container>
+            </VStack>
+          </GridItem>
+          <GridItem colSpan={2}>
+            <PackagesBox data={packages} id={data.uid} />
+          </GridItem>
+        </Grid>
+      )}
     </div>
   );
 }
 
 ArtistDetailPage.propTypes = {
   match: PropTypes.object,
+  onLoadData: PropTypes.func,
+  data: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
+  packages: PropTypes.oneOfType([PropTypes.array, PropTypes.bool]),
 };
 
-const mapStateToProps = createStructuredSelector({});
+const mapStateToProps = createStructuredSelector({
+  data: makeSelectData(),
+  packages: makeSelectPackages(),
+});
 
 export function mapDispatchToProps(dispatch) {
-  return {};
+  return {
+    onLoadData: id => {
+      dispatch(loadData(id));
+    },
+  };
 }
 
 const withConnect = connect(

@@ -2,16 +2,11 @@ import React from 'react';
 import {
   Box,
   HStack,
-  Link,
   Avatar,
   Divider,
-  InputGroup,
-  InputRightElement,
   Container,
   VStack,
-  Center,
   Text,
-  Button,
 } from '@chakra-ui/react';
 import { StarIcon } from '@chakra-ui/icons';
 import {
@@ -20,7 +15,6 @@ import {
   LIGHT_GRAY,
   SEC_TEXT_COLOR,
 } from 'constants/styles';
-import { H1 } from 'components/Elements';
 
 import PropTypes from 'prop-types';
 
@@ -28,11 +22,11 @@ import PropTypes from 'prop-types';
 const Header = ({ profile }) => (
   <Container marginInlineStart="inherit" paddingInlineStart="inherit" mb={6}>
     <VStack align="flex-start" spacing={4}>
-      <Text color={SEC_TEXT_COLOR} fontWeight={400} fontSize={18}>
+      {/* <Text color={SEC_TEXT_COLOR} fontWeight={400} fontSize={18}>
         Solo singer
-      </Text>
-      <Text as="h1" color={PRI_TEXT_COLOR} fontWeight={700} fontSize="20px">
-        Nhận biểu diễn cho các quán cà fê, phòng trà
+      </Text> */}
+      <Text as="h1" fontWeight={700} fontSize="20px">
+        {profile.displayName}
       </Text>
       <HStack>
         <Avatar
@@ -40,7 +34,7 @@ const Header = ({ profile }) => (
           src="https://bit.ly/dan-abramov"
           size="sm"
         />
-        <Text color={PRI_TEXT_COLOR}>Sundae</Text>
+        <Text>{profile.displayName}</Text>
         <Divider orientation="vertical" color={LIGHT_GRAY} w="1px" h="24px" />
         <StarIcon color={RED_COLOR} />
         <Box
@@ -58,6 +52,6 @@ const Header = ({ profile }) => (
 );
 
 Header.propTypes = {
-  slides: PropTypes.any,
+  profile: PropTypes.any,
 };
 export default Header;

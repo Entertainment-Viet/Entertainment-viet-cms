@@ -13,16 +13,35 @@ import {
   Th,
   Tbody,
   Td,
+  Button,
 } from '@chakra-ui/react';
 import Buttons from 'components/Buttons';
 import { PRI_TEXT_COLOR, RED_COLOR, LIGHT_GRAY } from 'constants/styles';
-
+import cRequest from 'utils/server';
+import { getResStatus, cacthError, cacthResponse } from 'utils/helpers';
 import PropTypes from 'prop-types';
 
 // If you want to use your own Selectors look up the Advancaed Story book examples
-const PackagesBox = () => {
+const PackagesBox = ({ data, id }) => {
   function numberWithCommas(x) {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  }
+  function handleSelect(pId) {
+    cRequest
+      .post(`/api/talents/${id}/packages/${pId}/bookings`)
+      .then(res => {
+        const status = getResStatus(res);
+        if (status === 200) {
+          console.log(res.data);
+        } else if (status === 400) {
+          console.log('error while logging out 400');
+        } else if (status === 500) {
+          console.log('error while logging out 500');
+        } else {
+          cacthResponse(res);
+        }
+      })
+      .catch(err => cacthError(err));
   }
   return (
     <Container>
@@ -55,40 +74,27 @@ const PackagesBox = () => {
                 </Tr>
               </Thead>
               <Tbody>
-                <Tr>
-                  <Td>
-                    <Link href="google.com">
-                      <Text textDecoration="underline">Cơ bản</Text>
-                      <Text fontSize="12px" whiteSpace="normal" noOfLines={3}>
-                        Mô tả chi tiết về gói dịch vụ tôi đa 3 dòng. Lorem ipsum
-                        no more text ...
-                      </Text>
-                    </Link>
-                  </Td>
-                  <Td>{numberWithCommas(3000000)} VND</Td>
-                  <Td>
-                    <Link href="google.com">
-                      <Text color={RED_COLOR}>Chọn</Text>
-                    </Link>
-                  </Td>
-                </Tr>
-                <Tr>
-                  <Td>
-                    <Link href="google.com">
-                      <Text textDecoration="underline">Cơ bản</Text>
-                      <Text fontSize="12px" whiteSpace="normal" noOfLines={3}>
-                        Mô tả chi tiết về gói dịch vụ tôi đa 3 dòng. Lorem ipsum
-                        no more text ...
-                      </Text>
-                    </Link>
-                  </Td>
-                  <Td>{numberWithCommas(3000000)} VND</Td>
-                  <Td>
-                    <Link href="google.com">
-                      <Text color={RED_COLOR}>Chọn</Text>
-                    </Link>
-                  </Td>
-                </Tr>
+                {data.map(item => (
+                  <Tr key={item.uid}>
+                    <Td>
+                      <Link href="google.com">
+                        <Text textDecoration="underline">{item.name}</Text>
+                        <Text fontSize="12px" whiteSpace="normal" noOfLines={4}>
+                          {item.jobDetail.note}
+                        </Text>
+                      </Link>
+                    </Td>
+                    <Td>{numberWithCommas(item.jobDetail.price.min)} VND</Td>
+                    <Td>
+                      <Button
+                        onClick={() => handleSelect(item.uid)}
+                        variant="ghost"
+                      >
+                        <Text color={RED_COLOR}>Chọn</Text>
+                      </Button>
+                    </Td>
+                  </Tr>
+                ))}
               </Tbody>
             </Table>
           </TableContainer>
@@ -98,5 +104,8 @@ const PackagesBox = () => {
   );
 };
 
-PackagesBox.propTypes = {};
+PackagesBox.propTypes = {
+  data: PropTypes.any,
+  id: PropTypes.string,
+};
 export default PackagesBox;

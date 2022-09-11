@@ -80,7 +80,7 @@ const Modal = props => {
                 </Box>
               </Container>
             </HStack>
-            <Text color={PRI_TEXT_COLOR}>{t(messages.postDesc())}</Text>
+            <Text>{t(messages.postDesc())}</Text>
             <Box as="span" color="gray.500">
               Current Sprint review and close Team's Feedback and comment.
               Resolution approach if have any.

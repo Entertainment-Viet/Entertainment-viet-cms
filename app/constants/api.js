@@ -9,7 +9,9 @@ export const API_NEWS_LIST = '/news/list';
 export const API_NEWS_DETAIL = '/news/detail/'; // :id
 
 /* TALENTS */
-export const API_TALENT_LIST = '/talents';
+export const API_TALENT_LIST = 'api/talents';
+export const API_TALENT_DETAIL = 'api/talents/:id';
+export const API_TALENT_PACKAGE = 'api/talents/:id/packages';
 
 /* MANAGER */
 export const API_JOBOFFER_LIST = 'api/organizers/:id/joboffers';

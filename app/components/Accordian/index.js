@@ -13,9 +13,9 @@ import PropTypes from 'prop-types';
 // If you want to use your own Selectors look up the Advancaed Story book examples
 const Dropdown = ({ slides }) => (
   <Accordion defaultIndex={[0]} allowMultiple w="100%" bg={LIGHT_GRAY} p="6">
-    <AccordionItem>
+    <AccordionItem sx={{ borderTopWidth: '0' }}>
       <h2>
-        <AccordionButton color={PRI_TEXT_COLOR}>
+        <AccordionButton>
           <Box flex="1" textAlign="left" color={PRI_TEXT_COLOR}>
             Section 1 title
           </Box>

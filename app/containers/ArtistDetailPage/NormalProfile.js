@@ -1,15 +1,9 @@
 import React from 'react';
 import {
-  Image,
-  Flex,
   Box,
-  Input,
   HStack,
   Link,
   Avatar,
-  Divider,
-  InputGroup,
-  InputRightElement,
   Container,
   VStack,
   Center,
@@ -18,6 +12,7 @@ import {
 } from '@chakra-ui/react';
 import { StarIcon } from '@chakra-ui/icons';
 import { PRI_TEXT_COLOR, RED_COLOR } from 'constants/styles';
+import Buttons from 'components/Buttons';
 
 import PropTypes from 'prop-types';
 
@@ -30,7 +25,7 @@ const NormalProfile = ({ profile }) => (
         <VStack align="flex-start" ml="12">
           <Link href="google">
             <Text fontSize="18px" fontWeight={700}>
-              Anna 212
+              {profile.displayName}
             </Text>
           </Link>
           <Box display="flex" ml="2" alignItems="center">
@@ -45,7 +40,7 @@ const NormalProfile = ({ profile }) => (
             </Box>
             <StarIcon color={RED_COLOR} />
           </Box>
-          <Button>Contact me</Button>
+          <Buttons>Contact me</Buttons>
         </VStack>
       </Center>
     </HStack>
@@ -53,6 +48,6 @@ const NormalProfile = ({ profile }) => (
 );
 
 NormalProfile.propTypes = {
-  slides: PropTypes.any,
+  profile: PropTypes.any,
 };
 export default NormalProfile;

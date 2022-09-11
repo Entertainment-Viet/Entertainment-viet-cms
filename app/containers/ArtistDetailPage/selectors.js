@@ -15,4 +15,28 @@ const makeSelectNFTError = () =>
     State => State.error,
   );
 
-export { makeSelectNFTError, makeSelectNFTLoading };
+const makeSelectData = () =>
+  createSelector(
+    selectState,
+    State => State.data,
+  );
+
+const makeSelectPackages = () =>
+  createSelector(
+    selectState,
+    State => State.packages,
+  );
+
+const makeSelectId = () =>
+  createSelector(
+    selectState,
+    State => State.id,
+  );
+
+export {
+  makeSelectData,
+  makeSelectNFTError,
+  makeSelectNFTLoading,
+  makeSelectId,
+  makeSelectPackages,
+};

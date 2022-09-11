@@ -1,22 +1,33 @@
 import produce from 'immer';
-import { ENUM_PAGGING } from 'constants/enums';
-import { NFT_LOAD } from './constants';
+import { LOAD_DATA, LOAD_DATA_ERROR, LOAD_DATA_SUCCESS } from './constants';
 
 export const initialState = {
   loading: false,
   error: false,
-  products: false,
+  data: false,
+  id: '',
+  packages: false,
 };
 
 /* eslint-disable default-case, no-param-reassign */
 const pageReducer = (state = initialState, action) =>
   produce(state, draft => {
     switch (action.type) {
-      case NFT_LOAD:
+      case LOAD_DATA:
         draft.loading = true;
         draft.error = false;
-        draft.products = false;
-        draft.paging = ENUM_PAGGING;
+        draft.data = false;
+        draft.packages = false;
+        draft.id = action.id;
+        break;
+      case LOAD_DATA_SUCCESS:
+        draft.loading = false;
+        draft.data = action.data;
+        draft.packages = action.packages;
+        break;
+      case LOAD_DATA_ERROR:
+        draft.error = action.error;
+        draft.loading = false;
         break;
     }
   });
