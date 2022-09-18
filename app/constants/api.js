@@ -8,6 +8,9 @@ export const API_LOGOUT = '/auth/realms/ve-sso/protocol/openid-connect/logout';
 export const API_NEWS_LIST = '/news/list';
 export const API_NEWS_DETAIL = '/news/detail/'; // :id
 
+/* org */
+export const API_ORG_DETAIL = 'api/organizers/:id';
+
 /* TALENTS */
 export const API_TALENT_LIST = 'api/talents';
 export const API_TALENT_DETAIL = 'api/talents/:id';

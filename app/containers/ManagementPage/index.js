@@ -1,10 +1,10 @@
-import React, { useEffect, memo } from 'react';
+import React, { useEffect, useState, memo } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { createStructuredSelector } from 'reselect';
 import { useTranslation } from 'react-i18next';
-import { Box, Flex, Text } from '@chakra-ui/react';
+import { Box, Flex, Text, Link } from '@chakra-ui/react';
 
 import { useInjectReducer } from 'utils/injectReducer';
 import { useInjectSaga } from 'utils/injectSaga';
@@ -21,7 +21,12 @@ import {} from './styles';
 import PageSpinner from 'components/PageSpinner';
 import { messages } from './messages';
 
-import { changePage, loadPackages, loadBookingPackages } from './actions';
+import {
+  changePage,
+  loadPackages,
+  loadBookingPackages,
+  changeMode,
+} from './actions';
 import saga from './saga';
 import reducer from './reducer';
 import {
@@ -29,6 +34,7 @@ import {
   makeSelectDetailError,
   makeSelectDetail,
   makeSelectPackage,
+  makeSelectMode,
 } from './selectors';
 // import { propTypes } from 'qrcode.react';
 
@@ -41,7 +47,9 @@ const StatusCell = styled(Text)`
         return '#00C2FF';
       case 'waiting':
         return '#999999';
-      case 'pending':
+      case 'booking.status.talent-pending':
+        return '#DBB325';
+      case 'booking.status.organizer-pending':
         return '#DBB325';
       case 'pendingTransaction':
         return '#4527A0';
@@ -52,7 +60,7 @@ const StatusCell = styled(Text)`
     }
   }};
 `;
-const tableColumns = [
+const packageColumns = [
   {
     Header: 'Ngày đặt',
     accessor: 'bookedDate',
@@ -73,32 +81,30 @@ const tableColumns = [
     Header: 'Giá tiền',
     accessor: 'price',
   },
+];
+const bookingColumns = [
+  {
+    Header: 'Ngày đặt',
+    accessor: 'bookedDate',
+  },
+  {
+    Header: 'Người đặt',
+    accessor: 'booker',
+  },
+  {
+    Header: 'Giá tiền min',
+    accessor: 'priceMin',
+  },
+  {
+    Header: 'Giá tiền max',
+    accessor: 'priceMax',
+  },
   {
     Header: 'STATUS',
     accessor: 'status',
   },
 ];
 
-const users = [
-  {
-    id: 1,
-    bookedDate: new Date().toDateString(),
-    performDate: new Date().toDateString(),
-    package: 'Cơ bản',
-    booker: 'Nguyễn Văn A',
-    price: '3.000.000 VND',
-    status: 'UPCOMING',
-  },
-  {
-    id: 1,
-    bookedDate: new Date().toDateString(),
-    performDate: new Date().toDateString(),
-    package: 'Cơ bản',
-    booker: 'Nguyễn Văn A',
-    price: '3.000.000 VND',
-    status: 'UPCOMING',
-  },
-];
 const key = 'ManagementPage';
 export function ManagementPage({
   loading,
@@ -107,33 +113,68 @@ export function ManagementPage({
   onLoadData,
   packageId,
   handlePackageChange,
+  handleModeChange,
+  mode,
 }) {
   useInjectReducer({ key, reducer });
   useInjectSaga({ key, saga });
-
-  const tableData = users.map(user => ({
-    bookedDate: (
-      <Flex align="center">
-        {/* <Avatar name={user.name} src={user.avatar_url} size="sm" mr="4" /> */}
-        <Text>{user.bookedDate}</Text>
-      </Flex>
-    ),
-    performDate: user.performDate,
-    package: user.package,
-    booker: user.booker,
-    price: user.price,
-    status: <StatusCell type={user.status}>{user.status}</StatusCell>,
-    // status: user.status,
-    // action: (
-    //   <Button
-    //     colorScheme="gray"
-    //     onClick={() => console.log('remove user!')}
-    //     size="sm"
-    //   >
-    //     <Icon as={FiTrash2} fontSize="20" />
-    //   </Button>
-    // ),
-  }));
+  let tablePackage;
+  let tableBooking;
+  if (data) {
+    if (mode === 0)
+      tablePackage = data.map(user => ({
+        bookedDate: (
+          <Flex align="center">
+            {/* <Avatar name={user.name} src={user.avatar_url} size="sm" mr="4" /> */}
+            <Text>{user.bookedDate}</Text>
+          </Flex>
+        ),
+        performDate: user.performanceTime,
+        package: (
+          <Text
+            onClick={() => {
+              handleModeChange(1);
+              handlePackageChange(user.uid);
+            }}
+          >
+            {user.name}
+          </Text>
+        ),
+        booker: user.booker,
+        price: user.price,
+        // status: <StatusCell type={user.status}>{user.status}</StatusCell>,
+      }));
+    else
+      tableBooking = data.map(booking => {
+        const { jobDetail } = booking;
+        // console.log(jobDetail);
+        return {
+          bookedDate: (
+            <Flex align="center">
+              {/* <Avatar name={user.name} src={user.avatar_url} size="sm" mr="4" /> */}
+              <Link href={`/booking/${booking.uid}`}>
+                <Text>{booking.createdAt}</Text>
+              </Link>
+            </Flex>
+          ),
+          booker: booking.booker.displayName,
+          priceMin: jobDetail.price.min,
+          priceMax: jobDetail.price.max,
+          status: (
+            <StatusCell type={booking.status}>{booking.status}</StatusCell>
+          ),
+          // action: (
+          //   <Button
+          //     colorScheme="gray"
+          //     onClick={() => console.log('remove user!')}
+          //     size="sm"
+          //   >
+          //     <Icon as={FiTrash2} fontSize="20" />
+          //   </Button>
+          // ),
+        };
+      });
+  }
 
   useEffect(() => {
     onLoadData();
@@ -146,9 +187,9 @@ export function ManagementPage({
         <PageSpinner />
       ) : (
         <MyTable
-          data={tableData}
-          title="List of packages"
-          columns={tableColumns}
+          data={mode === 0 ? tablePackage : tableBooking}
+          title="Quản lý đơn đặt dịch vụ"
+          columns={mode === 0 ? packageColumns : bookingColumns}
         />
       )}
     </Box>
@@ -158,10 +199,12 @@ export function ManagementPage({
 ManagementPage.propTypes = {
   onLoadData: PropTypes.func,
   handlePackageChange: PropTypes.func,
+  handleModeChange: PropTypes.func,
   loading: PropTypes.bool,
   error: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
   data: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
   packageId: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
+  mode: PropTypes.number,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -169,6 +212,7 @@ const mapStateToProps = createStructuredSelector({
   error: makeSelectDetailError(),
   data: makeSelectDetail(),
   packageId: makeSelectPackage(),
+  mode: makeSelectMode(),
 });
 
 export function mapDispatchToProps(dispatch) {
@@ -182,6 +226,9 @@ export function mapDispatchToProps(dispatch) {
     },
     handlePackageChange: id => {
       dispatch(loadBookingPackages(id));
+    },
+    handleModeChange: mode => {
+      dispatch(changeMode(mode));
     },
   };
 }

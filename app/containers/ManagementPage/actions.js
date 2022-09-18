@@ -4,6 +4,7 @@ import {
   LOAD_INFO_SUCCESS,
   LOAD_INFO_ERROR,
   LOAD_BOOKING_PACKAGES,
+  CHANGE_MODE,
 } from './constants';
 
 export function loadPackages() {
@@ -23,6 +24,12 @@ export function changePage(page) {
   return {
     type: CHANGE_PAGE,
     page,
+  };
+}
+export function changeMode(mode) {
+  return {
+    type: CHANGE_MODE,
+    mode,
   };
 }
 

@@ -5,6 +5,7 @@ import {
   LOAD_PACKAGES,
   LOAD_INFO_SUCCESS,
   LOAD_INFO_ERROR,
+  CHANGE_MODE,
 } from './constants';
 
 export const initialState = {
@@ -12,6 +13,7 @@ export const initialState = {
   error: false,
   data: false,
   packageId: false,
+  mode: 0,
 };
 
 /* eslint-disable default-case, no-param-reassign */
@@ -42,6 +44,9 @@ const pageReducer = (state = initialState, action) =>
         draft.error = true;
         draft.data = false;
         break;
+
+      case CHANGE_MODE:
+        draft.mode = action.mode;
     }
   });
 

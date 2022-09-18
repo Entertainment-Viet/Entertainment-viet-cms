@@ -131,7 +131,7 @@ export default function App() {
           exact
           path={Paths.ROUTE_MANAGER}
           isAuthenticated={isAuthenticated}
-          roles={[ENUM_ROLES.ORG, ENUM_ROLES.TAL]}
+          roles={[ENUM_ROLES.TAL]}
         >
           <ManagementPage />
         </PrivateRoute>

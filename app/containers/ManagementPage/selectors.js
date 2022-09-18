@@ -14,6 +14,12 @@ const makeSelectPage = () =>
     State => State.paging,
   );
 
+const makeSelectMode = () =>
+  createSelector(
+    selectState,
+    State => State.mode,
+  );
+
 const makeSelectDetailError = () =>
   createSelector(
     selectState,
@@ -38,4 +44,5 @@ export {
   makeSelectDetail,
   makeSelectPage,
   makeSelectPackage,
+  makeSelectMode,
 };
