@@ -10,7 +10,7 @@ import { loadCategoriesSuccess, loadDataError } from './actions';
 import {} from './selectors';
 
 export function* getCategories() {
-  console.log('aaa')
+  console.log('aaa');
   try {
     const payload = yield call(get, 'api/categories', {});
     yield put(loadCategoriesSuccess(payload));

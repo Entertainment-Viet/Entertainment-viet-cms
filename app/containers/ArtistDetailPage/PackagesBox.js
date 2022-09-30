@@ -81,10 +81,15 @@ const PackagesBox = ({ data, id, toggleModal }) => {
                   <Tr key={item.uid}>
                     <Td>
                       {/* <Link href="google.com"> */}
-                        <Text textDecoration="underline" onClick={() => toggleModal(item.uid)}>{item.name}</Text>
-                        <Text fontSize="12px" whiteSpace="normal" noOfLines={4}>
-                          {item.jobDetail.note}
-                        </Text>
+                      <Text
+                        textDecoration="underline"
+                        onClick={() => toggleModal(item.uid)}
+                      >
+                        {item.name}
+                      </Text>
+                      <Text fontSize="12px" whiteSpace="normal" noOfLines={4}>
+                        {item.jobDetail.note}
+                      </Text>
                       {/* </Link> */}
                     </Td>
                     <Td>{numberWithCommas(item.jobDetail.price.min)} VND</Td>

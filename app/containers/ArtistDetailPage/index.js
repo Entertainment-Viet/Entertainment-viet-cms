@@ -41,6 +41,7 @@ import { PackageModal } from 'components/Modal';
 import { PRI_TEXT_COLOR, RED_COLOR } from 'constants/styles';
 
 import PageSpinner from 'components/PageSpinner';
+import { loadDataHeader } from 'components/Header/actions';
 import { loadData, loadPackageInfo } from './actions';
 
 import NormalProfile from './NormalProfile';
@@ -237,6 +238,7 @@ export function mapDispatchToProps(dispatch) {
     },
     loadPackage: (id, talentId) => {
       dispatch(loadPackageInfo(id, talentId));
+      dispatch(loadDataHeader(window.localStorage.getItem('uid')));
     },
   };
 }
