@@ -13,7 +13,6 @@ import { Helmet } from 'react-helmet';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useTranslation } from 'react-i18next';
-import { useTheme } from '@chakra-ui/react';
 // Others
 import { isLoggedIn } from 'utils/auth';
 import * as Paths from 'constants/routes';
@@ -31,6 +30,7 @@ import Calendar from 'containers/Calendar/Loadable';
 import ManagementPage from 'containers/ManagementPage/Loadable';
 import PreCheckout from 'containers/PreCheckout/Loadable';
 import BookingDetailPage from 'containers/BookingDetailPage/Loadable';
+import CreateCustomDealPage from 'containers/CreateCustomDeal/Loadable';
 // Components
 import GlobalFonts from 'components/GlobalFonts';
 import Banner from 'components/DevelopmentBanner';
@@ -59,8 +59,6 @@ export default function App() {
       console.log(firebaseToken);
     })
     .catch(err => err);
-  const theme = useTheme();
-
   return (
     <AppWrapper>
       <GlobalFonts />
@@ -102,6 +100,14 @@ export default function App() {
           roles={[ENUM_ROLES.ORG, ENUM_ROLES.TAL]}
         >
           <PreCheckout />
+        </PrivateRoute>
+        <PrivateRoute
+          exact
+          path={Paths.ROUTE_CREATE_CUSTOM_BOOKING}
+          isAuthenticated={isAuthenticated}
+          roles={[ENUM_ROLES.ORG]}
+        >
+          <CreateCustomDealPage />
         </PrivateRoute>
         <PrivateRoute
           exact

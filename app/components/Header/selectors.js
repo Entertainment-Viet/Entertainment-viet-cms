@@ -1,7 +1,7 @@
 import { createSelector } from 'reselect';
 import { initialState } from './reducer';
 
-const selectState = state => state.ArtistDetailPage || initialState;
+const selectState = state => state.Header || initialState;
 
 const makeSelectNFTLoading = () =>
   createSelector(
@@ -15,10 +15,10 @@ const makeSelectNFTError = () =>
     State => State.error,
   );
 
-const makeSelectData = () =>
+const makeSelectCartData = () =>
   createSelector(
     selectState,
-    State => State.data,
+    State => State.cartData,
   );
 
 const makeSelectPackages = () =>
@@ -33,24 +33,10 @@ const makeSelectId = () =>
     State => State.id,
   );
 
-const makeSelectPackageInfo = () =>
-  createSelector(
-    selectState,
-    State => State.packageInfo,
-  );
-
-const makeSelectPackageId = () =>
-  createSelector(
-    selectState,
-    State => State.packageId,
-  );
-
 export {
-  makeSelectData,
+  makeSelectCartData,
   makeSelectNFTError,
   makeSelectNFTLoading,
   makeSelectId,
   makeSelectPackages,
-  makeSelectPackageInfo,
-  makeSelectPackageId,
 };

@@ -5,7 +5,7 @@
  *
  */
 
-import React, { useEffect, memo } from 'react';
+import React, { useEffect, useState, memo } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
@@ -37,10 +37,11 @@ import Metadata from 'components/Metadata';
 import Dropdown from 'components/Accordian';
 import CommentBox from 'components/Comment';
 import { H1 } from 'components/Elements';
+import { PackageModal } from 'components/Modal';
 import { PRI_TEXT_COLOR, RED_COLOR } from 'constants/styles';
 
 import PageSpinner from 'components/PageSpinner';
-import { loadData } from './actions';
+import { loadData, loadPackageInfo } from './actions';
 
 import NormalProfile from './NormalProfile';
 import Header from './Header';
@@ -52,7 +53,11 @@ import { messages } from './messages';
 
 import saga from './saga';
 import reducer from './reducer';
-import { makeSelectData, makeSelectPackages } from './selectors';
+import {
+  makeSelectData,
+  makeSelectPackageInfo,
+  makeSelectPackages,
+} from './selectors';
 // import { BasicRating } from '../../components/Rating';
 const CustomTab = chakra(Tab, {
   baseStyle: {
@@ -63,11 +68,24 @@ const CustomTab = chakra(Tab, {
   },
 });
 const key = 'ArtistDetailPage';
-export function ArtistDetailPage({ match, onLoadData, data, packages }) {
+export function ArtistDetailPage({
+  match,
+  onLoadData,
+  data,
+  packages,
+  loadPackage,
+  packageInfo,
+}) {
   useInjectReducer({ key, reducer });
   useInjectSaga({ key, saga });
   const { t } = useTranslation();
-
+  const [isShowing, setIsShowing] = useState(false);
+  const [id, setId] = useState();
+  const toggleModal = inputId => {
+    setIsShowing(!isShowing);
+    setId(inputId);
+    loadPackage(inputId, match.params.id);
+  };
   useEffect(() => {
     onLoadData(match.params.id);
   }, [match.params.id]);
@@ -108,7 +126,7 @@ export function ArtistDetailPage({ match, onLoadData, data, packages }) {
       {!data ? (
         <PageSpinner />
       ) : (
-        <Grid templateColumns="repeat(5, 1fr)">
+        <Grid templateColumns="repeat(4, 1fr)" gap={6}>
           <GridItem>
             <VStack align="flex-start">
               <Header profile={data} />
@@ -175,11 +193,24 @@ export function ArtistDetailPage({ match, onLoadData, data, packages }) {
               </Container>
             </VStack>
           </GridItem>
-          <GridItem colSpan={2}>
-            <PackagesBox data={packages} id={data.uid} />
+          <GridItem colSpan={3}>
+            {console.log(packages)}
+            <PackagesBox
+              data={packages.content}
+              id={match.params.id}
+              toggleModal={toggleModal}
+            />
           </GridItem>
         </Grid>
       )}
+      <PackageModal
+        title="My Modal"
+        onClose={() => toggleModal()}
+        show={isShowing}
+        id={id}
+        talentId={match.params.id}
+        data={packageInfo}
+      />
     </div>
   );
 }
@@ -187,19 +218,25 @@ export function ArtistDetailPage({ match, onLoadData, data, packages }) {
 ArtistDetailPage.propTypes = {
   match: PropTypes.object,
   onLoadData: PropTypes.func,
+  loadPackage: PropTypes.func,
   data: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
   packages: PropTypes.oneOfType([PropTypes.array, PropTypes.bool]),
+  packageInfo: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
 };
 
 const mapStateToProps = createStructuredSelector({
   data: makeSelectData(),
   packages: makeSelectPackages(),
+  packageInfo: makeSelectPackageInfo(),
 });
 
 export function mapDispatchToProps(dispatch) {
   return {
     onLoadData: id => {
       dispatch(loadData(id));
+    },
+    loadPackage: (id, talentId) => {
+      dispatch(loadPackageInfo(id, talentId));
     },
   };
 }

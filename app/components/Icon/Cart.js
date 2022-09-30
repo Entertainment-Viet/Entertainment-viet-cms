@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function GoogleMap() {
+export default function CartIcon() {
   return (
     <svg
       width="22"

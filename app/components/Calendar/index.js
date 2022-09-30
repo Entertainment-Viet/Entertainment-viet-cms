@@ -3,7 +3,7 @@ import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
-import Modal from 'components/Modal';
+import { JobDetailModal } from 'components/Modal';
 import { INITIAL_EVENTS } from './event-utils';
 import '@fullcalendar/common/main.css';
 import '@fullcalendar/daygrid/main.css'; // a dependency of timegrid
@@ -108,7 +108,7 @@ export default function Calendar() {
             */
         />
       </div>
-      <Modal
+      <JobDetailModal
         title="My Modal"
         onClose={() => toggleModal()}
         show={isShowing}

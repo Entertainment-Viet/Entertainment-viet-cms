@@ -28,3 +28,12 @@ export const API_SEND_QNA = '/qna/send';
 export const API_SEND_DEVICE_TOKEN = '/user/firebase/register-token';
 export const API_DEL_DEVICE_TOKEN = '/user/firebase/remove-token';
 export const API_GET_UNREAD_NOTI = '/user/get-userinfo';
+
+/* ORGANIZER */
+export const API_CREATE_BOOKING = 'api/organizers/:id/bookings';
+
+/* SHOPPINGCART */
+export const API_GET_SHOPPINGCART = 'api/organizers/:id/shoppingcart';
+
+/* PACKAGE */
+export const API_GET_PACKAGE_INFO = 'api/talents/:id/packages';

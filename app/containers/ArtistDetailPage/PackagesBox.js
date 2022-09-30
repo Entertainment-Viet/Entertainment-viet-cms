@@ -14,6 +14,7 @@ import {
   Tbody,
   Td,
   Button,
+  LinkBox,
 } from '@chakra-ui/react';
 import Buttons from 'components/Buttons';
 import { PRI_TEXT_COLOR, RED_COLOR, LIGHT_GRAY } from 'constants/styles';
@@ -22,13 +23,13 @@ import { getResStatus, cacthError, cacthResponse } from 'utils/helpers';
 import PropTypes from 'prop-types';
 
 // If you want to use your own Selectors look up the Advancaed Story book examples
-const PackagesBox = ({ data, id }) => {
+const PackagesBox = ({ data, id, toggleModal }) => {
   function numberWithCommas(x) {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
   }
   function handleSelect(pId) {
     cRequest
-      .post(`/api/talents/${id}/packages/${pId}/bookings`)
+      .post(`/api/talents/${id}/packages/${pId}/bookings/shoppingcart`)
       .then(res => {
         const status = getResStatus(res);
         if (status === 200) {
@@ -46,11 +47,11 @@ const PackagesBox = ({ data, id }) => {
   return (
     <Container>
       <VStack>
-        <Box h={32} />
+        <Box h="6.3rem" />
         <Box
           bg={LIGHT_GRAY}
           border="white 1px solid"
-          borderRadius="5%"
+          borderRadius="1%"
           color={PRI_TEXT_COLOR}
         >
           <TableContainer>
@@ -64,7 +65,9 @@ const PackagesBox = ({ data, id }) => {
               }}
             >
               <TableCaption>
-                <Buttons width="100%">Gửi báo giá riêng</Buttons>
+                <Link href={`/create-booking/${id}`} style={{ width: '100%' }}>
+                  <Buttons width="100%">Gửi báo giá riêng</Buttons>
+                </Link>
               </TableCaption>
               <Thead>
                 <Tr>
@@ -77,12 +80,12 @@ const PackagesBox = ({ data, id }) => {
                 {data.map(item => (
                   <Tr key={item.uid}>
                     <Td>
-                      <Link href="google.com">
-                        <Text textDecoration="underline">{item.name}</Text>
+                      {/* <Link href="google.com"> */}
+                        <Text textDecoration="underline" onClick={() => toggleModal(item.uid)}>{item.name}</Text>
                         <Text fontSize="12px" whiteSpace="normal" noOfLines={4}>
                           {item.jobDetail.note}
                         </Text>
-                      </Link>
+                      {/* </Link> */}
                     </Td>
                     <Td>{numberWithCommas(item.jobDetail.price.min)} VND</Td>
                     <Td>

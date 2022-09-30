@@ -1,4 +1,4 @@
-import React, { useEffect, useState, memo } from 'react';
+import React, { useEffect, memo } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
@@ -21,12 +21,7 @@ import {} from './styles';
 import PageSpinner from 'components/PageSpinner';
 import { messages } from './messages';
 
-import {
-  changePage,
-  loadPackages,
-  loadBookingPackages,
-  changeMode,
-} from './actions';
+import { changePage, loadPackages, changeMode } from './actions';
 import saga from './saga';
 import reducer from './reducer';
 import {
@@ -111,8 +106,6 @@ export function ManagementPage({
   error,
   data,
   onLoadData,
-  packageId,
-  handlePackageChange,
   handleModeChange,
   mode,
 }) {
@@ -122,7 +115,7 @@ export function ManagementPage({
   let tableBooking;
   if (data) {
     if (mode === 0)
-      tablePackage = data.map(user => ({
+      tablePackage = data.content.map(user => ({
         bookedDate: (
           <Flex align="center">
             {/* <Avatar name={user.name} src={user.avatar_url} size="sm" mr="4" /> */}
@@ -134,7 +127,7 @@ export function ManagementPage({
           <Text
             onClick={() => {
               handleModeChange(1);
-              handlePackageChange(user.uid);
+              onLoadData(user.uid);
             }}
           >
             {user.name}
@@ -145,9 +138,8 @@ export function ManagementPage({
         // status: <StatusCell type={user.status}>{user.status}</StatusCell>,
       }));
     else
-      tableBooking = data.map(booking => {
+      tableBooking = data.content.map(booking => {
         const { jobDetail } = booking;
-        // console.log(jobDetail);
         return {
           bookedDate: (
             <Flex align="center">
@@ -198,12 +190,10 @@ export function ManagementPage({
 
 ManagementPage.propTypes = {
   onLoadData: PropTypes.func,
-  handlePackageChange: PropTypes.func,
   handleModeChange: PropTypes.func,
   loading: PropTypes.bool,
   error: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
   data: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
-  packageId: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
   mode: PropTypes.number,
 };
 
@@ -217,15 +207,12 @@ const mapStateToProps = createStructuredSelector({
 
 export function mapDispatchToProps(dispatch) {
   return {
-    onLoadData: () => {
-      dispatch(loadPackages());
+    onLoadData: id => {
+      dispatch(loadPackages(id));
     },
     handlePageChange: page => {
       dispatch(changePage(page));
       dispatch(loadPackages());
-    },
-    handlePackageChange: id => {
-      dispatch(loadBookingPackages(id));
     },
     handleModeChange: mode => {
       dispatch(changeMode(mode));

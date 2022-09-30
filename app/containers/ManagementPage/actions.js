@@ -7,9 +7,10 @@ import {
   CHANGE_MODE,
 } from './constants';
 
-export function loadPackages() {
+export function loadPackages(id) {
   return {
     type: LOAD_PACKAGES,
+    id,
   };
 }
 

@@ -45,9 +45,16 @@ export function del(url, params, id) {
     .then(parseJSON);
 }
 
-export function post(url, params) {
+export function post(url, params, id) {
+  removeEmptyObj(params);
+  console.log(id);
+  let replaceUrl = url;
+  if (id) {
+    // eslint-disable-next-line no-param-reassign
+    replaceUrl = url.replace(':id', id);
+  }
   return cRequest
-    .post(url, params)
+    .post(replaceUrl, params)
     .then(checkStatus)
     .then(parseJSON);
 }

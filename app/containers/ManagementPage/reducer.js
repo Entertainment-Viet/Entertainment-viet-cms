@@ -24,6 +24,7 @@ const pageReducer = (state = initialState, action) =>
         draft.loading = true;
         draft.error = false;
         draft.data = false;
+        draft.packageId = action.id;
         break;
 
       case LOAD_BOOKING_PACKAGES:
@@ -40,8 +41,8 @@ const pageReducer = (state = initialState, action) =>
         break;
 
       case LOAD_INFO_ERROR:
-        draft.loading = action.error;
-        draft.error = true;
+        draft.loading = false;
+        draft.error = action.error;
         draft.data = false;
         break;
 

@@ -84,7 +84,10 @@
     "skillsDesc": "Vui lòng mô tả cụ thể kỹ năng yêu cầu",
     "workType": "Hình thức làm việc",
     "currency": "Ngân sách",
-    "submit": "Gửi"
+    "submit": "Gửi",
+    "location": "Địa điểm",
+    "startDate": "Thời gian bắt đầu",
+    "endDate": "Thời gian kết thúc"
   },
   "artistDetailPage": {
     "overview": "Overview",

@@ -7,13 +7,35 @@ import { get } from 'utils/request';
 import { API_PACKAGE_LIST, API_ORG_DETAIL } from 'constants/api';
 import { LOAD_PACKAGES, LOAD_BOOKING_PACKAGES } from './constants';
 import { loadInfoSuccess, loadInfoError } from './actions';
-import { makeSelectPackage, makeSelectPage } from './selectors';
+import { makeSelectMode, makeSelectPackage, makeSelectPage } from './selectors';
 
 export function* getData() {
   const myId = window.localStorage.getItem('uid');
   try {
     // const page = yield select(makeSelectPage());
-    const payload = yield call(get, API_PACKAGE_LIST, {}, myId);
+    const mode = yield select(makeSelectMode());
+    let payload;
+    if (mode === 0) {
+      payload = yield call(get, API_PACKAGE_LIST, {}, myId);
+    } else {
+      const packageId = yield select(makeSelectPackage());
+      // const page = yield select(makeSelectPage());
+      payload = yield call(
+        get,
+        `${API_PACKAGE_LIST}/${packageId}/bookings`,
+        {},
+        myId,
+      );
+      const booker = yield all(
+        payload.content.map(el =>
+          call(get, `${API_ORG_DETAIL}`, {}, el.organizerUid),
+        ),
+      );
+      payload.content = payload.content.map((p, index) => ({
+        ...p,
+        booker: booker[index],
+      }));
+    }
     yield put(loadInfoSuccess(payload));
   } catch (err) {
     yield put(loadInfoError(err));
@@ -25,16 +47,24 @@ export function* getBookingData() {
   try {
     const packageId = yield select(makeSelectPackage());
     // const page = yield select(makeSelectPage());
-    let payload = yield call(
+    const payload = yield call(
       get,
       `${API_PACKAGE_LIST}/${packageId}/bookings`,
       {},
       myId,
     );
+    console.log(payload);
     const booker = yield all(
-      payload.map(el => call(get, `${API_ORG_DETAIL}`, {}, el.organizerUid)),
+      payload.content.map(el =>
+        call(get, `${API_ORG_DETAIL}`, {}, el.organizerUid),
+      ),
+      // payload.content.map(el => console.log(el.organizerUid)),
     );
-    payload = payload.map((p, index) => ({ ...p, booker: booker[index] }));
+    payload.content = payload.content.map((p, index) => ({
+      ...p,
+      booker: booker[index],
+    }));
+    console.log(payload);
     yield put(loadInfoSuccess(payload));
   } catch (err) {
     yield put(loadInfoError(err));
@@ -43,5 +73,5 @@ export function* getBookingData() {
 
 export default function* watchLatestAction() {
   yield takeEvery(LOAD_PACKAGES, getData);
-  yield takeEvery(LOAD_BOOKING_PACKAGES, getBookingData);
+  // yield takeEvery(LOAD_BOOKING_PACKAGES, getBookingData);
 }
