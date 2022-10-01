@@ -1,23 +1,28 @@
-import React, { useEffect, useState, useLayoutEffect } from 'react';
+import React, { useEffect, useLayoutEffect } from 'react';
 import ReactDOM from 'react-dom';
 import { CSSTransition } from 'react-transition-group';
 import './Modal.css';
-import styled from 'styled-components';
-import { HStack, Text, Box, VStack, Container, Link } from '@chakra-ui/react';
+import { HStack, Text, Box, VStack, Container } from '@chakra-ui/react';
 import { PRI_TEXT_COLOR } from 'constants/styles';
 import { useTranslation } from 'react-i18next';
 import Button from 'components/Buttons';
 import {
-  toIsoString,
   getResStatus,
-  redirectTo,
   cacthError,
   cacthResponse,
+  numberWithCommas,
 } from 'utils/helpers';
 import { post } from 'utils/request';
 import { GoogleMap, Phone } from '../Icon';
 import { messages } from './messages';
+
 const PackageModal = props => {
+  console.log(props.data.jobDetail ? props.data.jobDetail.note : null);
+  let jobDetail;
+  if (props.data.jobDetail) {
+    // eslint-disable-next-line prefer-destructuring
+    jobDetail = props.data.jobDetail;
+  }
   const { t } = useTranslation();
   function handleAddToCart() {
     post(
@@ -77,10 +82,10 @@ const PackageModal = props => {
               <Box bg="orange" w={4} h={4} />
               <Container>
                 <Box color={PRI_TEXT_COLOR} as="h1" fontSize="18px">
-                  [Cơ bản] Hát cho quán A
+                  {props.data.name}
                 </Box>
                 <Box as="span" color="gray.500">
-                  {props.id}
+                  {jobDetail ? jobDetail.category.name : null}
                 </Box>
               </Container>
             </HStack>
@@ -88,27 +93,30 @@ const PackageModal = props => {
             <HStack>
               <GoogleMap />
               <Container>
-                <Text>283 Trần Quang Khải, P2, Phú Nhuận, Tp.HCM</Text>
-                <Link href="https://goo.gl/maps/mXySHagWZn7XxGJz5">
-                  <Box as="span" color="red">
-                    {t(messages.googleMap())}
-                  </Box>
-                </Link>
+                <Text>Thời gian biểu diễn</Text>
+                {/* <Link href="https://goo.gl/maps/mXySHagWZn7XxGJz5"> */}
+                <Box as="span" color="red">
+                  {t(messages.googleMap())}
+                </Box>
+                {/* </Link> */}
               </Container>
             </HStack>
             <HStack>
               <Phone />
               <Container>
-                <Text>09123 456 782 </Text>
+                <Text>Giá tiền</Text>
                 <Box as="span" color="gray.500">
-                  A Tăng - chủ quán
+                  {jobDetail
+                    ? `${numberWithCommas(
+                      jobDetail.price.min,
+                    )} VND - ${numberWithCommas(jobDetail.price.max)} VND`
+                    : null}
                 </Box>
               </Container>
             </HStack>
             <Text>{t(messages.postDesc())}</Text>
             <Box as="span" color="gray.500">
-              Current Sprint review and close Team's Feedback and comment.
-              Resolution approach if have any.
+              {jobDetail ? jobDetail.note : null}
             </Box>
             {/* <Link href="/" alignSelf="flex-end"> */}
             <Button color={PRI_TEXT_COLOR} onClick={() => handleAddToCart()}>

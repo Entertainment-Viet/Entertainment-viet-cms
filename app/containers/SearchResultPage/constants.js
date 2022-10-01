@@ -8,3 +8,6 @@ export const CHANGE_CATEGORY = 'App/SearchResultPage/CHANGE_CATEGORY';
 export const CHANGE_START = 'App/SearchResultPage/CHANGE_START';
 export const CHANGE_END = 'App/SearchResultPage/CHANGE_END';
 export const CHANGE_BUDGET = 'App/SearchResultPage/CHANGE_BUDGET';
+export const LOAD_CATEGORIES = 'App/SearchResultPage/LOAD_CATEGORIES';
+export const LOAD_CATEGORIES_SUCCESS =
+  'App/SearchResultPage/LOAD_CATEGORIES_SUCCESS';

@@ -14,19 +14,19 @@ import {
   Tbody,
   Td,
   Button,
-  LinkBox,
 } from '@chakra-ui/react';
 import Buttons from 'components/Buttons';
 import { PRI_TEXT_COLOR, RED_COLOR, LIGHT_GRAY } from 'constants/styles';
 import cRequest from 'utils/server';
-import { getResStatus, cacthError, cacthResponse } from 'utils/helpers';
+import {
+  getResStatus,
+  cacthError,
+  cacthResponse,
+  numberWithCommas,
+} from 'utils/helpers';
 import PropTypes from 'prop-types';
-
 // If you want to use your own Selectors look up the Advancaed Story book examples
 const PackagesBox = ({ data, id, toggleModal }) => {
-  function numberWithCommas(x) {
-    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-  }
   function handleSelect(pId) {
     cRequest
       .post(`/api/talents/${id}/packages/${pId}/bookings/shoppingcart`)
@@ -115,5 +115,6 @@ const PackagesBox = ({ data, id, toggleModal }) => {
 PackagesBox.propTypes = {
   data: PropTypes.any,
   id: PropTypes.string,
+  toggleModal: PropTypes.func,
 };
 export default PackagesBox;

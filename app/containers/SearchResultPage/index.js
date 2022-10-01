@@ -39,6 +39,7 @@ import { DateTimeCustom } from 'components/Controls';
 import {} from 'constants/routes';
 import {} from './styles';
 
+import { toIsoString } from 'utils/helpers';
 import {
   loadData,
   changePage,
@@ -48,6 +49,7 @@ import {
   changeEnd,
   changeCategory,
   changeSearch,
+  loadCategories,
 } from './actions';
 import saga from './saga';
 import reducer from './reducer';
@@ -63,6 +65,7 @@ import {
   makeSelectCity,
   makeSelectStart,
   makeSelectEnd,
+  makeSelectCategories,
 } from './selectors';
 
 const key = 'SearchResultPage';
@@ -81,6 +84,8 @@ export function SearchResultPage({
   handleEndChange,
   onLoadData,
   search,
+  categories,
+  onLoadCategory,
 }) {
   useInjectReducer({ key, reducer });
   useInjectSaga({ key, saga });
@@ -90,6 +95,7 @@ export function SearchResultPage({
   const searchParams = urlParams.get('search');
   const category = urlParams.get('category');
   useEffect(() => {
+    onLoadCategory();
     if (category) handleCategoryChange(category);
     else if (searchParams) handleSearchChange(searchParams.replace('+', ' '));
     else onLoadData();
@@ -147,9 +153,11 @@ export function SearchResultPage({
             bg="white"
             onChange={val => handleCategoryChange(val.target.value)}
           >
-            <option value="option1">Option 1</option>
-            <option value="option2">Option 2</option>
-            <option value="option3">Option 3</option>
+            {categories
+              ? categories.map(item => (
+                <option value={item.uid}>{item.name}</option>
+              ))
+              : null}
           </Select>
         </Box>
         <Box>
@@ -160,7 +168,7 @@ export function SearchResultPage({
             bg="white"
             onChange={val => handleCityChange(val.target.value)}
           >
-            <option value="option1">Option 1</option>
+            <option value="TPHCM">TPHCM</option>
             <option value="option2">Option 2</option>
             <option value="option3">Option 3</option>
           </Select>
@@ -194,14 +202,33 @@ export function SearchResultPage({
         </Box>
       </SimpleGrid>
       <Box color={SEC_TEXT_COLOR} my="6">
-        300 results found
+        {data && data.length} results found
       </Box>
       <Container maxW="100%" centerContent>
         <SimpleGrid maxW="100%" columns={[1, 3, 5]} spacing="50px">
-          {SlideData.map(function(tempt) {
-            const { id } = tempt;
-            return <Card key={id} />;
-          })}
+          {data &&
+            data.map(function(tempt) {
+              const { uid } = tempt;
+              const packagesPrice = [];
+              tempt.packages.map(item => {
+                packagesPrice.push(item.jobDetail.price.min);
+                packagesPrice.push(item.jobDetail.price.max);
+                return true;
+              });
+              const min = packagesPrice.sort(function(a, b) {
+                return a - b;
+              })[0];
+              const max = packagesPrice.sort(function(a, b) {
+                return b - a;
+              })[0];
+              return (
+                <Card
+                  key={uid}
+                  data={tempt}
+                  priceRange={min && max ? [min, max] : [0, 0]}
+                />
+              );
+            })}
         </SimpleGrid>
       </Container>
       <Pagination {...pageProps} onPageChange={handlePageChange} />
@@ -219,6 +246,7 @@ SearchResultPage.propTypes = {
   handleStartChange: PropTypes.func,
   handleEndChange: PropTypes.func,
   onLoadData: PropTypes.func,
+  onLoadCategory: PropTypes.func,
   loading: PropTypes.bool,
   error: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
   data: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
@@ -229,6 +257,7 @@ SearchResultPage.propTypes = {
   budget: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
   start: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
   end: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
+  categories: PropTypes.oneOfType([PropTypes.array, PropTypes.bool]),
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -243,6 +272,7 @@ const mapStateToProps = createStructuredSelector({
   budget: makeSelectBudget(),
   start: makeSelectStart(),
   end: makeSelectEnd(),
+  categories: makeSelectCategories(),
 });
 
 export function mapDispatchToProps(dispatch) {
@@ -264,11 +294,11 @@ export function mapDispatchToProps(dispatch) {
       dispatch(loadData());
     },
     handleStartChange: start => {
-      dispatch(changeStart(start));
+      dispatch(changeStart(toIsoString(start)));
       dispatch(loadData());
     },
     handleEndChange: end => {
-      dispatch(changeEnd(end));
+      dispatch(changeEnd(toIsoString(end)));
       dispatch(loadData());
     },
     handleCategoryChange: category => {
@@ -277,6 +307,9 @@ export function mapDispatchToProps(dispatch) {
     },
     onLoadData: category => {
       dispatch(loadData(category));
+    },
+    onLoadCategory: () => {
+      dispatch(loadCategories());
     },
   };
 }

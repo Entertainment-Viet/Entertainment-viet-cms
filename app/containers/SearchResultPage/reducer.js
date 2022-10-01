@@ -9,6 +9,8 @@ import {
   CHANGE_CATEGORY,
   CHANGE_CITY,
   CHANGE_SEARCH,
+  LOAD_CATEGORIES_SUCCESS,
+  LOAD_DATA_SUCCESS,
 } from './constants';
 
 export const initialState = {
@@ -23,6 +25,7 @@ export const initialState = {
   budget: '',
   start: '',
   end: '',
+  categories: false,
 };
 
 /* eslint-disable default-case, no-param-reassign */
@@ -57,6 +60,12 @@ const pageReducer = (state = initialState, action) =>
         console.log(action.search);
         draft.search = action.search;
         break;
+      case LOAD_DATA_SUCCESS:
+        draft.data = action.data;
+        draft.paging = action.paging;
+        break;
+      case LOAD_CATEGORIES_SUCCESS:
+        draft.categories = action.data;
     }
   });
 

@@ -9,6 +9,8 @@ import {
   CHANGE_CATEGORY,
   CHANGE_CITY,
   CHANGE_SEARCH,
+  LOAD_CATEGORIES,
+  LOAD_CATEGORIES_SUCCESS,
 } from './constants';
 
 export function loadData(search) {
@@ -17,10 +19,11 @@ export function loadData(search) {
     search,
   };
 }
-export function loadDataSuccess(data) {
+export function loadDataSuccess(data, paging) {
   return {
     type: LOAD_DATA_SUCCESS,
     data,
+    paging,
   };
 }
 export function loadDataError(error) {
@@ -71,5 +74,16 @@ export function changeSearch(search) {
   return {
     type: CHANGE_SEARCH,
     search,
+  };
+}
+export function loadCategories() {
+  return {
+    type: LOAD_CATEGORIES,
+  };
+}
+export function loadCategoriesSuccess(data) {
+  return {
+    type: LOAD_CATEGORIES_SUCCESS,
+    data,
   };
 }

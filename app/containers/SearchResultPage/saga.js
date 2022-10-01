@@ -5,8 +5,12 @@
 import { call, put, select, takeEvery, delay } from 'redux-saga/effects';
 import { get } from 'utils/request';
 import { API_TALENT_LIST } from 'constants/api';
-import { LOAD_DATA } from './constants';
-import { loadDataSuccess, loadDataError } from './actions';
+import { LOAD_CATEGORIES, LOAD_DATA } from './constants';
+import {
+  loadDataSuccess,
+  loadDataError,
+  loadCategoriesSuccess,
+} from './actions';
 import {
   makeSelectBudget,
   makeSelectCategory,
@@ -28,15 +32,23 @@ export function* getData() {
   const category = yield select(makeSelectCategory());
   try {
     const payload = yield call(get, API_TALENT_LIST, {
-      page,
+      page: page - 1,
       name: search,
       category,
       city,
       budget,
-      start,
-      end,
+      startTime: start,
+      endTime: end,
     });
-    yield put(loadDataSuccess(payload.data, payload.paging));
+    yield put(loadDataSuccess(payload.content, payload.pageable));
+  } catch (err) {
+    yield put(loadDataError(err));
+  }
+}
+export function* getCategories() {
+  try {
+    const payload = yield call(get, 'api/categories', {});
+    yield put(loadCategoriesSuccess(payload));
   } catch (err) {
     yield put(loadDataError(err));
   }
@@ -44,4 +56,5 @@ export function* getData() {
 
 export default function* watchLatestAction() {
   yield takeEvery(LOAD_DATA, getData);
+  yield takeEvery(LOAD_CATEGORIES, getCategories);
 }

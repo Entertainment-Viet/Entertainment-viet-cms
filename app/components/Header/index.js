@@ -57,7 +57,7 @@ function HeaderButton({ text, href, isExternal = false }) {
 }
 
 const key = 'Header';
-function Header({ handleSubmit, handleRefresh, cartData }) {
+function Header({ handleSubmit, handleRefresh, cartData, search }) {
   useInjectReducer({ key, reducer });
   useInjectSaga({ key, saga });
 
@@ -123,7 +123,7 @@ function Header({ handleSubmit, handleRefresh, cartData }) {
                   value={searchTerm}
                   onChange={e => setSearchTerm(e.target.value)}
                   bg="white"
-                  placeholder="Basic usage"
+                  placeholder={search}
                 />
                 <InputRightElement>
                   <SearchIcon color="green.500" />
@@ -158,6 +158,7 @@ Header.propTypes = {
   handleSubmit: PropTypes.func,
   handleRefresh: PropTypes.func,
   cartData: PropTypes.oneOfType([PropTypes.array, PropTypes.bool]),
+  search: PropTypes.string,
 };
 
 HeaderButton.propTypes = {

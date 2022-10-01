@@ -41,6 +41,11 @@ const makeSelectCategory = () =>
     selectState,
     State => State.category,
   );
+const makeSelectCategories = () =>
+  createSelector(
+    selectState,
+    State => State.categories,
+  );
 const makeSelectCity = () =>
   createSelector(
     selectState,
@@ -74,4 +79,5 @@ export {
   makeSelectBudget,
   makeSelectStart,
   makeSelectEnd,
+  makeSelectCategories,
 };
