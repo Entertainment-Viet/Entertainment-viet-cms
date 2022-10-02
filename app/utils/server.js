@@ -32,6 +32,13 @@ const cRequest = axios.create({
 
 cRequest.defaults.headers.get['content-type'] =
   'application/json; charset=utf-8';
+cRequest.defaults.paramsSerializer = params => {
+  let result = '';
+  Object.keys(params).forEach(key => {
+    result += `${key}=${encodeURIComponent(params[key])}&`;
+  });
+  return result.substr(0, result.length - 1);
+};
 cRequest.defaults.headers.delete['content-type'] =
   'application/json; charset=utf-8';
 cRequest.defaults.headers.post['Content-Type'] =
