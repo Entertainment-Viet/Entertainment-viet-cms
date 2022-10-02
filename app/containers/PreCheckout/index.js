@@ -19,6 +19,7 @@ import PackagesBox from 'components/PackageBox';
 import Metadata from 'components/Metadata';
 import { H1 } from 'components/Elements';
 import { LIGHT_GRAY } from 'constants/styles';
+import { makeSelectCartData } from 'components/Header/selectors';
 import CardImg from './assets/payment_card.svg';
 import Arrow from './assets/arrow.svg';
 
@@ -40,18 +41,52 @@ import {
   makeSelectDetailError,
   makeSelectDetail,
 } from './selectors';
+import { post } from 'utils/request';
+import { API_ORG_ACTION_SHOPPINGCART } from 'constants/api';
 
 const key = 'PreCheckout';
-export function PreCheckout({ loading, error, data, onLoadData }) {
+export function PreCheckout({ loading, error, data, onLoadData, cartData }) {
   useInjectReducer({ key, reducer });
   useInjectSaga({ key, saga });
 
   useEffect(() => {
     onLoadData();
   }, []);
+  const orgId = window.localStorage.getItem('uid');
+  function instantPay() {
+    const val = {
+      paymentType: "payment.online"
+    }
+    post(API_ORG_ACTION_SHOPPINGCART, val, orgId).then(res1 => {
+      const status1 = getResStatus(res1);
+      if (status1 === '201') {
+        console.log('sent');
+      } else if (status1 === '400') {
+        console.log('fail');
+      } else {
+        cacthResponse(res1);
+      }
+    });
+  }
+  function laterPay() {
+    const val = {
+      paymentType: "payment.offline"
+    }
+    post(API_ORG_ACTION_SHOPPINGCART, val, orgId).then(res1 => {
+      const status1 = getResStatus(res1);
+      if (status1 === '201') {
+        console.log('sent');
+      } else if (status1 === '400') {
+        console.log('fail');
+      } else {
+        cacthResponse(res1);
+      }
+    });
+  }
   const { t } = useTranslation();
   console.log(data, loading, error);
-
+  const { content } = cartData;
+  console.log(content);
   return (
     <div style={{ width: '100%' }}>
       <Metadata />
@@ -60,9 +95,7 @@ export function PreCheckout({ loading, error, data, onLoadData }) {
           <H1>{t(messages.overview())}</H1>
           <Text>{t(messages.overviewDesc())}</Text>
           <Box border="1px solid #718096" py={4} my={6}>
-            <PackagesBox />
-            <PackagesBox />
-            <PackagesBox />
+            {content && content.map(item => <PackagesBox data={item} />)}
           </Box>
         </GridItem>
         <GridItem colStart={5} colEnd={7}>
@@ -81,6 +114,7 @@ export function PreCheckout({ loading, error, data, onLoadData }) {
                 top="50%"
                 right="0"
                 transform="translate(-50%, -50%)"
+                onClick={instantPay}
               />
             </Box>
             <Box bg={LIGHT_GRAY} position="relative" p={4} mt={4}>
@@ -95,6 +129,7 @@ export function PreCheckout({ loading, error, data, onLoadData }) {
                 top="50%"
                 right="0"
                 transform="translate(-50%, -50%)"
+                onClick={laterPay}
               />
             </Box>
           </Box>
@@ -109,12 +144,14 @@ PreCheckout.propTypes = {
   loading: PropTypes.bool,
   error: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
   data: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
+  cartData: PropTypes.oneOfType([PropTypes.array, PropTypes.bool]),
 };
 
 const mapStateToProps = createStructuredSelector({
   loading: makeSelectDetailLoading(),
   error: makeSelectDetailError(),
   data: makeSelectDetail(),
+  cartData: makeSelectCartData(),
 });
 
 export function mapDispatchToProps(dispatch) {

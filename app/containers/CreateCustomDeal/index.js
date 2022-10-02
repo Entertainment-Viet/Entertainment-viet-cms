@@ -55,7 +55,6 @@ import { post } from 'utils/request';
 // import { InputCustom, SelectCustom, ButtonCustom } from 'components/Controls';
 
 import {} from 'constants/routes';
-import cRequest from 'utils/server';
 import { messages } from './messages';
 import { loadCategories } from './actions';
 import saga from './saga';

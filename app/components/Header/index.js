@@ -143,7 +143,7 @@ function Header({ handleSubmit, handleRefresh, cartData, search }) {
             />
             <Notification />
             <ProfileAvatar />
-            <Cart data={cartData} />
+            {cartData ? (<Cart data={cartData} />) : null}
           </HStack>
         </Box>
       </Flex>

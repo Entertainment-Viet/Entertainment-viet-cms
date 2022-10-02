@@ -34,6 +34,7 @@ export const API_CREATE_BOOKING = 'api/organizers/:id/bookings';
 
 /* SHOPPINGCART */
 export const API_GET_SHOPPINGCART = 'api/organizers/:id/shoppingcart';
+export const API_ORG_ACTION_SHOPPINGCART = 'api/organizers/:id/shoppingcart';
 
 /* PACKAGE */
 export const API_GET_PACKAGE_INFO = 'api/talents/:id/packages';

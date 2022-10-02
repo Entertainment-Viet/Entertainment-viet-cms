@@ -97,7 +97,8 @@ export function SearchResultPage({
   useEffect(() => {
     onLoadCategory();
     if (category) handleCategoryChange(category);
-    else if (searchParams) handleSearchChange(searchParams.replace('+', ' '));
+    // else if (searchParams) handleSearchChange(searchParams.replace('+', ' '));
+    else if (searchParams) handleSearchChange(searchParams);
     else onLoadData();
   }, []);
 
