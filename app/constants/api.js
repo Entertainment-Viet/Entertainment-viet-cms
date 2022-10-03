@@ -9,17 +9,17 @@ export const API_NEWS_LIST = '/news/list';
 export const API_NEWS_DETAIL = '/news/detail/'; // :id
 
 /* org */
-export const API_ORG_DETAIL = 'api/organizers/:id';
+export const API_ORG_DETAIL = 'api/organizers/:id1';
 
 /* TALENTS */
 export const API_TALENT_LIST = 'api/talents';
-export const API_TALENT_DETAIL = 'api/talents/:id';
-export const API_TALENT_PACKAGE = 'api/talents/:id/packages';
+export const API_TALENT_DETAIL = 'api/talents/:id1';
+export const API_TALENT_PACKAGE = 'api/talents/:id1/packages';
 
 /* MANAGER */
-export const API_JOBOFFER_LIST = 'api/organizers/:id/joboffers';
-export const API_BOOKING_LIST = 'api/talents/:id/bookings';
-export const API_PACKAGE_LIST = 'api/talents/:id/packages';
+export const API_JOBOFFER_LIST = 'api/organizers/:id1/joboffers';
+export const API_BOOKING_LIST = 'api/talents/:id1/bookings';
+export const API_PACKAGE_LIST = 'api/talents/:id1/packages';
 
 /* CONTACT FORM */
 export const API_SEND_QNA = '/qna/send';
@@ -30,11 +30,11 @@ export const API_DEL_DEVICE_TOKEN = '/user/firebase/remove-token';
 export const API_GET_UNREAD_NOTI = '/user/get-userinfo';
 
 /* ORGANIZER */
-export const API_CREATE_BOOKING = 'api/organizers/:id/bookings';
+export const API_CREATE_BOOKING = 'api/organizers/:id1/bookings';
 
 /* SHOPPINGCART */
-export const API_GET_SHOPPINGCART = 'api/organizers/:id/shoppingcart';
-export const API_ORG_ACTION_SHOPPINGCART = 'api/organizers/:id/shoppingcart';
+export const API_GET_SHOPPINGCART = 'api/organizers/:id1/shoppingcart';
+export const API_ORG_ACTION_SHOPPINGCART = 'api/organizers/:id1/shoppingcart';
 
 /* PACKAGE */
-export const API_GET_PACKAGE_INFO = 'api/talents/:id/packages';
+export const API_GET_PACKAGE_INFO = 'api/talents/:id1/packages';

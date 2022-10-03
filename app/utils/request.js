@@ -19,38 +19,45 @@ function checkStatus(response) {
   throw error;
 }
 
-export function get(url, params, id) {
+export function get(url, params, id1, id2, id3) {
   removeEmptyObj(params);
   let replaceUrl = url;
-  if (id) {
+  if (id1 || id2 || id3) {
     // eslint-disable-next-line no-param-reassign
-    replaceUrl = url.replace(':id', id);
+    replaceUrl = url.replace(':id1', id1);
+    replaceUrl = replaceUrl.replace(':id2', id2);
+    replaceUrl = replaceUrl.replace(':id3', id3);
   }
+  console.log(replaceUrl);
   return cRequest
     .get(replaceUrl, { params })
     .then(checkStatus)
     .then(parseJSON);
 }
 
-export function del(url, params, id) {
+export function del(url, params, id1, id2, id3) {
   removeEmptyObj(params);
-  if (id) {
+  let replaceUrl = url;
+  if (id1 || id2 || id3) {
     // eslint-disable-next-line no-param-reassign
-    url = url.replace(':id', id);
+    replaceUrl = url.replace(':id1', id1);
+    replaceUrl = replaceUrl.replace(':id2', id2);
+    replaceUrl = replaceUrl.replace(':id3', id3);
   }
   return cRequest
-    .delete(url, { params })
+    .delete(replaceUrl, params)
     .then(checkStatus)
     .then(parseJSON);
 }
 
-export function post(url, params, id) {
+export function post(url, params, id1, id2, id3) {
   removeEmptyObj(params);
-  console.log(id);
   let replaceUrl = url;
-  if (id) {
+  if (id1 || id2 || id3) {
     // eslint-disable-next-line no-param-reassign
-    replaceUrl = url.replace(':id', id);
+    replaceUrl = url.replace(':id1', id1);
+    replaceUrl = replaceUrl.replace(':id2', id2);
+    replaceUrl = replaceUrl.replace(':id3', id3);
   }
   return cRequest
     .post(replaceUrl, params)
@@ -58,13 +65,14 @@ export function post(url, params, id) {
     .then(parseJSON);
 }
 
-export function put(url, params, id) {
+export function put(url, params, id1, id2, id3) {
   removeEmptyObj(params);
-  console.log(id);
   let replaceUrl = url;
-  if (id) {
+  if (id1 || id2 || id3) {
     // eslint-disable-next-line no-param-reassign
-    replaceUrl = url.replace(':id', id);
+    replaceUrl = url.replace(':id1', id1);
+    replaceUrl = replaceUrl.replace(':id2', id2);
+    replaceUrl = replaceUrl.replace(':id3', id3);
   }
   return cRequest
     .put(replaceUrl, params)

@@ -39,11 +39,12 @@ cRequest.defaults.paramsSerializer = params => {
   });
   return result.substr(0, result.length - 1);
 };
-cRequest.defaults.headers.delete['content-type'] =
-  'application/json; charset=utf-8';
+
 cRequest.defaults.headers.post['Content-Type'] =
   'application/x-www-form-urlencoded; charset=UTF-8';
 cRequest.defaults.headers.put['Content-Type'] =
+  'application/x-www-form-urlencoded; charset=UTF-8';
+cRequest.defaults.headers.delete['Content-Type'] =
   'application/x-www-form-urlencoded; charset=UTF-8';
 
 cRequest.interceptors.request.use(async config => {
