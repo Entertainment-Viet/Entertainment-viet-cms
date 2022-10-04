@@ -114,9 +114,10 @@ export function SearchResultPage({
   }, []);
   // remember to +1 vào pageNumber
   const pageProps =  {
-    total: 200, //totalElement
-    page: 1, //pageNumber
+    // total: 200, //totalElement
+    page: 3, //pageNumber
     limit: 20, //pageSize
+    last: true,
   };
   const CustomSelect = chakra(Select, {
     baseStyle: {

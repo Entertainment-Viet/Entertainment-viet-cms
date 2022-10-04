@@ -4,13 +4,14 @@ import { usePagination, DOTS } from './actions';
 import { Container, Item, Arrow } from './styles';
 
 const Pagination = props => {
-  const { total, page, limit, onPageChange, siblingCount = 1 } = props;
+  const { total, page, limit, onPageChange, siblingCount = 1, last } = props;
 
   const paginationRange = usePagination({
     page,
     total,
     siblingCount,
     limit,
+    last,
   });
 
   // If there are less than 2 times in pagination range we shall not render the component
@@ -18,9 +19,9 @@ const Pagination = props => {
     return null;
   }
 
-  if (page === 0 || paginationRange.length < 2) {
-    return null;
-  }
+  // if (page === 0 || paginationRange.length < 2) {
+  //   return null;
+  // }
 
   const onNext = () => {
     onPageChange(page + 1);
@@ -75,6 +76,7 @@ Pagination.propTypes = {
   limit: PropTypes.number,
   onPageChange: PropTypes.func,
   siblingCount: PropTypes.number,
+  last: PropTypes.bool,
 };
 
 export default Pagination;
