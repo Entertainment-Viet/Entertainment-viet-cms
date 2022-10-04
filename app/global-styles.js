@@ -1,6 +1,5 @@
 import { createGlobalStyle } from 'styled-components';
-import { PRI_FONTCOLOR, INACTIVE_COLOR } from './constants/styles';
-import { device } from 'constants/styles';
+import { device, PRI_FONTCOLOR, INACTIVE_COLOR } from 'constants/styles';
 
 const GlobalStyle = createGlobalStyle`
   html,

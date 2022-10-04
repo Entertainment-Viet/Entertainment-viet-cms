@@ -33,7 +33,7 @@ export function* getData() {
   try {
     const payload = yield call(get, API_TALENT_LIST, {
       page: page - 1,
-      name: search,
+      displayName: search,
       category,
       city,
       budget,

@@ -15,6 +15,9 @@ const MyWrapper = styled(Wrapper)`
   .react-datepicker__triangle {
     left: -8px !important;
   }
+  .react-datepicker-popper {
+    z-index: 99;
+  }
 `;
 
 const DateTimeCustom = props => {

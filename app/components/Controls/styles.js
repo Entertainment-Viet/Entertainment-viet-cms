@@ -1,15 +1,15 @@
 import styled, { css } from 'styled-components';
-import { INACTIVE_COLOR, PRI_FONTCOLOR } from 'constants/styles';
+import { PRI_TEXT_COLOR, TEXT_PURPLE } from 'constants/styles';
 import icoSearch from './img/Search.svg';
 import icoArrowDown from './img/ArrowDown.svg';
 import icoCalendar from './img/Calendar.svg';
 
 export const Control = css`
-  background: #eff0f6;
+  background: transparent;
 
   font-style: normal;
   font-weight: normal;
-  color: ${PRI_FONTCOLOR};
+  color: ${PRI_TEXT_COLOR};
   letter-spacing: 0.75px;
 
   padding: 0.5rem 1.5rem;
@@ -25,12 +25,14 @@ export const Control = css`
 `;
 
 export const Wrapper = styled.div`
+  border: 1px solid ${TEXT_PURPLE};
+  border-radius: 0.5rem;
   display: block;
   align-items: center;
   justify-content: flex-start;
   position: relative;
   user-select: none;
-  margin-bottom: 1rem;
+  // margin-bottom: 1rem;
 
   &.inline{
     margin-right: 1rem;
@@ -85,6 +87,6 @@ export const Wrapper = styled.div`
   }
 
   &.disabled>input, &.disabled>textarea {
-    background-color: ${INACTIVE_COLOR};
+    background-color: ${PRI_TEXT_COLOR};
   }
 `;

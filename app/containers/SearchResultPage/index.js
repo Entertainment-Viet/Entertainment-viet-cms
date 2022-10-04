@@ -17,6 +17,9 @@ import {
   Select,
   NumberInput,
   NumberInputField,
+  chakra,
+  HStack,
+  Text,
 } from '@chakra-ui/react';
 
 import { useInjectReducer } from 'utils/injectReducer';
@@ -24,12 +27,17 @@ import { useInjectSaga } from 'utils/injectSaga';
 import { ImageSlider } from 'components/Carousel';
 import Buttons from 'components/Buttons';
 import Metadata from 'components/Metadata';
-import { PRI_TEXT_COLOR, SEC_TEXT_COLOR } from 'constants/styles';
+import {
+  TEXT_PURPLE,
+  SEC_TEXT_COLOR,
+  PRI_TEXT_COLOR,
+  TEXT_GREEN,
+} from 'constants/styles';
 import { Card } from 'components/Cards';
 import { H1 } from 'components/Elements';
 import Pagination from 'components/Pagination';
 import { DateTimeCustom } from 'components/Controls';
-
+import styled from 'styled-components';
 // import { loadNFTFilter } from 'containers/NFTFilterProvider/actions';
 
 // import { isAuthor } from 'utils/auth';
@@ -68,6 +76,9 @@ import {
   makeSelectCategories,
 } from './selectors';
 
+const CustomOption = styled.option`
+  color: black;
+`;
 const key = 'SearchResultPage';
 export function SearchResultPage({
   page,
@@ -101,88 +112,70 @@ export function SearchResultPage({
     else if (searchParams) handleSearchChange(searchParams);
     else onLoadData();
   }, []);
-
-  const SlideData = [
-    {
-      id: '1',
-    },
-    {
-      id: '1',
-    },
-    {
-      id: '1',
-    },
-    {
-      id: '1',
-    },
-    {
-      id: '1',
-    },
-    {
-      id: '1',
-    },
-    {
-      id: '1',
-    },
-    {
-      id: '1',
-    },
-    {
-      id: '1',
-    },
-    {
-      id: '1',
-    },
-  ];
-
-  const pageProps = paging || {
-    total: 0,
-    page,
-    limit: 5,
+  // remember to +1 vào pageNumber
+  const pageProps =  {
+    total: 200, //totalElement
+    page: 1, //pageNumber
+    limit: 20, //pageSize
   };
-
+  const CustomSelect = chakra(Select, {
+    baseStyle: {
+      color: 'white',
+      bg: TEXT_PURPLE,
+      textAlign: 'center',
+      w: 'fit-content',
+    },
+  });
+  const FieldWrapper = chakra(Box, {
+    baseStyle: {
+      w: 'fit-content',
+      color: 'white',
+    },
+  });
   return (
     <div style={{ width: '100%' }}>
       <Metadata />
-      <H1>Result for "{search}"</H1>
-      <SimpleGrid columns={5} spacing={2} maxW="100%">
-        <Box>
-          <Select
+      <H1 color={TEXT_GREEN}>Result for "{search}"</H1>
+      <Box color={SEC_TEXT_COLOR} mt="-4" mb="6">
+        {data && data.length} results found
+      </Box>
+      <HStack maxW="100%" mb="6">
+        <FieldWrapper>
+          <CustomSelect
             isSearchable
             placeholder="Categories"
-            color="black"
-            bg="white"
             onChange={val => handleCategoryChange(val.target.value)}
           >
             {categories
               ? categories.map(item => (
-                <option value={item.uid}>{item.name}</option>
+                <CustomOption value={item.uid}>{item.name}</CustomOption>
               ))
               : null}
-          </Select>
-        </Box>
-        <Box>
-          <Select
+          </CustomSelect>
+        </FieldWrapper>
+        <FieldWrapper>
+          <CustomSelect
             isSearchable
             placeholder="City"
-            color="black"
-            bg="white"
             onChange={val => handleCityChange(val.target.value)}
           >
-            <option value="TPHCM">TPHCM</option>
-            <option value="option2">Option 2</option>
-            <option value="option3">Option 3</option>
-          </Select>
-        </Box>
+            <CustomOption value="TPHCM">TPHCM</CustomOption>
+            <CustomOption value="option2">Option 2</CustomOption>
+            <CustomOption value="option3">Option 3</CustomOption>
+          </CustomSelect>
+        </FieldWrapper>
+        <Text>Your budget</Text>
         <Box>
           <NumberInput
-            color="black"
-            bg="white"
+            color={PRI_TEXT_COLOR}
+            bg="transparent"
+            borderColor={TEXT_PURPLE}
             onChange={val => handleBudgetChange(val)}
           >
             <NumberInputField placeholder="Budget" />
           </NumberInput>
         </Box>
+        <Text>Start time</Text>
         <Box>
           <DateTimeCustom
             template="datetime-picker right"
@@ -192,6 +185,7 @@ export function SearchResultPage({
             handleDateChange={handleStartChange}
           />
         </Box>
+        <Text>End time</Text>
         <Box>
           <DateTimeCustom
             template="datetime-picker right"
@@ -201,11 +195,8 @@ export function SearchResultPage({
             handleDateChange={handleEndChange}
           />
         </Box>
-      </SimpleGrid>
-      <Box color={SEC_TEXT_COLOR} my="6">
-        {data && data.length} results found
-      </Box>
-      <Container maxW="100%" centerContent>
+      </HStack>
+      <Container maxW="100%" centerContent ps={0}>
         <SimpleGrid maxW="100%" columns={[1, 3, 5]} spacing="50px">
           {data &&
             data.map(function(tempt) {

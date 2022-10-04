@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Image, Divider, Container, Link } from '@chakra-ui/react';
+import { Box, Image, Divider, Container, Link, chakra } from '@chakra-ui/react';
 import { StarIcon } from '@chakra-ui/icons';
 import {
   PRI_TEXT_COLOR,
@@ -10,6 +10,37 @@ import {
 import PropTypes from 'prop-types';
 import { numberWithCommas } from 'utils/helpers';
 import CardTop from './assets/CardTop.svg';
+
+const GradientBox = chakra(Box, {
+  baseStyle: {
+    borderRadius: 'md',
+    // overflow: 'hidden',
+    bg: PRI_BACKGROUND,
+    color: PRI_TEXT_COLOR,
+    pos: 'relative',
+    bottom: '10%',
+    w: [200, 200, 200, 250],
+    backgroundClip: 'padding-box',
+    border: 'solid 1px transparent',
+    // border-radius: 2rem;
+    position: 'relative',
+
+    _before: {
+      content: `""`,
+      position: 'absolute',
+      top: 0,
+      right: 0,
+      bottom: 0,
+      left: 0,
+      zIndex: -1,
+      margin: '-2px',
+      borderRadius: 'inherit',
+      background:
+        'linear-gradient(180deg, rgba(0, 35, 242, 0) 0%, #404B8D 100%)',
+    },
+  },
+});
+
 function Card(props) {
   const property = {
     imageUrl: 'https://bit.ly/2Z4KKcF',
@@ -34,20 +65,13 @@ function Card(props) {
       <Image
         src={property.imageUrl}
         alt={property.imageAlt}
-        maxW={[200, 200, 200, 250]}
+        maxW={[198, 198, 198, 248]}
         style={{ aspectRatio: '1/1.2' }}
         zIndex={50}
+        mt="0.3rem"
       />
-      <Link href={`/artist/${props.data.uid}`}>
-        <Box
-          borderRadius="md"
-          overflow="hidden"
-          bg={PRI_BACKGROUND}
-          color={PRI_TEXT_COLOR}
-          pos="relative"
-          bottom="10%"
-          w={[200, 200, 200, 250]}
-        >
+      <Link href={`/artist/${props.data.uid}`} zIndex={1}>
+        <GradientBox>
           <Box p="4">
             <Box
               fontSize="30px"
@@ -70,7 +94,13 @@ function Card(props) {
             </Box>
           </Box>
           <Divider orientation="horizontal" borderColor="#26358F" />
-          <Box p="2" maxW="sm" bg={PRI_BACKGROUND} color={TEXT_GREEN}>
+          <Box
+            p="2"
+            maxW="sm"
+            bg={PRI_BACKGROUND}
+            color={TEXT_GREEN}
+            borderRadius="md"
+          >
             <Box
               mt="1"
               ml="2"
@@ -82,7 +112,7 @@ function Card(props) {
               {numberWithCommas(props.priceRange[1])} / performance
             </Box>
           </Box>
-        </Box>
+        </GradientBox>
       </Link>
     </Container>
   );
