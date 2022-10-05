@@ -1,10 +1,10 @@
 import styled from 'styled-components';
-
+import { TEXT_PURPLE } from 'constants/styles';
 export const NumWrapper = styled.div`
   position: absolute;
-  top: 32%;
+  top: 57%;
   right: -3px;
-  color: white;
+  color: ${TEXT_PURPLE};
   font-size: 10px;
   text-align: center;
   width: 21px;

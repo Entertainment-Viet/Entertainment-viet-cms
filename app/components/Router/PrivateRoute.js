@@ -7,10 +7,13 @@ import Footer from 'components/Footer';
 import { getLocalRole } from 'utils/auth';
 
 import PageWrapper from 'components/PageWrapper';
+import { Flex } from '@chakra-ui/react';
+import Sidebar from '../Header/Sidebar/Sidebar';
 function PrivateRoute({ children, isAuthenticated, roles, ...rest }) {
   const getRole = getLocalRole();
   return (
-    <>
+    <Flex>
+      <Sidebar />
       <PageWrapper className="header-column">
         <Header />
         <Route
@@ -43,7 +46,7 @@ function PrivateRoute({ children, isAuthenticated, roles, ...rest }) {
         />
         <Footer />
       </PageWrapper>
-    </>
+    </Flex>
   );
 }
 

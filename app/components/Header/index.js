@@ -12,22 +12,15 @@ import {
   Input,
   HStack,
   Link,
-  Divider,
   InputGroup,
-  InputRightElement,
+  InputLeftElement,
 } from '@chakra-ui/react';
 import { SearchIcon } from '@chakra-ui/icons';
-import { PRI_TEXT_COLOR } from 'constants/styles';
-import cRequest from 'utils/server';
-import {
-  getResStatus,
-  redirectTo,
-  cacthError,
-  cacthResponse,
-} from 'utils/helpers';
+import { redirectTo } from 'utils/helpers';
 
 import { changeSearch, loadData } from 'containers/SearchResultPage/actions';
 import { makeSelectSearch } from 'containers/SearchResultPage/selectors';
+import { TEXT_PURPLE, TEXT_GREEN } from 'constants/styles';
 import { loadDataHeader } from './actions';
 import reducer from './reducer';
 import saga from './saga';
@@ -35,20 +28,19 @@ import saga from './saga';
 import { messages } from './messages';
 import { Wrapper } from './styles';
 import Notification from './Notification';
-import Categories from './Categories';
 import Cart from './Cart';
 import ProfileAvatar from './ProfileAvatar';
 import { makeSelectCartData } from './selectors';
-
 function HeaderButton({ text, href, isExternal = false }) {
   return (
     <Link href={href} isExternal={isExternal}>
       <Box
-        color={PRI_TEXT_COLOR}
+        color={TEXT_PURPLE}
         fontWeight="500"
         as="h1"
         lineHeight="tight"
         noOfLines={1}
+        _hover={{ color: TEXT_GREEN }}
       >
         {text}
       </Box>
@@ -62,7 +54,6 @@ function Header({ handleSubmit, handleRefresh, cartData, search }) {
   useInjectSaga({ key, saga });
 
   const [searchTerm, setSearchTerm] = useState('');
-  const [categories, setCategories] = useState([]);
 
   const { t } = useTranslation();
 
@@ -72,38 +63,14 @@ function Header({ handleSubmit, handleRefresh, cartData, search }) {
     handleRefresh(orgId);
   }, []);
 
-  useEffect(() => {
-    cRequest
-      .get('/api/categories')
-      .then(res => {
-        const status = getResStatus(res);
-        if (status === 200) {
-          setCategories(res.data);
-        } else if (status === 400) {
-          console.log('error while logging out 400');
-        } else if (status === 500) {
-          console.log('error while logging out 500');
-        } else {
-          cacthResponse(res);
-        }
-      })
-      .catch(err => cacthError(err));
-  }, []);
   return (
     <Wrapper>
       <Flex justify="space-between">
         <Flex alignItems="center">
-          <Box
-            color="red.500"
-            fontWeight="500"
-            as="h1"
-            lineHeight="tight"
-            noOfLines={1}
-            mr="8"
-          >
-            Entertainment Viet
-          </Box>
-          <Box width="50%">
+          <Box width="50%" />
+        </Flex>
+        <Box>
+          <HStack spacing={8}>
             <form
               style={{}}
               onSubmit={e => {
@@ -122,18 +89,16 @@ function Header({ handleSubmit, handleRefresh, cartData, search }) {
                 <Input
                   value={searchTerm}
                   onChange={e => setSearchTerm(e.target.value)}
-                  bg="white"
+                  bg="transparent"
                   placeholder={search}
+                  border={`1px solid ${TEXT_PURPLE}`}
+                  borderRadius="1rem"
                 />
-                <InputRightElement>
-                  <SearchIcon color="green.500" />
-                </InputRightElement>
+                <InputLeftElement>
+                  <SearchIcon color={TEXT_PURPLE} />
+                </InputLeftElement>
               </InputGroup>
             </form>
-          </Box>
-        </Flex>
-        <Box>
-          <HStack spacing={8}>
             <HeaderButton text={t(messages.findTalent())} href="#" />
             <HeaderButton text={t(messages.postJob())} href="#" />
             <HeaderButton
@@ -143,13 +108,10 @@ function Header({ handleSubmit, handleRefresh, cartData, search }) {
             />
             <Notification />
             <ProfileAvatar />
-            {cartData ? (<Cart data={cartData} />) : null}
+            {cartData ? <Cart data={cartData} /> : null}
           </HStack>
         </Box>
       </Flex>
-      <Divider my={4} />
-      <Categories categories={categories} />
-      <Divider mt={4} />
     </Wrapper>
   );
 }

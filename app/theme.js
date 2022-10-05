@@ -3,9 +3,16 @@ import { extendTheme, withDefaultColorScheme } from '@chakra-ui/react';
 import { PRI_TEXT_COLOR } from 'constants/styles';
 
 // import { StyleFunctionProps } from '@chakra-ui/theme-tools';
-
+const breakpoints = {
+  sm: '320px',
+  md: '768px',
+  lg: '1024px',
+  xl: '1200px',
+  '2xl': '1537px',
+};
 const theme = extendTheme(
   {
+    breakpoints,
     colors: {
       primary: {
         main: PRI_TEXT_COLOR,

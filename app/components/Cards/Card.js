@@ -11,6 +11,7 @@ import PropTypes from 'prop-types';
 import { numberWithCommas } from 'utils/helpers';
 import CardTop from './assets/CardTop.svg';
 
+const width = [230, 230, 250, 250, 290];
 const GradientBox = chakra(Box, {
   baseStyle: {
     borderRadius: 'md',
@@ -19,9 +20,9 @@ const GradientBox = chakra(Box, {
     color: PRI_TEXT_COLOR,
     pos: 'relative',
     bottom: '10%',
-    w: [200, 200, 200, 250],
+    w: width,
     backgroundClip: 'padding-box',
-    border: 'solid 1px transparent',
+    border: 'solid 2px transparent',
     // border-radius: 2rem;
     position: 'relative',
 
@@ -40,7 +41,6 @@ const GradientBox = chakra(Box, {
     },
   },
 });
-
 function Card(props) {
   const property = {
     imageUrl: 'https://bit.ly/2Z4KKcF',
@@ -53,11 +53,11 @@ function Card(props) {
   };
 
   return (
-    <Container centerContent>
+    <Container ps={0} zIndex={1}>
       <Image
         src={CardTop}
         alt={property.imageAlt}
-        w={[200, 200, 200, 250]}
+        w={width}
         maxW="inherit"
         pos="absolute"
         zIndex={51}
@@ -65,7 +65,7 @@ function Card(props) {
       <Image
         src={property.imageUrl}
         alt={property.imageAlt}
-        maxW={[198, 198, 198, 248]}
+        maxW={width}
         style={{ aspectRatio: '1/1.2' }}
         zIndex={50}
         mt="0.3rem"
@@ -79,7 +79,7 @@ function Card(props) {
               as="h1"
               lineHeight="100%"
               noOfLines={1}
-              w={[200, 200, 200, 250]}
+              w={width}
               color={TEXT_PURPLE}
               mt={1}
             >

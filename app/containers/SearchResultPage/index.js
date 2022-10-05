@@ -24,8 +24,6 @@ import {
 
 import { useInjectReducer } from 'utils/injectReducer';
 import { useInjectSaga } from 'utils/injectSaga';
-import { ImageSlider } from 'components/Carousel';
-import Buttons from 'components/Buttons';
 import Metadata from 'components/Metadata';
 import {
   TEXT_PURPLE,
@@ -113,10 +111,10 @@ export function SearchResultPage({
     else onLoadData();
   }, []);
   // remember to +1 vào pageNumber
-  const pageProps =  {
-    // total: 200, //totalElement
-    page: 3, //pageNumber
-    limit: 20, //pageSize
+  const pageProps = {
+    total: 200, // totalElement
+    page: 5, // pageNumber
+    limit: 20, // pageSize
     last: true,
   };
   const CustomSelect = chakra(Select, {
@@ -197,8 +195,13 @@ export function SearchResultPage({
           />
         </Box>
       </HStack>
-      <Container maxW="100%" centerContent ps={0}>
-        <SimpleGrid maxW="100%" columns={[1, 3, 5]} spacing="50px">
+      <Container maxW="100%" ps={0}>
+        <SimpleGrid
+          maxW="100%"
+          columns={{ xl: 4, '2xl': 5 }}
+          spacing="30px"
+          alignItems="start"
+        >
           {data &&
             data.map(function(tempt) {
               const { uid } = tempt;

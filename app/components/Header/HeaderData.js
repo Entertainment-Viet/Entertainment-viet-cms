@@ -1,38 +1,22 @@
 export const HeaderData = [
   {
-    title: 'soloSinger',
+    name: 'Career',
     url: 'vloz',
   },
   {
-    title: 'band',
+    name: 'News & Annoucement',
     url: 'ok fine',
   },
   {
-    title: 'band',
+    name: 'Partnership',
     url: 'ok fine',
   },
   {
-    title: 'dancer',
+    name: 'Privacy policy',
     url: 'ok fine',
   },
   {
-    title: 'instru',
-    url: 'ok fine',
-  },
-  {
-    title: 'dj',
-    url: 'ok fine',
-  },
-  {
-    title: 'stylish',
-    url: 'ok fine',
-  },
-  {
-    title: 'makeup',
-    url: 'ok fine',
-  },
-  {
-    title: 'bartender',
+    name: 'Terms of service',
     url: 'ok fine',
   },
 ];
