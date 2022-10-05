@@ -12,18 +12,17 @@ import { numberWithCommas } from 'utils/helpers';
 import CardTop from './assets/CardTop.svg';
 
 const width = [230, 230, 250, 250, 290];
+const imgWidth = [227, 227, 247, 247, 287];
 const GradientBox = chakra(Box, {
   baseStyle: {
     borderRadius: 'md',
-    // overflow: 'hidden',
     bg: PRI_BACKGROUND,
     color: PRI_TEXT_COLOR,
     pos: 'relative',
     bottom: '10%',
     w: width,
     backgroundClip: 'padding-box',
-    border: 'solid 2px transparent',
-    // border-radius: 2rem;
+    // border: 'solid 2px transparent',
     position: 'relative',
 
     _before: {
@@ -65,10 +64,11 @@ function Card(props) {
       <Image
         src={property.imageUrl}
         alt={property.imageAlt}
-        maxW={width}
+        maxW={imgWidth}
         style={{ aspectRatio: '1/1.2' }}
         zIndex={50}
         mt="0.3rem"
+        ml="1px"
       />
       <Link href={`/artist/${props.data.uid}`} zIndex={1}>
         <GradientBox>
