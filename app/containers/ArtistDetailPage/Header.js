@@ -9,24 +9,16 @@ import {
   Text,
 } from '@chakra-ui/react';
 import { StarIcon } from '@chakra-ui/icons';
-import {
-  PRI_TEXT_COLOR,
-  RED_COLOR,
-  LIGHT_GRAY,
-  SEC_TEXT_COLOR,
-} from 'constants/styles';
+import { LIGHT_GRAY, TEXT_PURPLE, TEXT_GREEN } from 'constants/styles';
 
 import PropTypes from 'prop-types';
 
 // If you want to use your own Selectors look up the Advancaed Story book examples
 const Header = ({ profile }) => (
   <Container marginInlineStart="inherit" paddingInlineStart="inherit" mb={6}>
-    <VStack align="flex-start" spacing={4}>
-      {/* <Text color={SEC_TEXT_COLOR} fontWeight={400} fontSize={18}>
-        Solo singer
-      </Text> */}
-      <Text as="h1" fontWeight={700} fontSize="20px">
-        {profile.displayName}
+    <VStack align="flex-start" spacing={4} w="max-content">
+      <Text as="h1" fontWeight={700} fontSize="30px" color={TEXT_PURPLE}>
+        Singer performs for music festival, bar, club and pub
       </Text>
       <HStack>
         <Avatar
@@ -34,13 +26,13 @@ const Header = ({ profile }) => (
           src="https://bit.ly/dan-abramov"
           size="sm"
         />
-        <Text>{profile.displayName}</Text>
+        <Text color={TEXT_PURPLE}>{profile.displayName}</Text>
         <Divider orientation="vertical" color={LIGHT_GRAY} w="1px" h="24px" />
-        <StarIcon color={RED_COLOR} />
+        <StarIcon color={TEXT_GREEN} />
         <Box
           as="span"
           mr="2"
-          color={SEC_TEXT_COLOR}
+          color={TEXT_GREEN}
           fontSize="14px"
           fontWeight={500}
         >

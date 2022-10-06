@@ -13,7 +13,13 @@ import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import './style.css';
 import PropTypes from 'prop-types';
-import { PRI_TEXT_COLOR, LIGHT_GRAY } from 'constants/styles';
+import {
+  PRI_TEXT_COLOR,
+  LIGHT_GRAY,
+  TEXT_GREEN,
+  TEXT_PURPLE,
+  PRI_BACKGROUND,
+} from 'constants/styles';
 
 // If you want to use your own Selectors look up the Advancaed Story book examples
 const arrowStyles = {
@@ -24,7 +30,7 @@ const arrowStyles = {
   height: 30,
   cursor: 'pointer',
   background: '#1A202C',
-  color: '#E53E3E',
+  color: PRI_TEXT_COLOR,
   boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
   borderRadius: '50%',
 };
@@ -60,30 +66,25 @@ const CommentCarousel = ({ slides }) => (
     {/* {slides.map(slide => (
       <Image src={slide.image} height="auto" width="800px" />
     ))} */}
-    <Box bg={LIGHT_GRAY} p="8">
+    <Box bg={PRI_BACKGROUND} p="8">
       <VStack align="flex-start">
         <HStack align="flex-start">
           <Center>
             <Avatar name="Dan Abrahmov" src="https://bit.ly/dan-abramov" />
-            <Text
-              color={PRI_TEXT_COLOR}
-              ml="2"
-              fontSize="18px"
-              fontWeight={700}
-            >
+            <Text color={TEXT_PURPLE} ml="2" fontSize="18px" fontWeight={700}>
               Anna 212
             </Text>
             <Box display="flex" ml="2" alignItems="center">
+              <StarIcon color={TEXT_GREEN} />
               <Box
                 as="span"
-                mr="2"
-                color={PRI_TEXT_COLOR}
+                ml={2}
+                color={TEXT_GREEN}
                 fontSize="18px"
                 fontWeight={700}
               >
                 4
               </Box>
-              <StarIcon color="#E53E3E" />
             </Box>
           </Center>
         </HStack>

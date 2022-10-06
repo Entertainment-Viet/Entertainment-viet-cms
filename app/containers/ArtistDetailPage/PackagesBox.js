@@ -14,9 +14,15 @@ import {
   Tbody,
   Td,
   Button,
+  Image,
 } from '@chakra-ui/react';
 import Buttons from 'components/Buttons';
-import { PRI_TEXT_COLOR, RED_COLOR, LIGHT_GRAY } from 'constants/styles';
+import {
+  PRI_TEXT_COLOR,
+  TEXT_PURPLE,
+  PRI_BACKGROUND,
+  TEXT_GREEN,
+} from 'constants/styles';
 import cRequest from 'utils/server';
 import {
   getResStatus,
@@ -25,11 +31,16 @@ import {
   numberWithCommas,
 } from 'utils/helpers';
 import PropTypes from 'prop-types';
+import Cart from './assets/Cart-white.svg';
+
 // If you want to use your own Selectors look up the Advancaed Story book examples
 const PackagesBox = ({ data, id, toggleModal }) => {
-  function handleSelect(pId) {
+  function handleSelect(pId, price) {
     cRequest
-      .post(`/api/talents/${id}/packages/${pId}/bookings/shoppingcart`)
+      .post(`/api/talents/${id}/packages/${pId}/bookings/shoppingcart`, {
+        suggestedPrice: price,
+        organizerId: window.localStorage.getItem('uid'),
+      })
       .then(res => {
         const status = getResStatus(res);
         if (status === 200) {
@@ -48,13 +59,8 @@ const PackagesBox = ({ data, id, toggleModal }) => {
     <Container>
       <VStack>
         <Box h="6.3rem" />
-        <Box
-          bg={LIGHT_GRAY}
-          border="white 1px solid"
-          borderRadius="1%"
-          color={PRI_TEXT_COLOR}
-        >
-          <TableContainer>
+        <Box bg={PRI_BACKGROUND} borderRadius="1%" color={PRI_TEXT_COLOR}>
+          <TableContainer pt={8}>
             <Table
               variant="unstyled"
               overflowX="hidden"
@@ -66,13 +72,19 @@ const PackagesBox = ({ data, id, toggleModal }) => {
             >
               <TableCaption>
                 <Link href={`/create-booking/${id}`} style={{ width: '100%' }}>
-                  <Buttons width="100%">Gửi báo giá riêng</Buttons>
+                  <Buttons width="100%" bg={TEXT_PURPLE} color="#1D1C4C">
+                    Gửi báo giá riêng
+                  </Buttons>
                 </Link>
               </TableCaption>
               <Thead>
                 <Tr>
                   <Th>Gói dịch vụ</Th>
-                  <Th>Giá khởi điểm</Th>
+                  <Th>
+                    <Box textAlign="center" w="9rem">
+                      Giá khởi điểm
+                    </Box>
+                  </Th>
                   <Th />
                 </Tr>
               </Thead>
@@ -80,9 +92,9 @@ const PackagesBox = ({ data, id, toggleModal }) => {
                 {data.map(item => (
                   <Tr key={item.uid}>
                     <Td>
-                      {/* <Link href="google.com"> */}
                       <Text
                         textDecoration="underline"
+                        color={TEXT_PURPLE}
                         onClick={() => toggleModal(item.uid)}
                       >
                         {item.name}
@@ -90,15 +102,24 @@ const PackagesBox = ({ data, id, toggleModal }) => {
                       <Text fontSize="12px" whiteSpace="normal" noOfLines={4}>
                         {item.jobDetail.note}
                       </Text>
-                      {/* </Link> */}
                     </Td>
-                    <Td>{numberWithCommas(item.jobDetail.price.min)} VND</Td>
                     <Td>
+                      {' '}
+                      <Text color={TEXT_GREEN} textAlign="center">
+                        {numberWithCommas(item.jobDetail.price.min)} VND
+                      </Text>
+                    </Td>
+                    <Td position="relative">
                       <Button
-                        onClick={() => handleSelect(item.uid)}
+                        onClick={() =>
+                          handleSelect(item.uid, item.jobDetail.price.min)
+                        }
                         variant="ghost"
+                        position="absolute"
+                        top="20%"
+                        right="10%"
                       >
-                        <Text color={RED_COLOR}>Chọn</Text>
+                        <Image src={Cart} alt="Cart" />
                       </Button>
                     </Td>
                   </Tr>

@@ -19,3 +19,7 @@
 .h-128 {
     height: 40rem;
 }
+
+.carousel-root {
+    width: 100%;
+}

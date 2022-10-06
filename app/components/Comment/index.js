@@ -11,7 +11,7 @@ import {
   VStack,
   Divider,
 } from '@chakra-ui/react';
-import { PRI_TEXT_COLOR } from 'constants/styles';
+import { PRI_TEXT_COLOR, TEXT_PURPLE } from 'constants/styles';
 
 // If you want to use your own Selectors look up the Advancaed Story book examples
 const CommentBox = ({ slides }) => (
@@ -21,7 +21,7 @@ const CommentBox = ({ slides }) => (
       <VStack justify="flex-start" align="flex-start">
         <Container maxW="100%">
           <Link href="google">
-            <Text fontSize="18px" fontWeight={700}>
+            <Text fontSize="18px" fontWeight={700} color={TEXT_PURPLE}>
               Anna 212
             </Text>
           </Link>
@@ -51,7 +51,7 @@ const CommentBox = ({ slides }) => (
         <Container>
           <HStack>
             <Text
-              color={PRI_TEXT_COLOR}
+              color={TEXT_PURPLE}
               fontSize="14px"
               _hover={{ color: 'green' }}
               onClick={() => alert('like')}
@@ -59,7 +59,7 @@ const CommentBox = ({ slides }) => (
               Đánh giá hữu ích
             </Text>
             <Text
-              color={PRI_TEXT_COLOR}
+              color={TEXT_PURPLE}
               fontSize="14px"
               _hover={{ color: 'red' }}
               onClick={() => alert('dislike')}
