@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { PRI_TEXT_COLOR, LIGHT_GRAY } from 'constants/styles';
+import { PRI_TEXT_COLOR, TEXT_GREEN, TEXT_PURPLE } from 'constants/styles';
 export const Container = styled.ul`
   display: flex;
   list-style-type: none;
@@ -11,15 +11,16 @@ export const Item = styled.li`
   height: 32px;
   text-align: center;
   margin: auto 4px;
-  color: ${PRI_TEXT_COLOR};
+  color: ${TEXT_PURPLE};
   display: flex;
   box-sizing: border-box;
   align-items: center;
   letter-spacing: 0.01071em;
-  border-radius: 16px;
+  border-radius: 5px;
   line-height: 32px;
   font-size: 13px;
   min-width: 32px;
+  border: 1px solid ${TEXT_PURPLE};
 
   &.dots:hover {
     background-color: transparent;
@@ -31,11 +32,12 @@ export const Item = styled.li`
   }
 
   &.selected {
-    background-color: ${LIGHT_GRAY};
+    background-color: ${TEXT_GREEN};
   }
 
   &.disabled {
     pointer-events: none;
+    display: none;
 
     .arrow::before {
       border-right: 0.12em solid rgba(0, 0, 0, 0.43);

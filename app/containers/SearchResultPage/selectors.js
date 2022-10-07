@@ -29,7 +29,7 @@ const makeSelectData = () =>
 const makeSelectPaging = () =>
   createSelector(
     selectState,
-    State => State.page,
+    State => State.paging,
   );
 const makeSelectSearch = () =>
   createSelector(

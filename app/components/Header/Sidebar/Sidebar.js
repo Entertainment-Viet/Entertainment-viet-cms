@@ -41,6 +41,7 @@ export default function Sidebar() {
       w={navSize === 'small' ? '75px' : '400px'}
       flexDir="column"
       justifyContent="space-between"
+      transition="0.5s"
       onMouseEnter={() => {
         changeNavSize('large');
       }}

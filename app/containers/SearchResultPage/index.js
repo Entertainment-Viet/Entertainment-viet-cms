@@ -79,7 +79,6 @@ const CustomOption = styled.option`
 `;
 const key = 'SearchResultPage';
 export function SearchResultPage({
-  page,
   paging,
   loading,
   data,
@@ -112,11 +111,12 @@ export function SearchResultPage({
   }, []);
   // remember to +1 vào pageNumber
   const pageProps = {
-    total: 200, // totalElement
-    page: 5, // pageNumber
-    limit: 20, // pageSize
-    last: true,
+    // total: paging.totalElement, // totalElement
+    page: paging.pageNumber + 1, // pageNumber
+    limit: paging.pageSize, // pageSize
+    last: paging.last,
   };
+
   const CustomSelect = chakra(Select, {
     baseStyle: {
       color: 'white',
@@ -147,8 +147,8 @@ export function SearchResultPage({
           >
             {categories
               ? categories.map(item => (
-                <CustomOption value={item.uid}>{item.name}</CustomOption>
-              ))
+                  <CustomOption value={item.uid}>{item.name}</CustomOption>
+                ))
               : null}
           </CustomSelect>
         </FieldWrapper>
@@ -226,8 +226,8 @@ export function SearchResultPage({
               );
             })}
         </SimpleGrid>
+        <Pagination {...pageProps} onPageChange={handlePageChange} />
       </Container>
-      <Pagination {...pageProps} onPageChange={handlePageChange} />
     </div>
   );
 }

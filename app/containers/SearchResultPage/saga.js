@@ -40,7 +40,7 @@ export function* getData() {
       startTime: start,
       endTime: end,
     });
-    yield put(loadDataSuccess(payload.content, payload.pageable));
+    yield put(loadDataSuccess(payload.content, payload.paging));
   } catch (err) {
     yield put(loadDataError(err));
   }

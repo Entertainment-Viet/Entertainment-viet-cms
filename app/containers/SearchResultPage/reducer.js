@@ -61,6 +61,7 @@ const pageReducer = (state = initialState, action) =>
         draft.search = action.search;
         break;
       case LOAD_DATA_SUCCESS:
+        draft.loading = false;
         draft.data = action.data;
         draft.paging = action.paging;
         break;
