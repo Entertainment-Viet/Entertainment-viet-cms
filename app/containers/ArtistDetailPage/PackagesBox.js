@@ -31,6 +31,7 @@ import {
   numberWithCommas,
 } from 'utils/helpers';
 import PropTypes from 'prop-types';
+import { Divider } from '@chakra-ui/core';
 import Cart from './assets/Cart-white.svg';
 
 // If you want to use your own Selectors look up the Advancaed Story book examples
@@ -65,7 +66,6 @@ const PackagesBox = ({ data, id, toggleModal }) => {
               variant="unstyled"
               overflowX="hidden"
               style={{
-                tableLayout: 'fixed',
                 width: '25rem',
                 wordWrap: 'break-word',
               }}
@@ -88,41 +88,53 @@ const PackagesBox = ({ data, id, toggleModal }) => {
                   <Th />
                 </Tr>
               </Thead>
-              <Tbody>
-                {data.map(item => (
-                  <Tr key={item.uid}>
-                    <Td>
-                      <Text
-                        textDecoration="underline"
-                        color={TEXT_PURPLE}
-                        onClick={() => toggleModal(item.uid)}
-                      >
-                        {item.name}
-                      </Text>
-                      <Text fontSize="12px" whiteSpace="normal" noOfLines={4}>
-                        {item.jobDetail.note}
-                      </Text>
-                    </Td>
-                    <Td>
-                      {' '}
-                      <Text color={TEXT_GREEN} textAlign="center">
-                        {numberWithCommas(item.jobDetail.price.min)} VND
-                      </Text>
-                    </Td>
-                    <Td position="relative">
-                      <Button
-                        onClick={() =>
-                          handleSelect(item.uid, item.jobDetail.price.min)
-                        }
-                        variant="ghost"
+              <Tbody position="relative">
+                {data.map((item, index) => (
+                  <>
+                    {index !== 0 ? (
+                      <Divider
+                        w="90%"
                         position="absolute"
-                        top="20%"
-                        right="10%"
-                      >
-                        <Image src={Cart} alt="Cart" />
-                      </Button>
-                    </Td>
-                  </Tr>
+                        left={0}
+                        right={0}
+                        margin="0 auto"
+                        bg={PRI_TEXT_COLOR}
+                      />
+                    ) : null}
+                    <Tr key={item.uid}>
+                      <Td>
+                        <Text
+                          textDecoration="underline"
+                          color={TEXT_PURPLE}
+                          onClick={() => toggleModal(item.uid)}
+                        >
+                          {item.name}
+                        </Text>
+                        <Text fontSize="12px" whiteSpace="normal" noOfLines={4}>
+                          {item.jobDetail.note}
+                        </Text>
+                      </Td>
+                      <Td>
+                        {' '}
+                        <Text color={TEXT_GREEN} textAlign="center">
+                          {numberWithCommas(item.jobDetail.price.min)} VND
+                        </Text>
+                      </Td>
+                      <Td position="relative">
+                        <Button
+                          onClick={() =>
+                            handleSelect(item.uid, item.jobDetail.price.min)
+                          }
+                          variant="ghost"
+                          position="absolute"
+                          top="20%"
+                          right="10%"
+                        >
+                          <Image src={Cart} alt="Cart" />
+                        </Button>
+                      </Td>
+                    </Tr>
+                  </>
                 ))}
               </Tbody>
             </Table>
