@@ -1,37 +1,19 @@
-import React, { useEffect, memo } from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { compose } from 'redux';
-import { createStructuredSelector } from 'reselect';
-import { useTranslation } from 'react-i18next';
-import { Box, Flex, Text, Link } from '@chakra-ui/react';
-
-import { useInjectReducer } from 'utils/injectReducer';
-import { useInjectSaga } from 'utils/injectSaga';
-import MyTable from 'components/Table';
-import { PRI_TEXT_COLOR } from 'constants/styles';
-// import { loadNFTFilter } from 'containers/NFTFilterProvider/actions';
-
-// import { isAuthor } from 'utils/auth';
-
-// import { InputCustom, SelectCustom, ButtonCustom } from 'components/Controls';
-import styled from 'styled-components';
-import {} from 'constants/routes';
-import {} from './styles';
-import PageSpinner from 'components/PageSpinner';
-import { messages } from './messages';
-
-import { changePage, loadPackages, changeMode } from './actions';
-import saga from './saga';
-import reducer from './reducer';
+import React, { memo } from 'react';
 import {
-  makeSelectDetailLoading,
-  makeSelectDetailError,
-  makeSelectDetail,
-  makeSelectPackage,
-  makeSelectMode,
-} from './selectors';
-// import { propTypes } from 'qrcode.react';
+  Container,
+  VStack,
+  HStack,
+  Text,
+  Flex,
+  Box,
+  Link,
+} from '@chakra-ui/react';
+import { useTranslation } from 'react-i18next';
+import PropTypes from 'prop-types';
+import MyTable from 'components/Table';
+import PageSpinner from 'components/PageSpinner';
+import { PRI_TEXT_COLOR } from 'constants/styles';
+import styled from 'styled-components';
 
 const StatusCell = styled(Text)`
   text-align: center;
@@ -99,18 +81,7 @@ const bookingColumns = [
     accessor: 'status',
   },
 ];
-
-const key = 'ManagementPage';
-export function ManagementPage({
-  loading,
-  error,
-  data,
-  onLoadData,
-  handleModeChange,
-  mode,
-}) {
-  useInjectReducer({ key, reducer });
-  useInjectSaga({ key, saga });
+const MyPackage = ({ data, mode }) => {
   let tablePackage;
   let tableBooking;
   if (data) {
@@ -167,12 +138,7 @@ export function ManagementPage({
         };
       });
   }
-
-  useEffect(() => {
-    onLoadData();
-  }, []);
   const { t } = useTranslation();
-
   return (
     <Box color={PRI_TEXT_COLOR}>
       {!data ? (
@@ -186,46 +152,11 @@ export function ManagementPage({
       )}
     </Box>
   );
-}
+};
 
-ManagementPage.propTypes = {
-  onLoadData: PropTypes.func,
-  handleModeChange: PropTypes.func,
-  loading: PropTypes.bool,
-  error: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
+MyPackage.propTypes = {
+  match: PropTypes.object,
   data: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
   mode: PropTypes.number,
 };
-
-const mapStateToProps = createStructuredSelector({
-  loading: makeSelectDetailLoading(),
-  error: makeSelectDetailError(),
-  data: makeSelectDetail(),
-  packageId: makeSelectPackage(),
-  mode: makeSelectMode(),
-});
-
-export function mapDispatchToProps(dispatch) {
-  return {
-    onLoadData: id => {
-      dispatch(loadPackages(id));
-    },
-    handlePageChange: page => {
-      dispatch(changePage(page));
-      dispatch(loadPackages());
-    },
-    handleModeChange: mode => {
-      dispatch(changeMode(mode));
-    },
-  };
-}
-
-const withConnect = connect(
-  mapStateToProps,
-  mapDispatchToProps,
-);
-
-export default compose(
-  withConnect,
-  memo,
-)(ManagementPage);
+export default memo(MyPackage);

@@ -124,5 +124,12 @@
     "methodDesc": "Vui lòng điền đầy đủ thông tin thanh toán để hoàn tất đặt hẹn cho talent",
     "instantPay": "Thanh toán ngay",
     "laterPay": "Thanh toán trả sau"
+  },
+  "TalentManagementPage" : {
+    "profile": "Profile",
+    "myPackage": "My Package",
+    "orders": "Orders",
+    "schedule": "Schedule",
+    "myAccount": "My Account"
   }
 }

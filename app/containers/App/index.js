@@ -28,7 +28,7 @@ import ArtistDetailPage from 'containers/ArtistDetailPage/Loadable';
 import CreateEventPage from 'containers/CreateEventPage/Loadable';
 import SearchResultPage from 'containers/SearchResultPage/Loadable';
 import Calendar from 'containers/Calendar/Loadable';
-import ManagementPage from 'containers/ManagementPage/Loadable';
+import ManagementPage from 'containers/TalentManagementPage/Loadable';
 import PreCheckout from 'containers/PreCheckout/Loadable';
 import BookingDetailPage from 'containers/BookingDetailPage/Loadable';
 import CreateCustomDealPage from 'containers/CreateCustomDeal/Loadable';
