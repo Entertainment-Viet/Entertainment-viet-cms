@@ -9,18 +9,17 @@ import {
   Link,
   MenuItemOption,
 } from '@chakra-ui/react';
-import { logout } from 'utils/auth';
-import { getCookie } from 'utils/cookie';
+import { logout, getLocalRefreshToken } from 'utils/auth';
 import qs from 'qs';
 import axios from 'axios';
 import { API_LOGOUT } from '../../constants/api';
+
 // If you want to use your own Selectors look up the Advancaed Story book examples
 const ProfileAvatar = () => {
   const logoutHandle = async () => {
-    console.log(getCookie('refreshToken'));
     const data = {
       client_id: 'backend',
-      refresh_token: getCookie('refreshToken'),
+      refresh_token: getLocalRefreshToken(),
     };
     const options = {
       method: 'POST',

@@ -6,7 +6,7 @@ const isBrowser = typeof window !== `undefined`;
 export const isLoggedIn = () => {
   if (!isBrowser) return false;
 
-  const Token = getCookie('refreshToken');
+  const Token = getCookie('token');
 
   return !!Token;
 };
@@ -22,7 +22,8 @@ export function getLocalRole() {
 }
 
 export function getLocalRefreshToken() {
-  const token = getCookie('refreshToken');
+  const token =
+    getCookie('refreshToken') || window.localStorage.getItem('refreshToken');
   return token;
 }
 

@@ -52,7 +52,7 @@ cRequest.interceptors.request.use(async config => {
   // console.log('Starting Request', JSON.stringify(config, null, 2));
   // eslint-disable-next-line no-console
   console.log(Date.now() > getLocalAccessTokenExpire() * 1000);
-  if (Date.now() > getLocalAccessTokenExpire() * 1000) {
+  if (Date.now() > getLocalAccessTokenExpire() * 1000 || !getLocalToken()) {
     // eslint-disable-next-line no-console
     console.log('expired');
     const data = {

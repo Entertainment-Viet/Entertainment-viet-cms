@@ -80,7 +80,7 @@ function LoginPageV2() {
         result.data.access_token,
         jwt(result.data.access_token).exp,
       );
-      setSecureCookie('refreshToken', result.data.refresh_token);
+      setSecureCookie('refreshToken', result.data.refresh_token, 1);
       if (data.checkBoxRemember === true) {
         window.localStorage.setItem('refreshToken', result.data.refresh_token);
       }
