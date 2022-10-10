@@ -6,7 +6,7 @@ const isBrowser = typeof window !== `undefined`;
 export const isLoggedIn = () => {
   if (!isBrowser) return false;
 
-  const Token = getCookie('token');
+  const Token = getCookie('token') || getCookie('refreshToken');
 
   return !!Token;
 };

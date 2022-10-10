@@ -16,8 +16,11 @@ export const setCookie = (
   options = {},
 ) => {
   const date = new Date();
-  date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
-  const expires = `expires=${date.toUTCString()}`;
+  let expires = 0;
+  if (days) {
+    date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
+    expires = `expires=${date.toUTCString()}`;
+  }
 
   options = {
     path: '/',

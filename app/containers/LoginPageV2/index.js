@@ -80,9 +80,11 @@ function LoginPageV2() {
         result.data.access_token,
         jwt(result.data.access_token).exp,
       );
-      setSecureCookie('refreshToken', result.data.refresh_token, 1);
       if (data.checkBoxRemember === true) {
-        window.localStorage.setItem('refreshToken', result.data.refresh_token);
+        // window.localStorage.setItem('refreshToken', result.data.refresh_token);
+        setSecureCookie('refreshToken', result.data.refresh_token, 30);
+      } else {
+        setSecureCookie('refreshToken', result.data.refresh_token, 0);
       }
       const role = roles.every(element => {
         if (talentRole === element) {
