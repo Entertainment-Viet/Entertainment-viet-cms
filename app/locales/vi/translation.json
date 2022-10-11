@@ -125,11 +125,15 @@
     "instantPay": "Thanh toán ngay",
     "laterPay": "Thanh toán trả sau"
   },
-  "TalentManagementPage" : {
+  "TalentManagementPage": {
     "profile": "Profile",
     "myPackage": "My Package",
     "orders": "Orders",
     "schedule": "Schedule",
-    "myAccount": "My Account"
+    "myAccount": "My Account",
+    "back": "Back",
+    "createPackage": "+ Create new package",
+    "edit": "Edit",
+    "delete": "Delete"
   }
 }

@@ -14,4 +14,8 @@ export const messages = {
   orders: () => t(translations.TalentManagementPage.orders),
   schedule: () => t(translations.TalentManagementPage.schedule),
   myAccount: () => t(translations.TalentManagementPage.myAccount),
+  back: () => t(translations.TalentManagementPage.back),
+  createPackage: () => t(translations.TalentManagementPage.createPackage),
+  delete: () => t(translations.TalentManagementPage.delete),
+  edit: () => t(translations.TalentManagementPage.edit),
 };
