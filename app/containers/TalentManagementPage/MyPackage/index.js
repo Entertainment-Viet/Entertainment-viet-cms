@@ -1,20 +1,38 @@
-import React, { memo } from 'react';
-import {
-  Container,
-  VStack,
-  HStack,
-  Text,
-  Flex,
-  Box,
-  Link,
-} from '@chakra-ui/react';
+import React, { memo, useEffect } from 'react';
+import { HStack, Text, Flex, Box, Link, Button } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
-import MyTable from 'components/Table';
 import PageSpinner from 'components/PageSpinner';
-import { PRI_TEXT_COLOR } from 'constants/styles';
+import { PRI_TEXT_COLOR, TEXT_GREEN, RED_COLOR } from 'constants/styles';
 import styled from 'styled-components';
+import AdvancedTable from 'components/AdvancedTable';
 
+import { connect } from 'react-redux';
+import { compose } from 'redux';
+import { createStructuredSelector } from 'reselect';
+import { useInjectReducer } from 'utils/injectReducer';
+import { useInjectSaga } from 'utils/injectSaga';
+import { messages } from '../messages';
+import { CustomButton } from '../styles';
+import {
+  changePage,
+  loadPackages,
+  changeMode,
+  changeLimit,
+  loadPackageInfo,
+} from './slice/actions';
+import saga from './slice/saga';
+import reducer from './slice/reducer';
+import {
+  makeSelectDetailLoading,
+  makeSelectDetailError,
+  makeSelectDetail,
+  makeSelectPackage,
+  makeSelectMode,
+  makeSelectPaging,
+  makeSelectPackageInfo,
+} from './slice/selectors';
+import PackageDetailCard from './PackageDetailCard';
 const StatusCell = styled(Text)`
   text-align: center;
   padding: 5px;
@@ -33,30 +51,40 @@ const StatusCell = styled(Text)`
       case 'request-user':
         return 'rgb(225 29 72)';
       default:
-        return 'white';
+        return 'transparent';
+    }
+  }};
+  color: ${props => {
+    switch (props.type) {
+      case 'disable':
+        return `${RED_COLOR}!important`;
+      case 'active':
+        return `${TEXT_GREEN}!important`;
+      default:
+        return 'black !important';
     }
   }};
 `;
 const packageColumns = [
   {
-    Header: 'Ngày đặt',
-    accessor: 'bookedDate',
-  },
-  {
-    Header: 'Ngày biểu diễn',
-    accessor: 'performDate',
-  },
-  {
     Header: 'Package',
     accessor: 'package',
   },
   {
-    Header: 'Người đặt',
-    accessor: 'booker',
+    Header: 'Số lượt đặt',
+    accessor: 'totalBooking',
+  },
+  {
+    Header: 'Status',
+    accessor: 'status',
   },
   {
     Header: 'Giá tiền',
     accessor: 'price',
+  },
+  {
+    Header: 'Action',
+    accessor: 'action',
   },
 ];
 const bookingColumns = [
@@ -77,78 +105,123 @@ const bookingColumns = [
     accessor: 'priceMax',
   },
   {
+    Header: 'Hình thức thanh toán',
+    accessor: 'paymentType',
+  },
+  {
     Header: 'STATUS',
     accessor: 'status',
   },
 ];
-const MyPackage = ({ data, mode }) => {
+const key = 'MyPackage';
+const MyPackage = ({
+  data,
+  mode,
+  onLoadData,
+  handleModeChange,
+  paging,
+  handlePageChange,
+  handleLimitchange,
+  loadPackage,
+  packageInfo,
+}) => {
+  useInjectReducer({ key, reducer });
+  useInjectSaga({ key, saga });
+  const { t } = useTranslation();
+
+  useEffect(() => {
+    onLoadData();
+  }, []);
+
   let tablePackage;
   let tableBooking;
   if (data) {
     if (mode === 0)
-      tablePackage = data.content.map(user => ({
-        bookedDate: (
-          <Flex align="center">
-            {/* <Avatar name={user.name} src={user.avatar_url} size="sm" mr="4" /> */}
-            <Text>{user.bookedDate}</Text>
-          </Flex>
-        ),
-        performDate: user.performanceTime,
+      tablePackage = data.map(user => ({
         package: (
           <Text
             onClick={() => {
               handleModeChange(1);
               onLoadData(user.uid);
+              handlePageChange(0);
+              loadPackage(user.uid, window.localStorage.getItem('uid'));
             }}
           >
             {user.name}
           </Text>
         ),
-        booker: user.booker,
-        price: user.price,
-        // status: <StatusCell type={user.status}>{user.status}</StatusCell>,
+        price: `${user.jobDetail.price.max} - ${user.jobDetail.price.max}`,
+        status: (
+          <StatusCell type={user.isActive ? 'active' : 'disable'}>
+            {user.isActive ? 'Active' : 'Disable'}
+          </StatusCell>
+        ),
+        action: (
+          <HStack>
+            <Button colorScheme="purple" size="xs">
+              {t(messages.edit())}
+            </Button>
+            <Button colorScheme="red" size="xs">
+              {t(messages.delete())}
+            </Button>
+          </HStack>
+        ),
       }));
     else
-      tableBooking = data.content.map(booking => {
+      tableBooking = data.map(booking => {
         const { jobDetail } = booking;
         return {
           bookedDate: (
             <Flex align="center">
-              {/* <Avatar name={user.name} src={user.avatar_url} size="sm" mr="4" /> */}
               <Link href={`/booking/${booking.uid}`}>
-                <Text>{booking.createdAt}</Text>
+                <Text>{new Date(booking.createdAt).toLocaleString()}</Text>
               </Link>
             </Flex>
           ),
           booker: booking.booker.displayName,
           priceMin: jobDetail.price.min,
           priceMax: jobDetail.price.max,
+          paymentType: booking.paymentType,
           status: (
             <StatusCell type={booking.status}>{booking.status}</StatusCell>
           ),
-          // action: (
-          //   <Button
-          //     colorScheme="gray"
-          //     onClick={() => console.log('remove user!')}
-          //     size="sm"
-          //   >
-          //     <Icon as={FiTrash2} fontSize="20" />
-          //   </Button>
-          // ),
         };
       });
   }
-  const { t } = useTranslation();
+  const pageProps = {
+    total: paging.totalElements,
+    pageNumber: paging.pageNumber, // pageNumber
+    limit: paging.pageSize, // pageSize
+    isLast: paging.last,
+  };
+
+  function handleBack() {
+    handleModeChange(0);
+    handlePageChange(0);
+  }
   return (
     <Box color={PRI_TEXT_COLOR}>
+      <Flex justifyContent="space-between" mb={2}>
+        {mode === 1 ? (
+          <CustomButton onClick={handleBack}>{t(messages.back())}</CustomButton>
+        ) : null}
+        <CustomButton>{t(messages.createPackage())}</CustomButton>
+      </Flex>
       {!data ? (
         <PageSpinner />
       ) : (
-        <MyTable
-          data={mode === 0 ? tablePackage : tableBooking}
-          title="Quản lý đơn đặt dịch vụ"
-          columns={mode === 0 ? packageColumns : bookingColumns}
-        />
+        <Flex zIndex={1} position="relative" gap={4}>
+          {mode === 1 ? <PackageDetailCard data={packageInfo} /> : null}
+          <Box w={mode === 1 ? 'auto' : '100%'} flexGrow={1}>
+            <AdvancedTable
+              columns={mode === 0 ? packageColumns : bookingColumns}
+              data={mode === 0 ? tablePackage : tableBooking}
+              {...pageProps}
+              handlePageChange={handlePageChange}
+              setLimit={handleLimitchange}
+            />
+          </Box>
+        </Flex>
       )}
     </Box>
   );
@@ -158,5 +231,53 @@ MyPackage.propTypes = {
   match: PropTypes.object,
   data: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
   mode: PropTypes.number,
+  onLoadData: PropTypes.func,
+  loadPackage: PropTypes.func,
+  handleModeChange: PropTypes.func,
+  paging: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
+  handlePageChange: PropTypes.func,
+  handleLimitchange: PropTypes.func,
+  packageInfo: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
 };
-export default memo(MyPackage);
+
+const mapStateToProps = createStructuredSelector({
+  loading: makeSelectDetailLoading(),
+  error: makeSelectDetailError(),
+  data: makeSelectDetail(),
+  packageId: makeSelectPackage(),
+  mode: makeSelectMode(),
+  paging: makeSelectPaging(),
+  packageInfo: makeSelectPackageInfo(),
+});
+
+export function mapDispatchToProps(dispatch) {
+  return {
+    onLoadData: id => {
+      dispatch(loadPackages(id));
+    },
+    handlePageChange: page => {
+      dispatch(changePage(page));
+      dispatch(loadPackages());
+    },
+    handleModeChange: mode => {
+      dispatch(changeMode(mode));
+    },
+    handleLimitchange: limit => {
+      dispatch(changeLimit(limit));
+      dispatch(loadPackages());
+    },
+    loadPackage: (id, talentId) => {
+      dispatch(loadPackageInfo(id, talentId));
+    },
+  };
+}
+
+const withConnect = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+);
+
+export default compose(
+  withConnect,
+  memo,
+)(MyPackage);
