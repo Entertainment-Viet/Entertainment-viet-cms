@@ -19,6 +19,7 @@ import {
   chakra,
   TabPanels,
   TabPanel,
+  Box,
 } from '@chakra-ui/react';
 
 import { useInjectReducer } from 'utils/injectReducer';
@@ -30,15 +31,16 @@ import { TEXT_PURPLE, TEXT_GREEN } from 'constants/styles';
 
 import PageSpinner from 'components/PageSpinner';
 import { loadDataHeader } from 'components/Header/actions';
-import { loadData, loadPackageInfo } from './actions';
+import { loadCommentsInfo, loadData, loadPackageInfo } from './actions';
 
-import {} from 'constants/routes';
-import {} from './styles';
+// import {} from 'constants/routes';
+// import {} from './styles';
 import { messages } from './messages';
 
 import saga from './saga';
 import reducer from './reducer';
 import {
+  makeSelectComments,
   makeSelectData,
   makeSelectPackageInfo,
   makeSelectPackages,
@@ -62,12 +64,16 @@ export function ArtistDetailPage({
   packages,
   loadPackage,
   packageInfo,
+  comments,
+  loadComments,
 }) {
   useInjectReducer({ key, reducer });
   useInjectSaga({ key, saga });
   const { t } = useTranslation();
   const [isShowing, setIsShowing] = useState(false);
   const [id, setId] = useState();
+  const [pageNumberComments, setPageNumberComments] = useState(0);
+  const [commentsData, setCommentsData] = useState([]);
   const toggleModal = inputId => {
     setIsShowing(!isShowing);
     setId(inputId);
@@ -75,7 +81,43 @@ export function ArtistDetailPage({
   };
   useEffect(() => {
     onLoadData(match.params.id);
+    loadComments(match.params.id, pageNumberComments);
   }, [match.params.id]);
+
+  useEffect(() => {
+    if (comments !== false && pageNumberComments === 0) {
+      const { content } = comments.reviews;
+      setCommentsData(content);
+      localStorage.removeItem('comments');
+      const commentTemp = localStorage.getItem('comments');
+      const commentLocalStorageParse = JSON.parse(commentTemp) || [];
+      const commentLocalStorageTemp = [...commentLocalStorageParse, ...content];
+      const commentsLocalStorage = JSON.stringify(commentLocalStorageTemp);
+      localStorage.setItem('comments', commentsLocalStorage);
+    }
+  }, [comments]);
+
+  useEffect(() => {
+    if (pageNumberComments !== 0) {
+      loadComments(match.params.id, pageNumberComments);
+      if (comments !== false) {
+        const { content } = comments.reviews;
+        const commentTemp = localStorage.getItem('comments');
+        const commentLocalStorageParse = JSON.parse(commentTemp) || [];
+        const commentLocalStorageTemp = [
+          ...commentLocalStorageParse,
+          ...content,
+        ];
+        setCommentsData(commentLocalStorageTemp);
+        const commentsLocalStorage = JSON.stringify(commentLocalStorageTemp);
+        localStorage.setItem('comments', commentsLocalStorage);
+      }
+    }
+  }, [pageNumberComments]);
+
+  const handleSeeMore = () => {
+    setPageNumberComments(pageNumberComments + 1);
+  };
 
   return (
     <div>
@@ -104,7 +146,15 @@ export function ArtistDetailPage({
               />
             </TabPanel>
             <TabPanel>
-              <Review />
+              <Box>Coming</Box>
+            </TabPanel>
+            <TabPanel>
+              <Review
+                comments={comments}
+                commentList={commentsData}
+                pageNumber={pageNumberComments}
+                handleSeeMore={handleSeeMore}
+              />
             </TabPanel>
           </TabPanels>
         )}
@@ -125,8 +175,10 @@ ArtistDetailPage.propTypes = {
   match: PropTypes.object,
   onLoadData: PropTypes.func,
   loadPackage: PropTypes.func,
+  loadComments: PropTypes.func,
   data: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
   packages: PropTypes.oneOfType([PropTypes.array, PropTypes.bool]),
+  comments: PropTypes.oneOfType([PropTypes.array, PropTypes.bool]),
   packageInfo: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
 };
 
@@ -134,6 +186,7 @@ const mapStateToProps = createStructuredSelector({
   data: makeSelectData(),
   packages: makeSelectPackages(),
   packageInfo: makeSelectPackageInfo(),
+  comments: makeSelectComments(),
 });
 
 export function mapDispatchToProps(dispatch) {
@@ -144,6 +197,9 @@ export function mapDispatchToProps(dispatch) {
     loadPackage: (id, talentId) => {
       dispatch(loadPackageInfo(id, talentId));
       dispatch(loadDataHeader(window.localStorage.getItem('uid')));
+    },
+    loadComments: (talentId, pageNumber) => {
+      dispatch(loadCommentsInfo(talentId, pageNumber));
     },
   };
 }
