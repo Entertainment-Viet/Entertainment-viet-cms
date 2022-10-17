@@ -1,5 +1,5 @@
 import React, { memo, useEffect, useState } from 'react';
-import { HStack, Text, Flex, Box, Button } from '@chakra-ui/react';
+import { HStack, Text, Flex, Box, Button, Link } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
 import PageSpinner from 'components/PageSpinner';
@@ -18,6 +18,7 @@ import { compose } from 'redux';
 import { createStructuredSelector } from 'reselect';
 import { useInjectReducer } from 'utils/injectReducer';
 import { useInjectSaga } from 'utils/injectSaga';
+import { ROUTE_BOOKING_DETAIL_MANAGER } from 'constants/routes';
 import { messages } from '../messages';
 import { changePage, changeLimit, loadBookings } from './slice/actions';
 import saga from './slice/saga';
@@ -181,15 +182,21 @@ const Orders = ({
           {booking.isPaid ? 'Paid' : 'Unpaid'}
         </StatusCell>
       ),
-      price: `${booking.jobDetail.price.max}`,
+      price: `${numberWithCommas(
+        booking.jobDetail.price.min,
+      )} - ${numberWithCommas(booking.jobDetail.price.max)}`,
       action: (
         <HStack>
           <Button colorScheme="purple" size="xs">
             {t(messages.done())}
           </Button>
-          <Button colorScheme="gray" size="xs">
-            {t(messages.contact())}
-          </Button>
+          <Link
+            href={`${ROUTE_BOOKING_DETAIL_MANAGER.replace(':id', booking.uid)}`}
+          >
+            <Button colorScheme="gray" size="xs">
+              {t(messages.detail())}
+            </Button>
+          </Link>
           <Button colorScheme="red" size="xs">
             {t(messages.cancel())}
           </Button>
