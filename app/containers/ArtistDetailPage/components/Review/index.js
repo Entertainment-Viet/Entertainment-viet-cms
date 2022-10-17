@@ -135,7 +135,7 @@ const Review = ({ comments, commentList, pageNumber, handleSeeMore }) => {
       <HStack>
         <Text>5 sao</Text>{' '}
         <Progress
-          value={comments.sumScore5 / totalComments}
+          value={(comments.sumScore5 * 100) / totalComments}
           size="xs"
           w="20rem"
         />
@@ -144,7 +144,7 @@ const Review = ({ comments, commentList, pageNumber, handleSeeMore }) => {
       <HStack>
         <Text>4 sao</Text>{' '}
         <Progress
-          value={comments.sumScore4 / totalComments}
+          value={(comments.sumScore4 * 100) / totalComments}
           size="xs"
           w="20rem"
         />
@@ -153,7 +153,7 @@ const Review = ({ comments, commentList, pageNumber, handleSeeMore }) => {
       <HStack>
         <Text>3 sao</Text>{' '}
         <Progress
-          value={comments.sumScore3 / totalComments}
+          value={(comments.sumScore3 * 100) / totalComments}
           size="xs"
           w="20rem"
         />
@@ -162,7 +162,7 @@ const Review = ({ comments, commentList, pageNumber, handleSeeMore }) => {
       <HStack>
         <Text>2 sao</Text>{' '}
         <Progress
-          value={comments.sumScore2 / totalComments}
+          value={(comments.sumScore2 * 100) / totalComments}
           size="xs"
           w="20rem"
         />
@@ -171,7 +171,7 @@ const Review = ({ comments, commentList, pageNumber, handleSeeMore }) => {
       <HStack>
         <Text>1 sao</Text>{' '}
         <Progress
-          value={comments.sumScore1 / totalComments}
+          value={(comments.sumScore1 * 100) / totalComments}
           size="xs"
           w="20rem"
         />
