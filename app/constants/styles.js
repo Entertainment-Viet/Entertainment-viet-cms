@@ -17,7 +17,7 @@ export const PRI_TEXT_COLOR = '#BDC1EA';
 export const TEXT_GREEN = '#B6FF6D';
 export const TEXT_PURPLE = '#8A6DFF';
 export const PRI_BACKGROUND = '#1D1C4D';
-
+export const TEXT_COLOR = '#BDC2EA';
 export const SEC_TEXT_COLOR = '#CBD5E0';
 export const THIRD_TEXT_COLOR = '#A0AEC0';
 export const DARK_PINK_COLOR = '#EE2068';

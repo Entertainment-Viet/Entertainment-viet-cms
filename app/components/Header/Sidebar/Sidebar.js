@@ -4,6 +4,7 @@ import { FiHome } from 'react-icons/fi';
 import cRequest from 'utils/server';
 import { getResStatus, cacthError, cacthResponse } from 'utils/helpers';
 import { BsFacebook, BsInstagram, BsTwitter, BsLinkedin } from 'react-icons/bs';
+import { TEXT_COLOR } from 'constants/styles';
 import NavItem from './NavItem';
 import VE from '../assets/Entertainment Viet.svg';
 import EV from '../assets/EV.svg';
@@ -72,54 +73,53 @@ export default function Sidebar() {
         />
         <DropdownItem navSize={navSize} title="About" data={dataAbout} />
         <DropdownItem navSize={navSize} title="Support" data={dataSupport} />
+        {navSize === 'large' && (
+          <Flex
+            p="5%"
+            flexDir="column"
+            w="100%"
+            alignItems={navSize === 'small' ? 'center' : 'flex-start'}
+            mb={5}
+            justifyContent="flex-start"
+          >
+            <Flex justifyContent="space-between" w="60%">
+              <Link href="https://www.facebook.com/">
+                <BsFacebook
+                  style={{ fill: TEXT_COLOR }}
+                  size={20}
+                  cursor="pointer"
+                />
+              </Link>
+              <Link href="https://www.instagram.com/">
+                <BsInstagram
+                  style={{ fill: TEXT_COLOR }}
+                  size={20}
+                  cursor="pointer"
+                />
+              </Link>
+              <Link href="https://twitter.com/">
+                <BsTwitter
+                  style={{ fill: TEXT_COLOR }}
+                  size={20}
+                  cursor="pointer"
+                />
+              </Link>
+              <Link href="https://www.linkedin.com/">
+                <BsLinkedin
+                  style={{ fill: TEXT_COLOR }}
+                  size={20}
+                  cursor="pointer"
+                />
+              </Link>
+            </Flex>
+            <Flex mt={4} align="center">
+              {navSize === 'large' && (
+                <Text as="span">Entertainment Viet Ltd. 2022</Text>
+              )}
+            </Flex>
+          </Flex>
+        )}
       </Flex>
-
-      {navSize === 'large' && (
-        <Flex
-          p="5%"
-          flexDir="column"
-          w="100%"
-          alignItems={navSize === 'small' ? 'center' : 'flex-start'}
-          mb={5}
-          justifyContent="flex-start"
-        >
-          <Flex justifyContent="space-between" w="60%">
-            <Link href="https://www.facebook.com/">
-              <BsFacebook
-                style={{ fill: '#BDC2EA' }}
-                size={30}
-                cursor="pointer"
-              />
-            </Link>
-            <Link href="https://www.instagram.com/">
-              <BsInstagram
-                style={{ fill: '#BDC2EA' }}
-                size={30}
-                cursor="pointer"
-              />
-            </Link>
-            <Link href="https://twitter.com/">
-              <BsTwitter
-                style={{ fill: '#BDC2EA' }}
-                size={30}
-                cursor="pointer"
-              />
-            </Link>
-            <Link href="https://www.linkedin.com/">
-              <BsLinkedin
-                style={{ fill: '#BDC2EA' }}
-                size={30}
-                cursor="pointer"
-              />
-            </Link>
-          </Flex>
-          <Flex mt={4} align="center">
-            {navSize === 'large' && (
-              <Text as="span">Entertainment Viet Ltd. 2022</Text>
-            )}
-          </Flex>
-        </Flex>
-      )}
     </Flex>
   );
 }
