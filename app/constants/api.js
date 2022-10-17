@@ -39,3 +39,10 @@ export const API_ORG_ACTION_SHOPPINGCART = 'api/organizers/:id1/shoppingcart';
 
 /* PACKAGE */
 export const API_GET_PACKAGE_INFO = 'api/talents/:id1/packages';
+
+/* BOOKINGS */
+
+export const API_GET_BOOKING_TALENT_INFO = 'api/talents/:id1/bookings/:id2';
+export const API_GET_BOOKING_ORG_INFO = 'api/organizers/:id1/bookings/:id2';
+export const API_TALENT_FINISH_BOOKING = 'api/talents/:id1/bookings/:id2/done';
+export const API_ORG_FINISH_BOOKING = 'api/organizers/:id1/bookings/:id2/done';

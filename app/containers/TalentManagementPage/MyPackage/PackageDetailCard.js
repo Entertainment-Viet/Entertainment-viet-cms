@@ -12,7 +12,9 @@ import { H1 } from 'components/Elements';
 import Buttons from 'components/Buttons';
 import styled from 'styled-components';
 import { PropTypes } from 'prop-types';
-
+import PageSpinner from 'components/PageSpinner';
+import parserHtml from 'utils/html';
+import { numberWithCommas } from '../../../utils/helpers';
 const GradientBox = chakra(Box, {
   baseStyle: {
     flex: 1,
@@ -54,37 +56,45 @@ const CustomLink = styled(Link)`
 `;
 const PackageDetailCard = ({ data }) => (
   <GradientBox>
-    <Text color={TEXT_GREEN} as="h1" fontSize="30px">
-      Package Detail
-    </Text>
-    <H1 color={TEXT_PURPLE} py={0} mb={-2}>
-      {data.name}
-    </H1>
-    <Text>
-      {data.jobDetail.price.min} - {data.jobDetail.price.max}
-    </Text>
-    <Text color={TEXT_PURPLE} mt={6}>
-      Details
-    </Text>
-    <UnorderedList>
-      <ListItem>
-        <Text>Location: {data.location}</Text>
-      </ListItem>
-      <ListItem>
-        <Text>
-          Time: {new Date(data.jobDetail.performanceStartTime).toLocaleString()}{' '}
-          - {new Date(data.jobDetail.performanceEndTime).toLocaleString()}
+    {!data ? (
+      <PageSpinner />
+    ) : (
+      <>
+        <Text color={TEXT_GREEN} as="h1" fontSize="30px">
+          Package Detail
         </Text>
-      </ListItem>
-      <ListItem>
-        <Text>Note: {data.jobDetail.note} </Text>
-      </ListItem>
-    </UnorderedList>
-    <CustomLink href="/#">
-      <Buttons width="100%" bg={TEXT_PURPLE} color={SUB_BLU_COLOR}>
-        Edit
-      </Buttons>
-    </CustomLink>
+        <H1 color={TEXT_PURPLE} py={0} mb={-2}>
+          {data.name}
+        </H1>
+        <Text>
+          {numberWithCommas(data.jobDetail.price.min)} -{' '}
+          {numberWithCommas(data.jobDetail.price.max)}
+        </Text>
+        <Text color={TEXT_PURPLE} mt={6}>
+          Details
+        </Text>
+        <UnorderedList>
+          <ListItem>
+            <Text>Location: {data.location}</Text>
+          </ListItem>
+          <ListItem>
+            <Text>
+              Time:{' '}
+              {new Date(data.jobDetail.performanceStartTime).toLocaleString()} -{' '}
+              {new Date(data.jobDetail.performanceEndTime).toLocaleString()}
+            </Text>
+          </ListItem>
+          <ListItem>
+            <Text>Note: {parserHtml(data.jobDetail.note)} </Text>
+          </ListItem>
+        </UnorderedList>
+        <CustomLink href="/#">
+          <Buttons width="100%" bg={TEXT_PURPLE} color={SUB_BLU_COLOR}>
+            Edit
+          </Buttons>
+        </CustomLink>
+      </>
+    )}
   </GradientBox>
 );
 PackageDetailCard.propTypes = {
