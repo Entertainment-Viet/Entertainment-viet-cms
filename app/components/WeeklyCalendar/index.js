@@ -5,41 +5,23 @@ import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import { JobDetailModal } from 'components/Modal';
 import PropTypes from 'prop-types';
-
 // import { INITIAL_EVENTS } from './event-utils';
 import '@fullcalendar/common/main.css';
 import '@fullcalendar/daygrid/main.css'; // a dependency of timegrid
 import '@fullcalendar/timegrid/main.css';
 import './styles.css';
 
-export default function Calendar({ onSelectDate, data }) {
+export default function WeeklyCalendar({ toDate, data }) {
   const [currentEvents, setCurrentEvents] = useState([]);
   const [isShowing, setIsShowing] = useState(false);
   const [id, setId] = useState();
   const toggleModal = inputId => {
+    console.log(inputId);
     setIsShowing(!isShowing);
-    setId(inputId);
+    setId(data.content.find(x => x.uid === inputId));
+    // setId(inputId);
   };
-  // const events = [];
-  // useEffect(() => {
-  //   if (data) {
-  //     console.log(data.content)
-  //     const tempt1 = [];
-  //     data.content.map(event => {
-  //       const tempt = {
-  //         id: createEventId(),
-  //         title: event.packageName,
-  //         start: new Date(event.jobDetail.performanceStartTime).toISOString().replace('0Z', ''),
-  //         end: new Date(event.jobDetail.performanceEndTime).toISOString().replace('0Z', ''),
-  //         backgroundColor: '#805AD5',
-  //         className: 'dot',
-  //       };
-  //       tempt1.push(tempt);
-  //       return true;
-  //     });
-  //     setCurrentEvents(tempt1);
-  //   }
-  // }, [data]);
+
   useLayoutEffect(() => {
     if (data) {
       const tempt1 = [];
@@ -61,27 +43,16 @@ export default function Calendar({ onSelectDate, data }) {
       });
       setCurrentEvents(tempt1);
     }
-    function appendHtml(el, str) {
-      const div = document.createElement('div');
-      div.innerHTML = str;
-      while (div.children.length > 0) {
-        el.appendChild(div.children[0]);
-      }
-    }
-    const val = document.querySelectorAll('.fc-toolbar-chunk')[3];
-    const test =
-      '<select class="select_month form-control"><option value=""></option><option value="01">Jan</option><option value="02">Feb</option><option value="03">Mrch</option><option value="04">Aprl</option><option value="05">May</option><option value="06">June</option><option value="07">July</option><option value="08">Aug</option><option value="09">Sep</option><option value="10">Oct</option><option value="11">Nov</option><option value="12">Dec</option></select>';
-    appendHtml(val, test);
-    const selectTag = document.querySelector('.select_month');
     const calendarApi = calendarComponentRef.current.getApi();
-    selectTag.addEventListener('change', () => {
-      calendarApi.gotoDate(
-        `${new Date().getFullYear()}-${
-          document.querySelector('.select_month').value
-        }-01`,
-      );
-    });
-  }, [data]);
+    // const selectDay = document.getElementsByClassName('fc-daygrid-day-frame');
+    // const date = new Date(window.localStorage.getItem('calendar'));
+    if (!toDate) {
+      calendarApi.gotoDate(new Date());
+    } else {
+      calendarApi.gotoDate(toDate);
+    }
+    // }
+  }, [toDate, data]);
 
   const calendarComponentRef = React.createRef();
 
@@ -89,8 +60,6 @@ export default function Calendar({ onSelectDate, data }) {
     // const title = prompt('Please enter a new title for your event');
     const calendarApi = selectInfo.view.calendar;
     // console.log(selectInfo);
-    // window.localStorage.setItem('calendar', selectInfo.start)
-    onSelectDate(selectInfo.start);
     calendarApi.unselect(); // clear date selection
     // toggleModal(selectInfo.startStr);
 
@@ -116,7 +85,8 @@ export default function Calendar({ onSelectDate, data }) {
     // ) {
     //   clickInfo.event.remove();
     // }
-    toggleModal(clickInfo.event.title);
+    console.log(clickInfo.event);
+    toggleModal(clickInfo.event.id);
   };
 
   const handleEvents = events => {
@@ -125,7 +95,7 @@ export default function Calendar({ onSelectDate, data }) {
     // setCurrentEvents(events);
   };
   return (
-    <div className="calendar-wrapper">
+    <div className="weekly-calendar-wrapper">
       {/* {this.renderSidebar()} */}
       {/* <div className="demo-app-main"> */}
       <FullCalendar
@@ -137,15 +107,15 @@ export default function Calendar({ onSelectDate, data }) {
           // right: 'dayGridMonth,timeGridWeek,timeGridDay',
         }}
         ref={calendarComponentRef}
-        height={350}
+        height={1430}
         // width={100}
-        initialView="dayGridMonth"
-        events={currentEvents}
+        initialView="timeGridWeek"
         editable
         selectable
         selectMirror
         dayMaxEvents
-        // initialEvents={currentEvents} // alternatively, use the `events` setting to fetch from a feed
+        // initialEvents={INITIAL_EVENTS}
+        events={currentEvents} // alternatively, use the `events` setting to fetch from a feed
         select={handleDateSelect}
         eventContent={renderEventContent} // custom render function
         eventClick={handleEventClick}
@@ -161,13 +131,13 @@ export default function Calendar({ onSelectDate, data }) {
         title="My Modal"
         onClose={() => toggleModal()}
         show={isShowing}
-        id={id}
+        data={id}
       />
     </div>
   );
 }
-Calendar.propTypes = {
-  onSelectDate: PropTypes.func,
+WeeklyCalendar.propTypes = {
+  toDate: PropTypes.any,
   data: PropTypes.any,
 };
 function renderEventContent(eventInfo) {

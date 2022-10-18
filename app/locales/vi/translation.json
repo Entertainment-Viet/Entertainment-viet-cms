@@ -108,7 +108,8 @@
     "paymentMethod": "Payment Method",
     "prepay": "Prepay",
     "postPaid": "Post Paid",
-    "createPackage": "Create new package"
+    "createPackage": "Create new package",
+    "paymentType": "Payment type"
   },
   "artistDetailPage": {
     "overview": "Overview",
@@ -119,14 +120,16 @@
     "description": "Thông tin dịch vụ công cấp",
     "basicInfo": "Thông tin cơ bản về talent",
     "questions": "Câu hỏi thường gặp",
-    "seeMore": "+ See more"
+    "seeMore": "+ See more",
+    "schedule": "Schedule"
   },
   "Modal": {
     "orgInfo": "Thông tin gói",
     "priceRange": "Mức Giá",
     "postDesc": "Mô tả công việc",
     "goToDetail": "Xem chi tiết",
-    "performanceTime": "Thời gian diễn"
+    "performanceTime": "Thời gian diễn",
+    "location": "Địa điểm"
   },
   "preCheckout": {
     "overview": "Tổng quát",
