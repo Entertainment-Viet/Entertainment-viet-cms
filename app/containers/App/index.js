@@ -29,6 +29,7 @@ import CreateEventPage from 'containers/CreateEventPage/Loadable';
 import SearchResultPage from 'containers/SearchResultPage/Loadable';
 import Calendar from 'containers/Calendar/Loadable';
 import ManagementPage from 'containers/TalentManagementPage/Loadable';
+import OrganizerManagementPage from 'containers/OrganizerManagementPage/Loadable';
 import PreCheckout from 'containers/PreCheckout/Loadable';
 import BookingDetailPage from 'containers/BookingDetailPage/Loadable';
 import CreateCustomDealPage from 'containers/CreateCustomDeal/Loadable';
@@ -53,6 +54,7 @@ const AppWrapper = styled.div`
 export default function App() {
   const { i18n } = useTranslation();
   const isAuthenticated = isLoggedIn();
+  const role = localStorage.getItem('role');
   requestFirebaseNotificationPermission()
     .then(firebaseToken => {
       // eslint-disable-next-line no-console
@@ -148,9 +150,13 @@ export default function App() {
           exact
           path={Paths.ROUTE_MANAGER}
           isAuthenticated={isAuthenticated}
-          roles={[ENUM_ROLES.TAL]}
+          roles={[ENUM_ROLES.TAL, ENUM_ROLES.ORG]}
         >
-          <ManagementPage />
+          {role === ENUM_ROLES.TAL ? (
+            <ManagementPage />
+          ) : (
+            <OrganizerManagementPage />
+          )}
         </PrivateRoute>
         <PrivateRoute
           exact
