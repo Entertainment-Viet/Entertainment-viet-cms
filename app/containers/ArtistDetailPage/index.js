@@ -47,6 +47,7 @@ import {
 import Overview from './components/Overview';
 import Review from './components/Review';
 import Calendar from '../Calendar';
+import About from './components/About';
 // import { BasicRating } from '../../components/Rating';
 const CustomTab = chakra(Tab, {
   baseStyle: {
@@ -118,7 +119,6 @@ export function ArtistDetailPage({
   const handleSeeMore = () => {
     setPageNumberComments(pageNumberComments + 1);
   };
-
   return (
     <div>
       <Metadata />
@@ -145,6 +145,15 @@ export function ArtistDetailPage({
                 packages={packages}
                 toggleModal={toggleModal}
                 comments={comments}
+              />
+            </TabPanel>
+            <TabPanel>
+              <About
+                data={data}
+                comments={comments}
+                match={match}
+                packages={packages}
+                toggleModal={toggleModal}
               />
             </TabPanel>
             <TabPanel>

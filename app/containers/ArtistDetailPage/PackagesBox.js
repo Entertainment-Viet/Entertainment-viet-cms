@@ -91,7 +91,7 @@ const PackagesBox = ({ data, id, toggleModal }) => {
               <Tbody position="relative">
                 {data.map((item, index) => (
                   <>
-                    {index !== 0 ? (
+                    {index !== 0 && (
                       <Divider
                         w="90%"
                         position="absolute"
@@ -100,7 +100,7 @@ const PackagesBox = ({ data, id, toggleModal }) => {
                         margin="0 auto"
                         bg={PRI_TEXT_COLOR}
                       />
-                    ) : null}
+                    )}
                     <Tr key={item.uid}>
                       <Td>
                         <Text
