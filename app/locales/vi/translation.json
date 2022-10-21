@@ -131,7 +131,10 @@
     "postDesc": "Mô tả công việc",
     "goToDetail": "Xem chi tiết",
     "performanceTime": "Thời gian diễn",
-    "location": "Địa điểm"
+    "location": "Địa điểm",
+    "yourReviewRating": "Your review and rating",
+    "yourReview": "Your reviews",
+    "submit": "Submit"
   },
   "preCheckout": {
     "overview": "Tổng quát",

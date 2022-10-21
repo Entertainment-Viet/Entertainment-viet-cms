@@ -15,4 +15,7 @@ export const messages = {
   performanceTime: () => t(translations.Modal.performanceTime),
   goToDetail: () => t(translations.Modal.goToDetail),
   location: () => t(translations.Modal.location),
+  yourReview: () => t(translations.Modal.yourReview),
+  yourReviewRating: () => t(translations.Modal.yourReviewRating),
+  submit: () => t(translations.Modal.submit),
 };

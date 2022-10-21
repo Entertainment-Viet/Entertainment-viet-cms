@@ -3,18 +3,14 @@ import ReactDOM from 'react-dom';
 import { CSSTransition } from 'react-transition-group';
 import './Modal.css';
 import {
-  HStack,
-  Text,
   Box,
   VStack,
-  Container,
   FormControl,
   FormErrorMessage,
   FormLabel,
-  Input,
   chakra,
 } from '@chakra-ui/react';
-import { PRI_TEXT_COLOR } from 'constants/styles';
+import { TEXT_GREEN, TEXT_PURPLE, SUB_BLU_COLOR } from 'constants/styles';
 import { useTranslation } from 'react-i18next';
 import Button from 'components/Buttons';
 import { getResStatus, cacthError, cacthResponse } from 'utils/helpers';
@@ -24,8 +20,10 @@ import {
   API_TALENT_FINISH_BOOKING,
   API_ORG_FINISH_BOOKING,
 } from 'constants/api';
+import TextAreaCustom from 'components/Controls/TextAreaCustom';
 import BasicRating from '../Rating/BasicRating';
 import { messages } from './messages';
+
 const CustomFormLabel = chakra(FormLabel, {
   baseStyle: {
     my: '4',
@@ -123,25 +121,32 @@ const ConfirmFinishModal = props => {
           onKeyPress={closeOnEscapeKeyDown}
         >
           <VStack align="flex-start" p={4} spacing={4}>
+            <Box
+              w="100%"
+              textAlign="center"
+              as="h1"
+              fontSize="20px"
+              color={TEXT_GREEN}
+            >
+              {t(messages.yourReviewRating())}
+            </Box>
             <BasicRating
               size={48}
               icon="star"
               scale={5}
-              fillColor="gold"
+              fillColor={TEXT_GREEN}
               strokeColor="grey"
               setRating={setRating}
               rating={rating}
             />
-            <form onSubmit={handleSubmit(onSubmit)}>
+            <form onSubmit={handleSubmit(onSubmit)} style={{ width: '100%' }}>
               <FormControl isInvalid={errors.suggestedPrice}>
                 <CustomFormLabel htmlFor="suggestedPrice">
-                  Giá đề nghị
+                  {t(messages.yourReview())}
                 </CustomFormLabel>
-                <Input
-                  bg="white"
+                <TextAreaCustom
                   id="comment"
-                  color="black"
-                  placeholder="Mức giá"
+                  placeholder="Your reviews"
                   {...register('comment', {
                     required: 'This is required',
                     minLength: {
@@ -155,12 +160,15 @@ const ConfirmFinishModal = props => {
                 </FormErrorMessage>
               </FormControl>
               <Button
-                color={PRI_TEXT_COLOR}
+                width="100%"
+                bg={TEXT_PURPLE}
+                color={SUB_BLU_COLOR}
+                mt={2}
                 // onClick={() => handleAddToCart()}
                 isLoading={isSubmitting}
                 type="submit"
               >
-                Feedback offer
+                {t(messages.submit())}
               </Button>
             </form>
             {/* </Link> */}

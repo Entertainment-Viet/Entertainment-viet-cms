@@ -1,13 +1,15 @@
-import React, { useState } from 'react';
-import { Box, Icon, Stack, Text } from '@chakra-ui/react';
+/* eslint-disable react/prop-types */
+import React from 'react';
+import { Box, Icon, Stack } from '@chakra-ui/react';
 import { StarIcon } from '@chakra-ui/icons';
 
 const BasicRating = React.forwardRef(
-  ({ size, icon, scale, fillColor, strokeColor, setRating, rating }, ref) => {
+  ({ size, scale, fillColor, strokeColor, setRating, rating }, ref) => {
     // const [rating, setRating] = useState(0);
     const buttons = [];
 
     const onClick = idx => {
+      // eslint-disable-next-line no-restricted-globals
       if (!isNaN(idx)) {
         // allow user to click first icon and set rating to zero if rating is already 1
         if (rating === 1 && idx === 1) {
@@ -49,17 +51,9 @@ const BasicRating = React.forwardRef(
     }
 
     return (
-      <Stack isInline mt={8} justify="center">
+      <Stack isInline mt={8} justify="center" style={{ margin: '0 auto' }}>
         <input name="rating" type="hidden" value={rating} ref={ref} />
         {buttons}
-        <Box width={`${size * 1.5}px`} textAlign="center">
-          <Text fontSize="sm" textTransform="uppercase">
-            Rating
-          </Text>
-          <Text fontSize="2xl" fontWeight="semibold" lineHeight="1.2em">
-            {rating}
-          </Text>
-        </Box>
       </Stack>
     );
   },
