@@ -50,7 +50,7 @@ export function BookManagementPage({ data, onLoadData, roles, uid }) {
   // const { t } = useTranslation();
 
   return (
-    <Flex color={PRI_TEXT_COLOR} gap={8}>
+    <Flex color={PRI_TEXT_COLOR} gap={8} minWidth="max-content">
       {data && (
         <>
           <WeeklyCalendar toDate={selectedDate} data={data} />
