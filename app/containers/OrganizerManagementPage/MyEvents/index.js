@@ -1,3 +1,6 @@
+/* eslint-disable prettier/prettier */
+/* eslint-disable indent */
+/* eslint-disable no-nested-ternary */
 import React, { memo, useEffect } from 'react';
 import { HStack, Text, Flex, Box, Link, Button } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
@@ -12,17 +15,17 @@ import { compose } from 'redux';
 import { createStructuredSelector } from 'reselect';
 import { useInjectReducer } from 'utils/injectReducer';
 import { useInjectSaga } from 'utils/injectSaga';
-import { API_GET_PACKAGE_INFO } from 'constants/api';
-import { del } from 'utils/request';
+// import { API_EVENT_DETAIL } from 'constants/api';
+// import { del } from 'utils/request';
 import { ENUM_BOOKING_STATUS } from 'constants/enums';
 import { messages } from '../messages';
 import { CustomButton } from '../styles';
 import {
   changePage,
-  loadPackages,
+  loadEvents,
   changeMode,
   changeLimit,
-  loadPackageInfo,
+  loadEventInfo,
 } from './slice/actions';
 import saga from './slice/saga';
 import reducer from './slice/reducer';
@@ -30,14 +33,15 @@ import {
   makeSelectDetailLoading,
   makeSelectDetailError,
   makeSelectDetail,
-  makeSelectPackage,
+  makeSelectEvent,
   makeSelectMode,
   makeSelectPaging,
-  makeSelectPackageInfo,
+  makeSelectEventInfo,
 } from './slice/selectors';
-import PackageDetailCard from './PackageDetailCard';
+import EventDetailCard from './EventDetailCard';
 import { numberWithCommas } from '../../../utils/helpers';
 import { globalMessages } from '../../App/globalMessage';
+import PositionDetailCard from './PositionDetailCard';
 const StatusCell = styled(Text)`
   text-align: center;
   padding: 5px;
@@ -74,22 +78,40 @@ const StatusCell = styled(Text)`
     }
   }};
 `;
-const packageColumns = [
+const eventColumns = [
   {
-    Header: 'Package',
-    accessor: 'package',
+    Header: 'Event Name',
+    accessor: 'eventName',
   },
   {
-    Header: 'Số lượt đặt',
-    accessor: 'totalBooking',
+    Header: 'Địa chỉ',
+    accessor: 'address',
+  },
+  {
+    Header: 'Thời gian',
+    accessor: 'time',
   },
   {
     Header: 'Status',
     accessor: 'status',
   },
   {
-    Header: 'Giá tiền',
-    accessor: 'price',
+    Header: 'Action',
+    accessor: 'action',
+  },
+];
+const positionsColumns = [
+  {
+    Header: 'Categories',
+    accessor: 'categories',
+  },
+  {
+    Header: 'Số lượt apply',
+    accessor: 'totalApply',
+  },
+  {
+    Header: 'Thời gian',
+    accessor: 'time',
   },
   {
     Header: 'Action',
@@ -102,8 +124,8 @@ const bookingColumns = [
     accessor: 'bookedDate',
   },
   {
-    Header: 'Người đặt',
-    accessor: 'booker',
+    Header: 'Talent apply',
+    accessor: 'applicant',
   },
   {
     Header: 'Giá tiền min',
@@ -122,59 +144,64 @@ const bookingColumns = [
     accessor: 'status',
   },
 ];
-const key = 'MyPackage';
-const MyPackage = ({
+const key = 'MyEvents';
+const MyEvents = ({
   data,
   mode,
-  onLoadData,
+  onLoadTableData,
   handleModeChange,
   paging,
   handlePageChange,
   handleLimitchange,
-  loadPackage,
-  packageInfo,
+  onLoadDetailData,
+  eventInfo,
 }) => {
   useInjectReducer({ key, reducer });
   useInjectSaga({ key, saga });
   const { t } = useTranslation();
 
   useEffect(() => {
-    onLoadData();
+    if (mode === 0) onLoadTableData();
   }, []);
-  const userId = window.localStorage.getItem('uid');
-  function handleDelete(id) {
-    del(`${API_GET_PACKAGE_INFO}/${id}`, {}, userId).then(res1 => {
-      console.log(res1);
-      if (res1 > 300) {
-        console.log('error');
-      } else {
-        onLoadData(userId);
-      }
-    });
-  }
-  let tablePackage;
+  const userId = localStorage.getItem('uid');
+  // function handleDelete(id) {
+  //   del(`${API_EVENT_DETAIL}/${id}`, {}, userId).then(res1 => {
+  //     console.log(res1);
+  //     if (res1 > 300) {
+  //       console.log('error');
+  //     } else {
+  //       onLoadTableData(userId);
+  //     }
+  //   });
+  // }
+  let tableEvent;
+  let tablePositions;
   let tableBooking;
   if (data) {
     if (mode === 0)
-      tablePackage = data.map(user => ({
-        package: (
+      tableEvent = data.map(event => ({
+        eventName: (
           <Text
             onClick={() => {
               handleModeChange(1);
-              onLoadData(user.uid);
+              onLoadTableData(event.uid);
               handlePageChange(0);
-              loadPackage(user.uid, userId);
+              onLoadDetailData(event.uid, userId);
             }}
           >
-            {user.name}
+            {event.name}
           </Text>
         ),
-        price: `${numberWithCommas(
-          user.jobDetail.price.max,
-        )} - ${numberWithCommas(user.jobDetail.price.max)}`,
+        address: event.occurrenceAddress,
+        time: (
+          <Text>
+            {new Date(event.occurrenceStartTime).toLocaleString()} -{' '}
+            {new Date(event.occurrenceEndTime).toLocaleString()}
+          </Text>
+        ),
         status: (
-          <StatusCell type={user.isActive ? 'active' : 'disable'}>
-            {user.isActive ? 'Active' : 'Disable'}
+          <StatusCell type={event.isActive ? 'active' : 'disable'}>
+            {event.isActive ? 'Active' : 'Disable'}
           </StatusCell>
         ),
         action: (
@@ -185,7 +212,48 @@ const MyPackage = ({
             <Button
               colorScheme="red"
               size="xs"
-              onClick={() => handleDelete(user.uid)}
+              // onClick={() => handleDelete(event.uid)}
+            >
+              {t(messages.delete())}
+            </Button>
+          </HStack>
+        ),
+      }));
+    else if (mode === 1)
+      tablePositions = data.map(position => ({
+        categories: (
+          <Text
+            onClick={() => {
+              handleModeChange(2);
+              onLoadTableData(position.eventId, position.uid);
+              handlePageChange(0);
+              onLoadDetailData(position.eventId, position.uid);
+            }}
+          >
+            {position.jobOffer.jobDetail.category.name}
+          </Text>
+        ),
+        totalApply: position.applicantCount,
+        time: (
+          <Text>
+            {new Date(position.jobOffer.jobDetail.performanceStartTime).toLocaleString()} -{' '}
+            {new Date(position.jobOffer.jobDetail.performanceEndTime).toLocaleString()}
+          </Text>
+        ),
+        status: (
+          <StatusCell type={position.isActive ? 'active' : 'disable'}>
+            {position.isActive ? 'Active' : 'Disable'}
+          </StatusCell>
+        ),
+        action: (
+          <HStack>
+            <Button colorScheme="purple" size="xs">
+              {t(messages.edit())}
+            </Button>
+            <Button
+              colorScheme="red"
+              size="xs"
+              // onClick={() => handleDelete(position.uid)}
             >
               {t(messages.delete())}
             </Button>
@@ -203,7 +271,7 @@ const MyPackage = ({
               </Link>
             </Flex>
           ),
-          booker: booking.organizerName,
+          applicant: booking.talentName,
           priceMin: numberWithCommas(jobDetail.price.min),
           priceMax: numberWithCommas(jobDetail.price.max),
           paymentType: booking.paymentType,
@@ -223,28 +291,48 @@ const MyPackage = ({
   };
 
   function handleBack() {
-    handleModeChange(0);
+    handleModeChange(mode - 1);
     handlePageChange(0);
   }
   return (
     <Box color={PRI_TEXT_COLOR}>
       <Flex justifyContent="space-between" mb={2}>
-        {mode === 1 ? (
+        {mode === 1 || mode === 2 ? (
           <CustomButton onClick={handleBack}>{t(messages.back())}</CustomButton>
         ) : null}
-        <Link href="/create-package">
-          <CustomButton>{t(messages.createPackage())}</CustomButton>
-        </Link>
+        {mode === 0 ? (
+          <Link href="/event/create">
+            <CustomButton>{t(messages.createEvent())}</CustomButton>
+          </Link>
+        ) : (
+          <Link href="/event/create">
+            <CustomButton>{t(messages.createPosition())}</CustomButton>
+          </Link>
+        )}
       </Flex>
       {!data ? (
         <PageSpinner />
       ) : (
         <Flex zIndex={1} position="relative" gap={4}>
-          {mode === 1 ? <PackageDetailCard data={packageInfo} /> : null}
-          <Box w={mode === 1 ? 'auto' : '100%'} flexGrow={1}>
+          {mode === 1 ? (
+            <EventDetailCard data={eventInfo} />
+          ) : mode === 2 ? <PositionDetailCard data={eventInfo} /> : null}
+          <Box w={mode === 1 || mode === 2 ? 'auto' : '100%'} flexGrow={1}>
             <AdvancedTable
-              columns={mode === 0 ? packageColumns : bookingColumns}
-              data={mode === 0 ? tablePackage : tableBooking}
+              columns={
+                mode === 0
+                  ? eventColumns
+                  : mode === 1
+                  ? positionsColumns
+                  : bookingColumns
+              }
+              data={
+                mode === 0
+                  ? tableEvent
+                  : mode === 1
+                  ? tablePositions
+                  : tableBooking
+              }
               {...pageProps}
               handlePageChange={handlePageChange}
               setLimit={handleLimitchange}
@@ -256,47 +344,47 @@ const MyPackage = ({
   );
 };
 
-MyPackage.propTypes = {
+MyEvents.propTypes = {
   match: PropTypes.object,
   data: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
   mode: PropTypes.number,
-  onLoadData: PropTypes.func,
-  loadPackage: PropTypes.func,
+  onLoadTableData: PropTypes.func,
+  onLoadDetailData: PropTypes.func,
   handleModeChange: PropTypes.func,
   paging: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
   handlePageChange: PropTypes.func,
   handleLimitchange: PropTypes.func,
-  packageInfo: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
+  eventInfo: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
 };
 
 const mapStateToProps = createStructuredSelector({
   loading: makeSelectDetailLoading(),
   error: makeSelectDetailError(),
   data: makeSelectDetail(),
-  packageId: makeSelectPackage(),
+  eventId: makeSelectEvent(),
   mode: makeSelectMode(),
   paging: makeSelectPaging(),
-  packageInfo: makeSelectPackageInfo(),
+  eventInfo: makeSelectEventInfo(),
 });
 
 export function mapDispatchToProps(dispatch) {
   return {
-    onLoadData: id => {
-      dispatch(loadPackages(id));
+    onLoadTableData: (eventId, positionId) => {
+      dispatch(loadEvents(eventId, positionId));
     },
     handlePageChange: page => {
       dispatch(changePage(page));
-      dispatch(loadPackages());
+      dispatch(loadEvents());
     },
     handleModeChange: mode => {
       dispatch(changeMode(mode));
     },
     handleLimitchange: limit => {
       dispatch(changeLimit(limit));
-      dispatch(loadPackages());
+      dispatch(loadEvents());
     },
-    loadPackage: (id, talentId) => {
-      dispatch(loadPackageInfo(id, talentId));
+    onLoadDetailData: (eventId, positionId) => {
+      dispatch(loadEventInfo(eventId, positionId));
     },
   };
 }
@@ -309,4 +397,4 @@ const withConnect = connect(
 export default compose(
   withConnect,
   memo,
-)(MyPackage);
+)(MyEvents);

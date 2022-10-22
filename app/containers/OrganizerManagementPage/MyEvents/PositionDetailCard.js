@@ -8,13 +8,13 @@ import {
   Link,
 } from '@chakra-ui/react';
 import { SUB_BLU_COLOR, TEXT_GREEN, TEXT_PURPLE } from 'constants/styles';
-import { H1 } from 'components/Elements';
+// import { H1 } from 'components/Elements';
 import Buttons from 'components/Buttons';
 import styled from 'styled-components';
 import { PropTypes } from 'prop-types';
 import PageSpinner from 'components/PageSpinner';
 import parserHtml from 'utils/html';
-import { numberWithCommas } from '../../../utils/helpers';
+// import { numberWithCommas } from '../../../utils/helpers';
 const GradientBox = chakra(Box, {
   baseStyle: {
     flex: 1,
@@ -54,38 +54,36 @@ const CustomLink = styled(Link)`
   right: 0;
   margin: auto;
 `;
-const PackageDetailCard = ({ data }) => (
+const PositionDetailCard = ({ data }) => (
   <GradientBox>
     {!data ? (
       <PageSpinner />
     ) : (
       <>
         <Text color={TEXT_GREEN} as="h1" fontSize="30px">
-          Package Detail
-        </Text>
-        <H1 color={TEXT_PURPLE} py={0} mb={-2}>
-          {data.name}
-        </H1>
-        <Text>
-          {numberWithCommas(data.jobDetail.price.min)} -{' '}
-          {numberWithCommas(data.jobDetail.price.max)}
+          Position Detail
         </Text>
         <Text color={TEXT_PURPLE} mt={6}>
           Details
         </Text>
         <UnorderedList>
           <ListItem>
-            <Text>Location: {data.location}</Text>
+            <Text>Category: {data.jobOffer.jobDetail.category.name}</Text>
           </ListItem>
           <ListItem>
             <Text>
               Time:{' '}
-              {new Date(data.jobDetail.performanceStartTime).toLocaleString()} -{' '}
-              {new Date(data.jobDetail.performanceEndTime).toLocaleString()}
+              {new Date(
+                data.jobOffer.jobDetail.performanceStartTime,
+              ).toLocaleString()}{' '}
+              -{' '}
+              {new Date(
+                data.jobOffer.jobDetail.performanceEndTime,
+              ).toLocaleString()}
             </Text>
           </ListItem>
           <ListItem>
-            <Text>Note: {parserHtml(data.jobDetail.note)} </Text>
+            <Text>Note: {parserHtml(data.jobOffer.jobDetail.note)} </Text>
           </ListItem>
         </UnorderedList>
         <CustomLink href="/#">
@@ -97,7 +95,7 @@ const PackageDetailCard = ({ data }) => (
     )}
   </GradientBox>
 );
-PackageDetailCard.propTypes = {
+PositionDetailCard.propTypes = {
   data: PropTypes.any,
 };
-export default PackageDetailCard;
+export default PositionDetailCard;

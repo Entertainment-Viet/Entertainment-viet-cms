@@ -34,7 +34,7 @@ import {
   makeSelectPackage,
   makeSelectMode,
 } from './selectors';
-import MyPackage from './MyPackage';
+import MyPackage from './MyEvents';
 import Orders from './Orders';
 import Calendar from '../Calendar';
 
@@ -62,7 +62,7 @@ export function OrganizerManagementPage() {
       <Tabs mb="12" isLazy>
         <TabList color={TEXT_PURPLE}>
           <CustomTab>{t(messages.profile())}</CustomTab>
-          <CustomTab>{t(messages.myPackage())}</CustomTab>
+          <CustomTab>{t(messages.myEvents())}</CustomTab>
           <CustomTab>{t(messages.orders())}</CustomTab>
           <CustomTab>{t(messages.schedule())}</CustomTab>
         </TabList>
