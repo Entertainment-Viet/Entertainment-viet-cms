@@ -169,6 +169,7 @@ const MyPackage = ({
             {user.name}
           </Text>
         ),
+        totalBooking: user.orderNum,
         price: `${numberWithCommas(
           user.jobDetail.price.max,
         )} - ${numberWithCommas(user.jobDetail.price.max)}`,
