@@ -45,6 +45,7 @@ import PrivateRoute from 'components/Router/PrivateRoute';
 import GlobalStyle from 'global-styles';
 import styled from 'styled-components';
 import ScrollToTop from 'components/ScrollToTop';
+import CreatePositionPage from '../CreatePositionPage/Loadable';
 
 import { requestFirebaseNotificationPermission } from '../../firebaseInit';
 const AppWrapper = styled.div`
@@ -121,6 +122,14 @@ export default function App() {
           roles={[ENUM_ROLES.TAL]}
         >
           <CreatePackagePage />
+        </PrivateRoute>
+        <PrivateRoute
+          exact
+          path={Paths.ROUTE_CREATE_POSITION}
+          isAuthenticated={isAuthenticated}
+          roles={[ENUM_ROLES.ORG]}
+        >
+          <CreatePositionPage />
         </PrivateRoute>
         <PrivateRoute
           exact

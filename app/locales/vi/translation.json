@@ -91,7 +91,6 @@
     "faq": "FAQ"
   },
   "createEventPage": {
-    "createEvent": "What Talent Are You Looking For?",
     "title": "Title",
     "desc": "Description",
     "category": "Category",
@@ -109,7 +108,10 @@
     "prepay": "Prepay",
     "postPaid": "Post Paid",
     "createPackage": "Create new package",
-    "paymentType": "Payment type"
+    "paymentType": "Payment type",
+    "createEvent": "Create event",
+    "createPosition": "Create a new position in event",
+    "quantity": "Số lượng"
   },
   "artistDetailPage": {
     "overview": "Overview",

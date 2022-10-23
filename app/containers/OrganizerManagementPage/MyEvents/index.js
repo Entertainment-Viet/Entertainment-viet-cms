@@ -110,6 +110,10 @@ const positionsColumns = [
     accessor: 'totalApply',
   },
   {
+    Header: 'Số lượng slot',
+    accessor: 'totalSlot',
+  },
+  {
     Header: 'Thời gian',
     accessor: 'time',
   },
@@ -233,6 +237,7 @@ const MyEvents = ({
             {position.jobOffer.jobDetail.category.name}
           </Text>
         ),
+        totalSlot: position.quantity,
         totalApply: position.applicantCount,
         time: (
           <Text>
@@ -305,7 +310,7 @@ const MyEvents = ({
             <CustomButton>{t(messages.createEvent())}</CustomButton>
           </Link>
         ) : (
-          <Link href="/event/create">
+          <Link href={`/create-position/${eventInfo.uid}`}>
             <CustomButton>{t(messages.createPosition())}</CustomButton>
           </Link>
         )}
