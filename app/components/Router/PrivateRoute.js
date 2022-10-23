@@ -3,7 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Route, Redirect } from 'react-router-dom';
 import Header from 'components/Header';
-import Footer from 'components/Footer';
+// import Footer from 'components/Footer';
 import { getLocalRole } from 'utils/auth';
 
 import PageWrapper from 'components/PageWrapper';
@@ -44,7 +44,7 @@ function PrivateRoute({ children, isAuthenticated, roles, ...rest }) {
             );
           }}
         />
-        <Footer />
+        {/* <Footer /> */}
       </PageWrapper>
     </Flex>
   );

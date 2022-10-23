@@ -34,6 +34,7 @@ import PreCheckout from 'containers/PreCheckout/Loadable';
 import BookingDetailPage from 'containers/BookingDetailPage/Loadable';
 import CreateCustomDealPage from 'containers/CreateCustomDeal/Loadable';
 import CreatePackagePage from 'containers/CreatePackagePage/Loadable';
+import TalentHomePage from 'containers/TalentHomepage/Loadable';
 // Components
 import GlobalFonts from 'components/GlobalFonts';
 import Banner from 'components/DevelopmentBanner';
@@ -97,7 +98,7 @@ export default function App() {
           isAuthenticated={isAuthenticated}
           roles={[ENUM_ROLES.ORG, ENUM_ROLES.TAL]}
         >
-          <HomePage />
+          {role === ENUM_ROLES.ORG ? <HomePage /> : <TalentHomePage />}
         </PrivateRoute>
         <PrivateRoute
           exact
