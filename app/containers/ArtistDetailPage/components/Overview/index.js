@@ -44,11 +44,30 @@ const Overview = ({ data, match, packages, toggleModal, comments }) => {
     },
   ];
   return (
-    <Grid templateColumns="repeat(4, 1fr)" gap={2}>
-      <GridItem colSpan={3}>
+    <Grid
+      templateRows="repeat(2, 1fr)"
+      templateColumns="repeat(6, 1fr)"
+      gap={2}
+    >
+      <GridItem colSpan={6}>
         <VStack align="flex-start">
           <Header profile={data} comments={comments} />
-          <ImageSliderWithPreview slides={SlideData} />
+          <Grid templateColumns="repeat(6, 1fr)" gap={2}>
+            <GridItem colSpan={4}>
+              <ImageSliderWithPreview slides={SlideData} />
+            </GridItem>
+            <GridItem colSpan={2}>
+              <PackagesBox
+                data={packages.content}
+                id={match.params.id}
+                toggleModal={toggleModal}
+              />
+            </GridItem>
+          </Grid>
+        </VStack>
+      </GridItem>
+      <GridItem colSpan={4}>
+        <VStack align="flex-start">
           <HStack
             justifyContent="space-between"
             w="100%"
@@ -76,13 +95,13 @@ const Overview = ({ data, match, packages, toggleModal, comments }) => {
           <Dropdown /> */}
         </VStack>
       </GridItem>
-      <GridItem colSpan={1}>
+      {/* <GridItem colSpan={1}>
         <PackagesBox
           data={packages.content}
           id={match.params.id}
           toggleModal={toggleModal}
         />
-      </GridItem>
+      </GridItem> */}
     </Grid>
   );
 };

@@ -42,24 +42,42 @@ const About = ({ data, match, packages, toggleModal, comments }) => {
   const ARTIST_IMAGE =
     'https://vnn-imgs-a1.vgcloud.vn/znews-photo.zadn.vn/Uploaded/izhqv/2020_11_12/viechannelphotos_rap_viet_tap_15_thi_sinh_rpt_mck_1_16050204487251365930315_crop_1605020583124889154191.jpg';
   return (
-    <Grid templateColumns="repeat(4, 1fr)" gap={2}>
-      <GridItem colSpan={3}>
+    <Grid templateColumns="repeat(6, 1fr)" gap={2}>
+      <GridItem colSpan={6}>
         <VStack align="flex-start">
           <Header profile={data} comments={comments} />
-          <Image src={ARTIST_IMAGE} borderRadius="10px" alt="Talent Image" />
-          <Text as="h1" fontWeight={600} fontSize="50px" color={TEXT_PURPLE}>
-            {data.displayName}
-          </Text>
-          <RenderProfile />
+          <Grid templateColumns="repeat(6, 1fr)" gap={2} w="100%">
+            <GridItem colSpan={4}>
+              <Image
+                src={ARTIST_IMAGE}
+                borderRadius="10px"
+                alt="Talent Image"
+                w="100%"
+              />
+            </GridItem>
+            <GridItem colSpan={2}>
+              <PackagesBox
+                data={packages.content}
+                id={match.params.id}
+                toggleModal={toggleModal}
+              />
+            </GridItem>
+          </Grid>
         </VStack>
       </GridItem>
-      <GridItem colSpan={1}>
+      <GridItem colSpan={4}>
+        <Text as="h1" fontWeight={600} fontSize="50px" color={TEXT_PURPLE}>
+          {data.displayName}
+        </Text>
+        <RenderProfile />
+      </GridItem>
+      {/* <GridItem colSpan={1}>
         <PackagesBox
           data={packages.content}
           id={match.params.id}
           toggleModal={toggleModal}
         />
-      </GridItem>
+      </GridItem> */}
     </Grid>
   );
 };

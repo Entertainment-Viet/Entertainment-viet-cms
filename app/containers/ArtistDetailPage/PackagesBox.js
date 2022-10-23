@@ -59,9 +59,9 @@ const PackagesBox = ({ data, id, toggleModal }) => {
   return (
     <Container>
       <VStack>
-        <Box h="6.3rem" />
+        {/* <Box h="6.3rem" /> */}
         <Box bg={PRI_BACKGROUND} borderRadius="1%" color={PRI_TEXT_COLOR}>
-          <TableContainer pt={8}>
+          <TableContainer>
             <Table
               variant="unstyled"
               overflowX="hidden"
