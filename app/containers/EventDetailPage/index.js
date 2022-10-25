@@ -103,7 +103,7 @@ export function EventDetailPage({
               <About
                 data={data}
                 match={match}
-                packages={positions}
+                positions={positions}
                 toggleModal={toggleModal}
               />
             </TabPanel>

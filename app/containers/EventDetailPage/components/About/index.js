@@ -16,11 +16,13 @@ import { messages } from '../../messages';
 import Header from '../../Header';
 import PositionBox from '../../PositionBox';
 
-const About = ({ data, match, packages, toggleModal, comments }) => {
+const About = ({ data, positions, toggleModal }) => {
   const { t } = useTranslation();
-  const dataArtist = data.extensions && JSON.parse(data.extensions);
+  const org = data && data.organizer;
+  const dataArtist = org && JSON.parse(org.extensions);
   const RenderProfile = () =>
-    dataArtist.profile.map(item => (
+    dataArtist &&
+    dataArtist.map(item => (
       <>
         <Divider />
         <Box style={{ margin: '1rem 0px' }}>
@@ -45,7 +47,12 @@ const About = ({ data, match, packages, toggleModal, comments }) => {
     <Grid templateColumns="repeat(6, 1fr)" gap={2}>
       <GridItem colSpan={6}>
         <VStack align="flex-start">
-          <Header profile={data} comments={comments} />
+          <Header
+            profile={{
+              name: 'About Organizer',
+              organizerName: org.displayName,
+            }}
+          />
           <Grid templateColumns="repeat(6, 1fr)" gap={2} w="100%">
             <GridItem colSpan={4}>
               <Image
@@ -54,21 +61,22 @@ const About = ({ data, match, packages, toggleModal, comments }) => {
                 alt="Talent Image"
                 w="100%"
               />
+              <Text
+                as="h1"
+                fontWeight={600}
+                fontSize="50px"
+                color={TEXT_PURPLE}
+              >
+                {org.displayName}
+              </Text>
             </GridItem>
             <GridItem colSpan={2}>
-              <PositionBox
-                data={packages.content}
-                id={match.params.id}
-                toggleModal={toggleModal}
-              />
+              <PositionBox data={positions.content} toggleModal={toggleModal} />
             </GridItem>
           </Grid>
         </VStack>
       </GridItem>
       <GridItem colSpan={4}>
-        <Text as="h1" fontWeight={600} fontSize="50px" color={TEXT_PURPLE}>
-          {data.displayName}
-        </Text>
         <RenderProfile />
       </GridItem>
       {/* <GridItem colSpan={1}>
@@ -83,10 +91,8 @@ const About = ({ data, match, packages, toggleModal, comments }) => {
 };
 
 About.propTypes = {
-  match: PropTypes.object,
   data: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
-  comments: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
-  packages: PropTypes.oneOfType([PropTypes.array, PropTypes.bool]),
   toggleModal: PropTypes.func,
+  positions: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
 };
 export default memo(About);
