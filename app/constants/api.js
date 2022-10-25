@@ -56,3 +56,4 @@ export const API_EVENT_POSITIONS_BOOKINGS =
 export const API_EVENT_DETAIL = 'api/organizers/:id1/events/:id2';
 export const API_EVENT_POSITION_DETAIL =
   'api/organizers/:id1/events/:id2/positions/:id3';
+export const API_EVENT_SEARCH = 'api/events';

@@ -35,6 +35,7 @@ import BookingDetailPage from 'containers/BookingDetailPage/Loadable';
 import CreateCustomDealPage from 'containers/CreateCustomDeal/Loadable';
 import CreatePackagePage from 'containers/CreatePackagePage/Loadable';
 import TalentHomePage from 'containers/TalentHomepage/Loadable';
+import EventSearchResultPage from 'containers/EventSearchResultPage/Loadable';
 // Components
 import GlobalFonts from 'components/GlobalFonts';
 import Banner from 'components/DevelopmentBanner';
@@ -154,7 +155,11 @@ export default function App() {
           isAuthenticated={isAuthenticated}
           roles={[ENUM_ROLES.ORG, ENUM_ROLES.TAL]}
         >
-          <SearchResultPage />
+          {role === ENUM_ROLES.ORG ? (
+            <SearchResultPage />
+          ) : (
+            <EventSearchResultPage />
+          )}
         </PrivateRoute>
         <PrivateRoute
           exact
