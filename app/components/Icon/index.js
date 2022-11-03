@@ -1,0 +1,13 @@
+export { default as GoogleMap } from './Google-map';
+export { default as Phone } from './Phone';
+export { default as NotificationIcon } from './Notification';
+export { default as CartIcon } from './Cart';
+export { default as NumberedCart } from './NumberedCart';
+export { default as TermOfService } from './TermOfService';
+export { default as Categories } from './Categories';
+export { default as About } from './About';
+export { default as Support } from './Support';
+export { default as Partner } from './Partner';
+export { default as Career } from './Career';
+export { default as Safety } from './Safety';
+export { default as Buyer } from './Buyer';

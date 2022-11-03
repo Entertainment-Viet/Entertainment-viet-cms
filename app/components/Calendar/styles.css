@@ -1,0 +1,84 @@
+
+
+.fc-day-future {
+    background-color: #1D1C4C;
+    position: inherit !important;
+}
+.fc-day-today {
+    background-color: transparent !important;
+    border-top: 2px solid white !important;
+}
+.fc-theme-standard td {
+    border-top: 2px solid #BDC1EA;
+    /* borde    r-left: 10px solid #1A202C; */
+    border-right: 10px solid #1A202C;
+    border-bottom: 1px solid #1A202C;
+}
+.fc-theme-standard th {
+    border: none;
+}
+.fc-theme-standard td:first-child {
+    border-left: 0px solid #BDC1EA;
+}
+.fc-theme-standard td:last-child {
+    border-right: 0px solid #1A202C;
+}
+.fc-day-past {
+    background-color: #2F2E6C;
+    position: inherit !important; 
+}
+.fc-theme-standard .fc-scrollgrid {
+    border: none;
+}
+.fc-scrollgrid-sync-inner {
+    text-align: right;
+}
+.fc-button {
+    border: 1px solid white !important;
+}
+.fc-daygrid-day-events{
+    position: relative !important;
+}
+.select_month {
+    background-color: transparent;
+    padding: 6px;
+    border-radius: 2px;
+    /* border: 1px solid white; */
+    font-size: 0px;
+}
+option {
+    font-size: 30px;
+}
+.fc-toolbar-chunk{
+    display: flex;
+    color: #8A6DFF;
+}
+.fc-icon-chevron-right{
+    vertical-align: baseline !important;
+}
+.fc-icon-chevron-left{
+    vertical-align: baseline !important;
+}
+.fc-button-group {
+    visibility: hidden;
+}
+.dot::before {
+    content: " ";
+    height: 10px;
+    width: 10px;
+    margin-right: 10px;
+    background-color: red;
+    border-radius: 50%;
+    display: inline-block;
+  }
+.fc-event b {
+    display: none;
+}
+.fc-today-button.fc-button.fc-button-primary {
+    visibility: hidden;
+}
+.calendar-wrapper {
+    width: 50%;
+    display: inline-block;
+    background: transparent;
+}

@@ -1,0 +1,11 @@
+table {
+    border: 1px solid;
+}
+
+th {
+    color: white !important;
+}
+
+tbody {
+    background-color: #2D3748;
+}
