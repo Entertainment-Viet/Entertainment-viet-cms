@@ -18,7 +18,9 @@ const OAuthButtonGroup = () => (
     {providers.map(({ name, icon, bg, color }) => (
       <Button key={name} width="full" bg={bg}>
         {icon}
-        <Text color="black" fontWeight="500">&nbsp;&nbsp;Sign in with {name}</Text>
+        <Text color="black" fontWeight="500">
+          &nbsp;&nbsp;Sign in with {name}
+        </Text>
       </Button>
     ))}
   </ButtonGroup>

@@ -55,8 +55,8 @@ export function PreCheckout({ loading, error, data, onLoadData, cartData }) {
   const orgId = window.localStorage.getItem('uid');
   function instantPay() {
     const val = {
-      paymentType: "payment.online"
-    }
+      paymentType: 'payment.online',
+    };
     post(API_ORG_ACTION_SHOPPINGCART, val, orgId).then(res1 => {
       const status1 = getResStatus(res1);
       if (status1 === '201') {
@@ -70,8 +70,8 @@ export function PreCheckout({ loading, error, data, onLoadData, cartData }) {
   }
   function laterPay() {
     const val = {
-      paymentType: "payment.offline"
-    }
+      paymentType: 'payment.offline',
+    };
     post(API_ORG_ACTION_SHOPPINGCART, val, orgId).then(res1 => {
       const status1 = getResStatus(res1);
       if (status1 === '201') {

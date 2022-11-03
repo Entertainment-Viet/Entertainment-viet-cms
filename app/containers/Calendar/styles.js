@@ -48,15 +48,15 @@ export const SwitchWrapper = styled.div`
 `;
 
 export const OrganizationItem = styled.a`
-  color: #9F9ACB;
+  color: #9f9acb;
   cursor: pointer;
   padding: 1.25rem 3rem;
   font-size: 1.5rem;
   margin-bottom: -2px;
-  &:hover, &:active, &.active{
-    color: #2F4797;
-    border-bottom: 2px solid #2F4797;
+  &:hover,
+  &:active,
+  &.active {
+    color: #2f4797;
+    border-bottom: 2px solid #2f4797;
   }
 `;
-
-
