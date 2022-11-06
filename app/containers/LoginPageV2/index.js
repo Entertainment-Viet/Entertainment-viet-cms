@@ -93,10 +93,13 @@ function LoginPageV2() {
       const isAccountant = checker(roles, accountantRole);
       if (isBd) {
         localStorage.setItem('role', ENUM_ROLES.BD);
+        window.location.href = '/bd-home';
       } else if (isOa) {
         localStorage.setItem('role', ENUM_ROLES.OA);
+        window.location.href = '/oa-home';
       } else if (isAccountant) {
         localStorage.setItem('role', ENUM_ROLES.ACCOUNTANT);
+        window.location.href = '/acc-home';
       } else {
         console.log('error while set role');
       }

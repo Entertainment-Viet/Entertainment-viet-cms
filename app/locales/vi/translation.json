@@ -154,10 +154,10 @@
     "instantPay": "Thanh toán ngay",
     "laterPay": "Thanh toán trả sau"
   },
-  "TalentManagementPage": {
+  "BDManagementPage": {
     "profile": "Profile",
     "myPackage": "My Package",
-    "orders": "Orders",
+    "orders": "All bookings",
     "schedule": "Schedule",
     "myAccount": "My Account",
     "back": "Back",
@@ -172,7 +172,8 @@
     "canceled": "Canceled",
     "budget": "Ngân sách hiện có",
     "detail": "Chi tiết",
-    "delete": "Delete"
+    "delete": "Delete",
+    "achievement": "Achievement"
   },
   "OrganizerManagementPage": {
     "createEvent": "+ Create event",

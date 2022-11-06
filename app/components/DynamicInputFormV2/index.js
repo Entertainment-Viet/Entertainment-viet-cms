@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { Button } from '@chakra-ui/react';
+import { Button, Image } from '@chakra-ui/react';
 import { Box } from '@chakra-ui/core';
 import InputCustomV2 from '../Controls/InputCustomV2';
 import { SEC_TEXT_COLOR, SUB_BLU_COLOR } from '../../constants/styles';
-
-function DynamicFormV2(props) {
+import trashCan from './assets/ic_delete.svg';
+function DynamicInput(props) {
   const [formFields, setFormFields] = useState([{ key: '', value: '' }]);
-  const obj = {};
 
   const handleFormChange = (event, index) => {
     const data = [...formFields];
@@ -17,15 +16,7 @@ function DynamicFormV2(props) {
 
   const submit = e => {
     e.preventDefault();
-    for (let i = 0; i < formFields.length; i += 1) {
-      obj[formFields[i].key] = formFields[i].value;
-      for (let j = 0; j < formFields.length; j += 1) {
-        if (formFields[j].key === formFields[i].key && i !== j) {
-          props.setDynamicValid(false);
-        }
-      }
-    }
-    props.setDynamicData(obj);
+    props.setDynamicData(formFields);
   };
 
   const addFields = () => {
@@ -37,11 +28,12 @@ function DynamicFormV2(props) {
     setFormFields([...formFields, object]);
   };
 
-  // const removeFields = index => {
-  //   const data = [...formFields];
-  //   data.splice(index, 1);
-  //   setFormFields(data);
-  // };
+  const removeFields = index => {
+    const data = [...formFields];
+    data.splice(index, 1);
+    props.setDynamicData(data);
+    setFormFields(data);
+  };
 
   return (
     <form onChange={submit}>
@@ -49,24 +41,22 @@ function DynamicFormV2(props) {
         <Box display="flex" height="40px" marginBottom="20px">
           <InputCustomV2
             name="key"
-            placeholder="Key"
+            placeholder="Enter Achievement Name"
             onChange={event => handleFormChange(event, index)}
             value={form.key}
           />
           <Box marginRight="4px" marginLeft="4px" />
           <InputCustomV2
             name="value"
-            placeholder="Value"
+            placeholder="Enter score"
             onChange={event => handleFormChange(event, index)}
             value={form.value}
           />
-          {/* <Button */}
-          {/*  onClick={() => removeFields(index)} */}
-          {/*  text="Remove" */}
-          {/*  template="btn-pri btn-inline" */}
-          {/* > */}
-          {/*  Remove */}
-          {/* </Button> */}
+          <Image
+            src={trashCan}
+            alt="trash"
+            onClick={() => removeFields(index)}
+          />
         </Box>
       ))}
       <Box width="100%">
@@ -86,9 +76,10 @@ function DynamicFormV2(props) {
   );
 }
 
-DynamicFormV2.propTypes = {
+DynamicInput.propTypes = {
   setDynamicData: PropTypes.func,
+  // eslint-disable-next-line react/no-unused-prop-types
   setDynamicValid: PropTypes.func,
 };
 
-export default DynamicFormV2;
+export default DynamicInput;

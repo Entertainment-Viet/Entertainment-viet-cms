@@ -19,6 +19,8 @@ import * as Paths from 'constants/routes';
 import { ENUM_ROLES } from 'constants/enums';
 
 // Page
+import ManagementPage from 'containers/BDManagementPage/Loadable';
+import BookingDetailPage from 'containers/BookingDetailPage/Loadable';
 
 // Components
 import GlobalFonts from 'components/GlobalFonts';
@@ -68,6 +70,22 @@ export default function App() {
         >
           <LoginPageV2 />
         </PublicRoute>
+        <PrivateRoute
+          exact
+          path={Paths.ROUTE_BD_HOME}
+          isAuthenticated={isAuthenticated}
+          roles={[ENUM_ROLES.BD]}
+        >
+          <ManagementPage />
+        </PrivateRoute>
+        <PrivateRoute
+          exact
+          path={Paths.ROUTE_CREATE_PACKAGE}
+          isAuthenticated={isAuthenticated}
+          roles={[ENUM_ROLES.BD]}
+        >
+          <BookingDetailPage />
+        </PrivateRoute>
         <Route path="*" component={NotFoundPage} />
       </Switch>
       <GlobalStyle />

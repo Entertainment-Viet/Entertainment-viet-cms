@@ -1,35 +1,24 @@
 import { createSelector } from 'reselect';
 import { initialState } from './reducer';
 
-const selectState = state => state.BookingDetail || initialState;
+const selectState = state => state.BookingDetailPage || initialState;
 
-const makeSelectNFTLoading = () =>
+const makeSelectLoading = () =>
   createSelector(
     selectState,
     State => State.loading,
   );
 
-const makeSelectNFTError = () =>
+const makeSelectError = () =>
   createSelector(
     selectState,
     State => State.error,
   );
 
-const makeSelectData = () =>
+const makeSelectCategories = () =>
   createSelector(
     selectState,
-    State => State.data,
+    State => State.categories,
   );
 
-const makeSelectId = () =>
-  createSelector(
-    selectState,
-    State => State.id,
-  );
-
-export {
-  makeSelectData,
-  makeSelectNFTError,
-  makeSelectNFTLoading,
-  makeSelectId,
-};
+export { makeSelectError, makeSelectLoading, makeSelectCategories };

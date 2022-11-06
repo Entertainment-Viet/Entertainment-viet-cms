@@ -18,7 +18,7 @@ import { compose } from 'redux';
 import { createStructuredSelector } from 'reselect';
 import { useInjectReducer } from 'utils/injectReducer';
 import { useInjectSaga } from 'utils/injectSaga';
-import { ROUTE_BOOKING_DETAIL_MANAGER } from 'constants/routes';
+// import { ROUTE_BOOKING_DETAIL_MANAGER } from 'constants/routes';
 import { messages } from '../messages';
 import { changePage, changeLimit, loadBookings } from './slice/actions';
 import saga from './slice/saga';

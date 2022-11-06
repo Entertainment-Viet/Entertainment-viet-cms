@@ -56,15 +56,7 @@ const key = 'Header';
 function Header({ handleSubmit, handleRefresh, cartData }) {
   useInjectReducer({ key, reducer });
   useInjectSaga({ key, saga });
-  const [searchTerm, setSearchTerm] = useState('');
-
   const { t } = useTranslation();
-
-  const orgId = window.localStorage.getItem('uid');
-
-  useEffect(() => {
-    handleRefresh(orgId);
-  }, []);
 
   return (
     <Wrapper>
@@ -72,7 +64,7 @@ function Header({ handleSubmit, handleRefresh, cartData }) {
         <Flex alignItems="center">
           <Box width="50%" />
         </Flex>
-        <Box>
+        {/* <Box>
           <HStack spacing={8}>
             <form
               style={{}}
@@ -114,7 +106,7 @@ function Header({ handleSubmit, handleRefresh, cartData }) {
             {cartData && <Cart data={cartData} />}
             <ProfileAvatar />
           </HStack>
-        </Box>
+        </Box> */}
       </Flex>
     </Wrapper>
   );
