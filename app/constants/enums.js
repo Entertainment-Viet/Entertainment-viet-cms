@@ -29,6 +29,12 @@ export const ENUM_PREVIEW_TYPE = {
   audio: 'audio/*',
 };
 
+export const ENUM_CLIENT_ROLES = {
+  ORG: 'organizer',
+  TAL: 'talent',
+  COMP: 'company',
+};
+
 export const ENUM_ROLES = {
   BD: 'bd',
   OA: 'oa',

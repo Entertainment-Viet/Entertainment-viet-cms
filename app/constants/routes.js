@@ -9,6 +9,7 @@ export const ROUTE_BD_HOME = '/bd-home';
 export const ROUTE_OA_HOME = '/oa-home';
 export const ROUTE_ACC_HOME = '/acc-home';
 export const ROUTE_CREATE_PACKAGE = '/booking/:id';
+export const ROUTE_BILL = '/bill/:id';
 // ================================================================
 export const ROUTE_PRODUCTS = '/products';
 export const ROUTE_NEWS = '/news';

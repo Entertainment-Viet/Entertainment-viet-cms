@@ -20,7 +20,9 @@ import { ENUM_ROLES } from 'constants/enums';
 
 // Page
 import ManagementPage from 'containers/BDManagementPage/Loadable';
+import AccManagementPage from 'containers/AccountantManagementPage/Loadable';
 import BookingDetailPage from 'containers/BookingDetailPage/Loadable';
+import BillDetailPage from 'containers/BillDetailPage/Loadable';
 
 // Components
 import GlobalFonts from 'components/GlobalFonts';
@@ -80,11 +82,28 @@ export default function App() {
         </PrivateRoute>
         <PrivateRoute
           exact
+          path={Paths.ROUTE_ACC_HOME}
+          isAuthenticated={isAuthenticated}
+          roles={[ENUM_ROLES.BD]}
+        >
+          <AccManagementPage />
+        </PrivateRoute>
+        <PrivateRoute
+          exact
           path={Paths.ROUTE_CREATE_PACKAGE}
           isAuthenticated={isAuthenticated}
           roles={[ENUM_ROLES.BD]}
         >
           <BookingDetailPage />
+        </PrivateRoute>
+        <Route path="*" component={NotFoundPage} />
+        <PrivateRoute
+          exact
+          path={Paths.ROUTE_CREATE_PACKAGE}
+          isAuthenticated={isAuthenticated}
+          roles={[ENUM_ROLES.ACCOUNTANT]}
+        >
+          <BillDetailPage />
         </PrivateRoute>
         <Route path="*" component={NotFoundPage} />
       </Switch>
