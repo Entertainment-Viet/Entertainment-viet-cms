@@ -20,6 +20,9 @@ import { ENUM_ROLES } from 'constants/enums';
 
 // Page
 import ManagementPage from 'containers/BDManagementPage/Loadable';
+import OAManagementPage from 'containers/OAManagementPage/Loadable';
+import KYCVerifyTalentPage from 'containers/KYCVerifyTalentPage/Loadable';
+import KYCVerifyOrgPage from 'containers/KYCVerifyOrgPage/Loadable';
 import AccManagementPage from 'containers/AccountantManagementPage/Loadable';
 import BookingDetailPage from 'containers/BookingDetailPage/Loadable';
 import BillDetailPage from 'containers/BillDetailPage/Loadable';
@@ -46,7 +49,6 @@ const AppWrapper = styled.div`
 export default function App() {
   const { i18n } = useTranslation();
   const isAuthenticated = isLoggedIn();
-  const role = localStorage.getItem('role');
   requestFirebaseNotificationPermission()
     .then(firebaseToken => {
       // eslint-disable-next-line no-console
@@ -79,6 +81,30 @@ export default function App() {
           roles={[ENUM_ROLES.BD]}
         >
           <ManagementPage />
+        </PrivateRoute>
+        <PrivateRoute
+          exact
+          path={Paths.ROUTE_OA_HOME}
+          isAuthenticated={isAuthenticated}
+          roles={[ENUM_ROLES.OA]}
+        >
+          <OAManagementPage />
+        </PrivateRoute>
+        <PrivateRoute
+          exact
+          path={Paths.ROUTE_OA_HOME_VERIFY_TALENT}
+          isAuthenticated={isAuthenticated}
+          roles={[ENUM_ROLES.OA]}
+        >
+          <KYCVerifyTalentPage />
+        </PrivateRoute>
+        <PrivateRoute
+          exact
+          path={Paths.ROUTE_OA_HOME_VERIFY_ORG}
+          isAuthenticated={isAuthenticated}
+          roles={[ENUM_ROLES.OA]}
+        >
+          <KYCVerifyOrgPage />
         </PrivateRoute>
         <PrivateRoute
           exact

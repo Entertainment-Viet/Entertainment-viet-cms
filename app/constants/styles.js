@@ -23,6 +23,8 @@ export const THIRD_TEXT_COLOR = '#A0AEC0';
 export const DARK_PINK_COLOR = '#EE2068';
 export const SUB_BLU_COLOR = '#1D1C4C';
 export const LIGHT_PINK = '#906cfc';
+export const LIGHT_ORANGE = '#CE4545';
+export const LIGHT_BLUE = '#00F0FF';
 export const size = {
   mobileS: '320px',
   mobileM: '375px',
