@@ -8,8 +8,10 @@
 import { translations } from 'locales/translations';
 import { t } from 'utils/messages';
 import {
+  ENUM_ACCOUNT_TYPE,
   ENUM_BOOKING_STATUS,
   ENUM_PAYMENT_TYPE,
+  ENUM_USER_STATE,
   ENUM_WORK_TYPE,
 } from '../../constants/enums';
 
@@ -35,5 +37,21 @@ export const globalMessages = {
   [ENUM_WORK_TYPE.SINGLE_TIME]: t(translations.globalMessages.SINGLE_TIME),
   [ENUM_WORK_TYPE.PERIOD_CONTRACT]: t(
     translations.globalMessages.PERIOD_CONTRACT,
+  ),
+  [ENUM_ACCOUNT_TYPE.PERSONAL]: t(translations.globalMessages.PERSONAL),
+  [ENUM_ACCOUNT_TYPE.COMPANY]: t(translations.globalMessages.COMPANY),
+  [ENUM_USER_STATE.GUEST]: t(translations.globalMessages.USER_STATE_GUEST),
+  [ENUM_USER_STATE.PENDING]: t(translations.globalMessages.USER_STATE_PENDING),
+  [ENUM_USER_STATE.VERIFIED]: t(
+    translations.globalMessages.USER_STATE_VERIFIED,
+  ),
+  [ENUM_USER_STATE.UNVERIFIED]: t(
+    translations.globalMessages.USER_STATE_UNVERIFIED,
+  ),
+  [ENUM_USER_STATE.CHARGEABLE]: t(
+    translations.globalMessages.USER_STATE_CHARGEABLE,
+  ),
+  [ENUM_USER_STATE.ARCHIVED]: t(
+    translations.globalMessages.USER_STATE_ARCHIVED,
   ),
 };
