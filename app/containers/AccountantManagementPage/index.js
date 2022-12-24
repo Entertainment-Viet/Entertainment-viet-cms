@@ -42,7 +42,7 @@ export function ManagementPage() {
       <Tabs mb="12" isLazy>
         <TabList color={TEXT_PURPLE}>
           {/* <CustomTab>{t(messages.achievement())}</CustomTab> */}
-          <CustomTab>{t(messages.orders())}</CustomTab>
+          <CustomTab>{t(messages.talentTab())}</CustomTab>
           {/* <CustomTab>By customer</CustomTab> */}
         </TabList>
         <TabPanels>

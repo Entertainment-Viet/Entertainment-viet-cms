@@ -19,14 +19,7 @@ export const initialState = {
   loading: false,
   error: false,
   paging: ENUM_PAGGING,
-  bookings: false,
   data: false,
-  unpaidSum: false,
-  role: '',
-  status: '',
-  isPaid: false,
-  start: '',
-  end: '',
   search: '',
 };
 
@@ -53,32 +46,17 @@ const pageReducer = (state = initialState, action) =>
       case LOAD_BOOKINGS:
         draft.error = false;
         draft.loading = true;
-        draft.bookings = false;
+        draft.data = false;
         break;
       case LOAD_BOOKINGS_SUCCESS:
+        console.log('data: ', action.payload.paging);
         draft.loading = false;
-        draft.bookings = action.payload;
-        draft.paging = action.payload.bookings.paging;
-        draft.data = action.payload.bookings.content;
-        draft.unpaidSum = action.payload.unpaidSum;
-        break;
-      case CHANGE_END:
-        draft.end = action.end;
-        break;
-      case CHANGE_START:
-        draft.start = action.start;
+        // draft.bookings = action.payload;
+        draft.paging = action.payload.paging;
+        draft.data = action.payload.content;
         break;
       case CHANGE_SEARCH:
         draft.search = action.search;
-        break;
-      case CHANGE_ROLE:
-        draft.role = action.role;
-        break;
-      case CHANGE_ISPAID:
-        draft.isPaid = action.isPaid;
-        break;
-      case CHANGE_STATUS:
-        draft.status = action.status;
         break;
     }
   });

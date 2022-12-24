@@ -110,7 +110,7 @@ export default function App() {
           exact
           path={Paths.ROUTE_ACC_HOME}
           isAuthenticated={isAuthenticated}
-          roles={[ENUM_ROLES.BD]}
+          roles={[ENUM_ROLES.ACCOUNTANT]}
         >
           <AccManagementPage />
         </PrivateRoute>

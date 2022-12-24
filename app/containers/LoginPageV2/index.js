@@ -69,59 +69,63 @@ function LoginPageV2() {
       data: qs.stringify(data),
       url: `${process.env.REACT_KEYCLOAK_API}${API_LOGIN}`,
     };
-    // eslint-disable-next-line no-console
-    console.log('data', data);
-    const result = await axios(options);
-    const { roles } = jwt(result.data.access_token).realm_access;
-    if (result.status === 200) {
-      window.localStorage.setItem('exp', jwt(result.data.access_token).exp);
-      window.localStorage.setItem('uid', jwt(result.data.access_token).sub);
-      setSecureCookie(
-        'token',
-        result.data.access_token,
-        jwt(result.data.access_token).exp,
-      );
-      if (data.checkBoxRemember === true) {
-        // window.localStorage.setItem('refreshToken', result.data.refresh_token);
-        setSecureCookie('refreshToken', result.data.refresh_token, 30);
-      } else {
-        setSecureCookie('refreshToken', result.data.refresh_token, 0);
+    try {
+      const result = await axios(options);
+      const { roles } = jwt(result.data.access_token).realm_access;
+      if (result.status === 200) {
+        console.log('uid: ', jwt(result.data.access_token).sub);
+        window.localStorage.setItem('exp', jwt(result.data.access_token).exp);
+        window.localStorage.setItem('uid', jwt(result.data.access_token).sub);
+        setSecureCookie(
+          'token',
+          result.data.access_token,
+          jwt(result.data.access_token).exp,
+        );
+        if (data.checkBoxRemember === true) {
+          // window.localStorage.setItem('refreshToken', result.data.refresh_token);
+          setSecureCookie('refreshToken', result.data.refresh_token, 30);
+        } else {
+          setSecureCookie('refreshToken', result.data.refresh_token, 0);
+        }
+        console.log(roles);
+        const isBd = checker(roles, bdRole);
+        const isOa = checker(roles, oaRole);
+        const isAccountant = checker(roles, accountantRole);
+        if (isBd) {
+          localStorage.setItem('role', ENUM_ROLES.BD);
+          window.location.href = '/bd-home';
+        } else if (isOa) {
+          localStorage.setItem('role', ENUM_ROLES.OA);
+          window.location.href = '/oa-home';
+        } else if (isAccountant) {
+          console.log('setting here');
+          localStorage.setItem('role', ENUM_ROLES.ACCOUNTANT);
+          window.location.href = '/acc-home';
+        } else {
+          console.log('error while set role');
+        }
+        // const role = roles.every(element => {
+        //   if (bdRole.includes(element)) {
+        //     window.localStorage.setItem('role', ENUM_ROLES.OA);
+        //     // window.location.href = '/';
+        //     return false;
+        //   }
+        //   if (oaRole.includes(element)) {
+        //     window.localStorage.setItem('role', ENUM_ROLES.BD);
+        //     // window.location.href = '/';
+        //     return false;
+        //   }
+        //   if (accountantRole.includes(element)) {
+        //     window.localStorage.setItem('role', ENUM_ROLES.ACCOUNTANT);
+        //     // window.location.href = '/admin';
+        //     return false;
+        //   }
+        //   return true;
+        // });
+        // eslint-disable-next-line no-console
       }
-      console.log(roles);
-      const isBd = checker(roles, bdRole);
-      const isOa = checker(roles, oaRole);
-      const isAccountant = checker(roles, accountantRole);
-      if (isBd) {
-        localStorage.setItem('role', ENUM_ROLES.BD);
-        window.location.href = '/bd-home';
-      } else if (isOa) {
-        localStorage.setItem('role', ENUM_ROLES.OA);
-        window.location.href = '/oa-home';
-      } else if (isAccountant) {
-        localStorage.setItem('role', ENUM_ROLES.ACCOUNTANT);
-        window.location.href = '/acc-home';
-      } else {
-        console.log('error while set role');
-      }
-      // const role = roles.every(element => {
-      //   if (bdRole.includes(element)) {
-      //     window.localStorage.setItem('role', ENUM_ROLES.OA);
-      //     // window.location.href = '/';
-      //     return false;
-      //   }
-      //   if (oaRole.includes(element)) {
-      //     window.localStorage.setItem('role', ENUM_ROLES.BD);
-      //     // window.location.href = '/';
-      //     return false;
-      //   }
-      //   if (accountantRole.includes(element)) {
-      //     window.localStorage.setItem('role', ENUM_ROLES.ACCOUNTANT);
-      //     // window.location.href = '/admin';
-      //     return false;
-      //   }
-      //   return true;
-      // });
-      // eslint-disable-next-line no-console
+    } catch (err) {
+      console.log(err);
     }
   };
 

@@ -183,6 +183,10 @@
     "decline": "Decline",
     "delete": "Delete"
   },
+  "AccountManagementPage": {
+    "talentTab": "Talent",
+    "orgTab": "Organizer"
+  },
   "TalentProfile": {
     "fullName": "Full Name",
     "displayName": "Display Name",

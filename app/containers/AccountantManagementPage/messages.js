@@ -10,7 +10,7 @@ import { t } from 'utils/messages';
 
 export const messages = {
   profile: () => t(translations.BDManagementPage.profile),
-  orders: () => t(translations.BDManagementPage.orders),
+  talentTab: () => t(translations.AccountManagementPage.talentTab),
   schedule: () => t(translations.BDManagementPage.schedule),
   myAccount: () => t(translations.BDManagementPage.myAccount),
   back: () => t(translations.BDManagementPage.back),

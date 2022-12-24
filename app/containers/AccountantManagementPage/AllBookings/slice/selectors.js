@@ -37,38 +37,6 @@ const makeSelectData = () =>
     selectState,
     State => State.data,
   );
-
-const makeSelectUnpaidSum = () =>
-  createSelector(
-    selectState,
-    State => State.unpaidSum,
-  );
-const makeSelectStart = () =>
-  createSelector(
-    selectState,
-    State => State.start,
-  );
-const makeSelectEnd = () =>
-  createSelector(
-    selectState,
-    State => State.end,
-  );
-
-const makeSelectRole = () =>
-  createSelector(
-    selectState,
-    State => State.role,
-  );
-const makeSelectStatus = () =>
-  createSelector(
-    selectState,
-    State => State.status,
-  );
-const makeSelectIsPaid = () =>
-  createSelector(
-    selectState,
-    State => State.isPaid,
-  );
 const makeSelectSearch = () =>
   createSelector(
     selectState,
@@ -81,12 +49,6 @@ export {
   makeSelectPage,
   makeSelectPaging,
   makeSelectLimit,
-  makeSelectUnpaidSum,
   makeSelectData,
-  makeSelectEnd,
-  makeSelectStart,
-  makeSelectIsPaid,
-  makeSelectRole,
-  makeSelectStatus,
   makeSelectSearch,
 };

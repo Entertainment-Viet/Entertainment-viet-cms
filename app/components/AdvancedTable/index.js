@@ -35,7 +35,6 @@ const Table = ({
   pageNumber,
   limit,
   isLast,
-  total,
   setLimit,
   handlePageChange,
   // setPrevPage,
@@ -159,10 +158,7 @@ const Table = ({
         <Flex justifyContent="center" alignItems="center" />
         <Flex flexDirection="row" alignItems="center">
           <Text mr={4}>
-            Page{' '}
-            <strong>
-              {pageIndex + 1} of {Math.ceil(total / limit)}
-            </strong>{' '}
+            Page <strong>{pageIndex + 1}</strong>{' '}
           </Text>
           <TableIconButton
             mr={-1}

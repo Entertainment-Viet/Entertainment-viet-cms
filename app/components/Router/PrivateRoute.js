@@ -13,7 +13,7 @@ function PrivateRoute({ children, isAuthenticated, roles, ...rest }) {
   const getRole = getLocalRole();
   return (
     <Flex>
-      <Sidebar />
+      {/* <Sidebar /> */}
       <PageWrapper className="header-column">
         <Header />
         <Route
