@@ -46,21 +46,26 @@ const Achievement = ({ data, loading, onLoadData }) => {
     setAchievementList(data);
   }, [data]);
   const onSubmit = async () => {
-    let achievementData = achievement;
-    // eslint-disable-next-line no-shadow
-    achievementData = achievementData.map(({ key, value }) => ({
-      name: key,
-      rate: Number(value),
-    }));
-
-    achievementData.map(item =>
-      post(`${API_ACHIEVEMENT}`, item, userId).then(res => {
-        if (res > 400) {
-          console.log('error', res);
-        }
-        onLoadData();
-        console.log('Success!!');
-      }),
+    let achievementData = achievement && achievement;
+    achievementData =
+      achievement &&
+      // eslint-disable-next-line no-shadow
+      achievementData.map(({ key, value }) => ({
+        name: key,
+        rate: value,
+      }));
+    return Promise.all(
+      achievementData.map(achievementItem =>
+        post(`${API_ACHIEVEMENT}`, achievementItem, userId).then(res => {
+          if (res >= 400 || res <= 500) {
+            alert("Try again! Can't add achievement");
+            console.log('Error code', res);
+          } else {
+            onLoadData();
+            console.log('Add success!!');
+          }
+        }),
+      ),
     );
   };
 
@@ -86,14 +91,13 @@ const Achievement = ({ data, loading, onLoadData }) => {
       <form onSubmit={handleSubmit(onSubmit)}>
         <Form title="Achievement" isSubmitting={isSubmitting}>
           <DynamicInput setDynamicData={setAchievement} />
-          {achievementList &&
+          {achievementList.length > 0 &&
             achievementList.map((item, index) => (
               <Flex
                 height="40px"
                 alignItems="center"
                 marginTop="20px"
-                // eslint-disable-next-line react/no-array-index-key
-                key={`achievement_${index}`}
+                key={`achievement_${item.id}`}
               >
                 <InputCustomV2 name="name" value={item.name} />
                 <Box marginRight="4px" marginLeft="4px" />
