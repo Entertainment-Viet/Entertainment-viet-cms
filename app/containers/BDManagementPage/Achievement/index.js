@@ -98,11 +98,7 @@ const Achievement = ({ data, loading, onLoadData }) => {
                 <InputCustomV2 name="name" value={item.name} />
                 <Box marginRight="4px" marginLeft="4px" />
                 <InputCustomV2 name="rate" type="number" value={item.rate} />
-                <TrashCan
-                  size="80px"
-                  _hover={{ cursor: 'pointer' }}
-                  onClick={() => handleDelete(index)}
-                />
+                <TrashCan size="80px" onClick={() => handleDelete(index)} />
               </Flex>
             ))}
         </Form>

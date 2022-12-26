@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-export default function TrashCan({ size }) {
+export default function TrashCan({ size, onClick }) {
   return (
     <svg
       width={size}
@@ -9,6 +9,7 @@ export default function TrashCan({ size }) {
       viewBox="0 0 24 24"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
+      onClick={onClick}
     >
       <path
         fillRule="evenodd"
@@ -27,4 +28,5 @@ export default function TrashCan({ size }) {
 }
 TrashCan.propTypes = {
   size: PropTypes.number,
+  onClick: PropTypes.func,
 };
