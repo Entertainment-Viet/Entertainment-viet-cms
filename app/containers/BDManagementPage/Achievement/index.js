@@ -57,15 +57,13 @@ const Achievement = ({ data, loading, onLoadData }) => {
     return Promise.all(
       achievementData.map(achievementItem =>
         post(`${API_ACHIEVEMENT}`, achievementItem, userId).then(res => {
-          if (res >= 400 || res <= 500) {
+          if (res >= 400 && res <= 500) {
             alert("Try again! Can't add achievement");
             console.log('Error code', res);
-          } else {
-            onLoadData();
-            console.log('Add success!!');
           }
         }),
       ),
+      onLoadData(),
     );
   };
 
