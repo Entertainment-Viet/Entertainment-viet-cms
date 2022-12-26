@@ -1,5 +1,15 @@
-import React, { memo, useEffect, useState } from 'react';
-import { HStack, Text, Flex, Box, Button, Link } from '@chakra-ui/react';
+import React, { memo, useEffect } from 'react';
+import {
+  HStack,
+  Text,
+  Flex,
+  Box,
+  Button,
+  InputGroup,
+  Input,
+  InputLeftElement,
+} from '@chakra-ui/react';
+import { SearchIcon } from '@chakra-ui/icons';
 import { useTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
 import PageSpinner from 'components/PageSpinner';
@@ -7,20 +17,31 @@ import {
   PRI_TEXT_COLOR,
   TEXT_GREEN,
   RED_COLOR,
-  SUB_BLU_COLOR,
   TEXT_PURPLE,
 } from 'constants/styles';
 import styled from 'styled-components';
 import AdvancedTable from 'components/AdvancedTable';
-
+import { DateTimeCustom } from 'components/Controls';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { createStructuredSelector } from 'reselect';
 import { useInjectReducer } from 'utils/injectReducer';
 import { useInjectSaga } from 'utils/injectSaga';
+import SelectCustom from 'components/Controls/SelectCustom';
 // import { ROUTE_BOOKING_DETAIL_MANAGER } from 'constants/routes';
+import { Link } from 'react-router-dom';
 import { messages } from '../messages';
-import { changePage, changeLimit, loadBookings } from './slice/actions';
+import {
+  changePage,
+  changeLimit,
+  loadBookings,
+  changeEnd,
+  changeIspaid,
+  changeSearch,
+  changeStart,
+  changeStatus,
+  changeRole,
+} from './slice/actions';
 import saga from './slice/saga';
 import reducer from './slice/reducer';
 import {
@@ -28,9 +49,18 @@ import {
   makeSelectDetailError,
   makeSelectPaging,
   makeSelectData,
-  makeSelectUnpaidSum,
+  makeSelectPage,
+  makeSelectLimit,
+  makeSelectSearch,
+  makeSelectEnd,
+  makeSelectIsPaid,
+  makeSelectStart,
+  makeSelectStatus,
+  makeSelectRole,
 } from './slice/selectors';
-import { numberWithCommas } from '../../../utils/helpers';
+import { ENUM_BOOKING_STATUS } from '../../../constants/enums';
+import { handleAddress, convertReadableTime } from '../../../utils/helpers';
+// import { numberWithCommas } from '../../../utils/helpers';
 const StatusCell = styled(Text)`
   text-align: center;
   padding: 5px;
@@ -65,147 +95,89 @@ const StatusCell = styled(Text)`
 `;
 const bookingsColumns = [
   {
-    Header: 'Booking date',
-    accessor: 'createdAt',
+    Header: 'Confirm At',
+    accessor: 'confirmAt',
   },
   {
-    Header: 'Perform date and time',
-    accessor: 'date',
+    Header: 'Perform date',
+    accessor: 'performDate',
   },
   {
-    Header: 'Package',
-    accessor: 'package',
+    Header: 'Location',
+    accessor: 'location',
   },
   {
     Header: 'Organizer',
-    accessor: 'organizer',
+    accessor: 'org',
+  },
+  {
+    Header: 'Talent',
+    accessor: 'talent',
   },
   {
     Header: 'Status',
     accessor: 'status',
   },
   {
-    Header: 'Price',
-    accessor: 'price',
+    Header: 'Is paid',
+    accessor: 'paid',
   },
   {
     Header: '',
-    accessor: 'action',
+    accessor: 'actions',
   },
 ];
 
-const key = 'Orders';
-const Orders = ({
+const key = 'AllBookings';
+const AllBookings = ({
   data,
   paging,
   handlePageChange,
   handleLimitChange,
   // eslint-disable-next-line no-shadow
   loadBookings,
-  unpaidSum,
+  handleSearchChange,
+  handleStartChange,
+  handleEndChange,
+  handleStatusChange,
+  handleIspaidChange,
+  handleRoleChange,
 }) => {
   useInjectReducer({ key, reducer });
   useInjectSaga({ key, saga });
   const { t } = useTranslation();
-  const [active, setActive] = useState(0);
-  const [status, setStatus] = useState('booking.status.talent-pending');
-  const [hasFilterStatus, setHasFilterStatus] = useState(false);
-  const [isFilterAll, setIsFilterAll] = useState(true);
-  const [isFilterUpcoming, setIsFilterUpcoming] = useState(false);
 
   useEffect(() => {
-    loadBookings(status, hasFilterStatus, isFilterAll, isFilterUpcoming);
-  }, [status, hasFilterStatus, isFilterAll, isFilterUpcoming]);
-
-  const handleChangeStatus = (activeTemp, statusTemp) => {
-    setStatus(statusTemp);
-    setActive(activeTemp);
-    setIsFilterUpcoming(false);
-    setIsFilterAll(false);
-    setHasFilterStatus(true);
-  };
-
-  const handleFilterUpcoming = () => {
-    setStatus(null);
-    setActive(1);
-    setIsFilterUpcoming(true);
-    setIsFilterAll(false);
-    setHasFilterStatus(false);
-  };
-
-  const handleFilterAll = () => {
-    setStatus(null);
-    setActive(0);
-    setIsFilterUpcoming(false);
-    setIsFilterAll(true);
-    setHasFilterStatus(false);
-  };
+    loadBookings();
+  }, []);
 
   let tableBookings;
   if (data) {
     tableBookings = data.map(booking => ({
-      createdAt: (
-        <Text>{new Date(booking.createdAt).toLocaleDateString()}</Text>
+      confirmAt: <Text>{booking.confirmedAt}</Text>,
+      performDate: (
+        <Text>
+          {convertReadableTime(booking.jobDetail.performanceStartTime)}-
+          {convertReadableTime(booking.jobDetail.performanceEndTime)}
+        </Text>
       ),
-      date: (
-        <Box>
-          <Box sx={{ marginBottom: '5px' }}>
-            <Text>
-              {new Date(
-                booking.jobDetail.performanceStartTime,
-              ).toLocaleDateString()}
-            </Text>
-          </Box>
-          <Text>
-            {`${new Date(
-              booking.jobDetail.performanceStartTime,
-            ).getHours()}:${new Date(
-              booking.jobDetail.performanceStartTime,
-            ).getMinutes()}:${new Date(
-              booking.jobDetail.performanceStartTime,
-            ).getSeconds()}`}{' '}
-            -
-            {`${new Date(
-              booking.jobDetail.performanceEndTime,
-            ).getHours()}:${new Date(
-              booking.jobDetail.performanceEndTime,
-            ).getMinutes()}:${new Date(
-              booking.jobDetail.performanceEndTime,
-            ).getSeconds()}`}
-          </Text>
-        </Box>
-      ),
-      package: <Text>{booking.packageName}</Text>,
-      organizer: <Text>{booking.organizerName}</Text>,
-      status: (
-        <StatusCell type={booking.isPaid ? 'active' : 'disable'}>
-          {booking.isPaid ? 'Paid' : 'Unpaid'}
-        </StatusCell>
-      ),
-      price: `${numberWithCommas(
-        booking.jobDetail.price.min,
-      )} - ${numberWithCommas(booking.jobDetail.price.max)}`,
-      action: (
+      location: <Text>{handleAddress(booking.jobDetail.location)}</Text>,
+      org: <Text>{booking.organizerName}</Text>,
+      talent: <Text>{booking.talentName}</Text>,
+      paid: <Text>{booking.isPaid.toString()}</Text>,
+      status: <Text>{booking.status}</Text>,
+      actions: (
         <HStack>
-          <Button colorScheme="purple" size="xs">
-            {t(messages.done())}
-          </Button>
-          <Link
-            href={`${ROUTE_BOOKING_DETAIL_MANAGER.replace(':id', booking.uid)}`}
-          >
-            <Button colorScheme="gray" size="xs">
+          <Link to="#">
+            <Button colorScheme="red" size="xs">
               {t(messages.detail())}
             </Button>
           </Link>
-          <Button colorScheme="red" size="xs">
-            {t(messages.cancel())}
-          </Button>
         </HStack>
       ),
     }));
   }
   const pageProps = {
-    total: paging.totalElements,
     pageNumber: paging.pageNumber, // pageNumber
     limit: paging.pageSize, // pageSize
     isLast: paging.last,
@@ -220,114 +192,79 @@ const Orders = ({
           marginBottom: '20px',
         }}
       >
-        <Box
-          display="flex"
-          sx={{
-            marginTop: '40px',
-          }}
-        >
-          <Button
-            borderBottom="1px solid"
-            bg="transparent"
-            sx={{
-              borderRadius: '0',
-              borderColor: active === 0 ? TEXT_GREEN : 'transparent',
-              fontWeight: '10px',
-            }}
-            onClick={() => handleFilterAll()}
-            color={active === 0 ? TEXT_PURPLE : 'white'}
-          >
-            {t(messages.all())}
-          </Button>
-          <Button
-            borderBottom="1px solid"
-            bg="transparent"
-            sx={{
-              borderRadius: '0',
-              borderColor: active === 1 ? TEXT_GREEN : 'transparent',
-              fontWeight: '10px',
-            }}
-            onClick={() => handleFilterUpcoming()}
-            color={active === 1 ? TEXT_PURPLE : 'white'}
-          >
-            {t(messages.upcoming())}
-          </Button>
-          <Button
-            borderBottom="1px solid"
-            bg="transparent"
-            sx={{
-              borderRadius: '0',
-              borderColor: active === 2 ? TEXT_GREEN : 'transparent',
-              fontWeight: '10px',
-            }}
-            onClick={() =>
-              handleChangeStatus(2, 'booking.status.talent-pending')
-            }
-            color={active === 2 ? TEXT_PURPLE : 'white'}
-          >
-            {t(messages.pending())}
-          </Button>
-          <Button
-            borderBottom="1px solid"
-            bg="transparent"
-            sx={{
-              borderRadius: '0',
-              borderColor: active === 3 ? TEXT_GREEN : 'transparent',
-              fontWeight: '10px',
-            }}
-            onClick={() => handleChangeStatus(3, 'booking.status.finished')}
-            color={active === 3 ? TEXT_PURPLE : 'white'}
-          >
-            {t(messages.done())}
-          </Button>
-          <Button
-            borderBottom="1px solid"
-            bg="transparent"
-            sx={{
-              borderRadius: '0',
-              borderColor: active === 4 ? TEXT_GREEN : 'transparent',
-              fontWeight: '10px',
-            }}
-            onClick={() => handleChangeStatus(4, 'booking.status.cancelled')}
-            color={active === 4 ? TEXT_PURPLE : 'white'}
-          >
-            {t(messages.canceled())}
-          </Button>
-        </Box>
-        <Box>
-          <Box
-            width="336px"
-            height="81px"
-            bg={SUB_BLU_COLOR}
-            borderRadius="5px"
-            p={5}
-          >
-            <Box display="d-flex" justifyContent="space-between">
-              <Box fontWeight="400px" fontSize="15px" lineHeight="18px">
-                {t(messages.budget())}
-              </Box>
-              <Box
-                fontWeight="400px"
-                fontSize="10px"
-                lineHeight="12px"
-                color={TEXT_PURPLE}
-                sx={{
-                  textDecoration: 'underline',
-                }}
-              >
-                {t(messages.detail())}
-              </Box>
-            </Box>
-            <Box
-              fontWeight="600px"
-              fontSize="30px"
-              lineHeight="42px"
-              color={TEXT_GREEN}
+        <HStack gap={4}>
+          <InputGroup w="50%">
+            <Input
+              // value={searchTerm}
+              onChange={e => handleSearchChange(e.target.value)}
+              bg="transparent"
+              placeholder="Search"
+              _placeholder={{ opacity: 1, color: `${TEXT_PURPLE}` }}
+              border={`1px solid ${TEXT_PURPLE}`}
+              borderRadius="2rem"
+            />
+            <InputLeftElement>
+              <SearchIcon color={TEXT_PURPLE} />
+            </InputLeftElement>
+          </InputGroup>
+          <Box>
+            <SelectCustom
+              placeholder="Role"
+              isSearchable
+              onChange={val => handleRoleChange(val.target.value)}
             >
-              ${numberWithCommas(unpaidSum)}
-            </Box>
+              <option value="talent">Talent</option>
+              <option value="organizer">Company</option>
+            </SelectCustom>
           </Box>
-        </Box>
+          <Box>
+            <SelectCustom
+              placeholder="Status"
+              isSearchable
+              onChange={val => handleStatusChange(val.target.value)}
+            >
+              <option value={ENUM_BOOKING_STATUS.TALENT_PENDING}>
+                Talent pending
+              </option>
+              <option value={ENUM_BOOKING_STATUS.ORG_PENDING}>
+                Org pending
+              </option>
+              <option value={ENUM_BOOKING_STATUS.CONFIRMED}>Confirmed</option>
+              <option value={ENUM_BOOKING_STATUS.CANCELLED}>Cancelled</option>
+              <option value={ENUM_BOOKING_STATUS.FINISHED}>Finished</option>
+            </SelectCustom>
+          </Box>
+          <Box>
+            <SelectCustom
+              placeholder="Ispaid"
+              isSearchable
+              onChange={val => handleIspaidChange(val.target.value)}
+            >
+              <option value="true">True</option>
+              <option value="false">False</option>
+            </SelectCustom>
+          </Box>
+          <Text>Start time</Text>
+          <Box>
+            <DateTimeCustom
+              template="datetime-picker right"
+              name="end_vip_date"
+              type="hm"
+              message="Start date"
+              handleDateChange={handleStartChange}
+            />
+          </Box>
+          <Text>End time</Text>
+          <Box>
+            <DateTimeCustom
+              template="datetime-picker right"
+              name="end_vip_date"
+              type="hm"
+              message="End date"
+              handleDateChange={handleEndChange}
+            />
+          </Box>
+        </HStack>
       </Box>
       {!data ? (
         <PageSpinner />
@@ -348,11 +285,17 @@ const Orders = ({
   );
 };
 
-Orders.propTypes = {
+AllBookings.propTypes = {
   match: PropTypes.object,
   paging: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
   handlePageChange: PropTypes.func,
   handleLimitChange: PropTypes.func,
+  handleSearchChange: PropTypes.func,
+  handleStartChange: PropTypes.func,
+  handleEndChange: PropTypes.func,
+  handleRoleChange: PropTypes.func,
+  handleStatusChange: PropTypes.func,
+  handleIspaidChange: PropTypes.func,
   loadBookings: PropTypes.func,
   bookings: PropTypes.oneOfType([
     PropTypes.object,
@@ -368,7 +311,14 @@ const mapStateToProps = createStructuredSelector({
   error: makeSelectDetailError(),
   paging: makeSelectPaging(),
   data: makeSelectData(),
-  unpaidSum: makeSelectUnpaidSum(),
+  page: makeSelectPage(),
+  limit: makeSelectLimit(),
+  search: makeSelectSearch(),
+  isPaid: makeSelectIsPaid(),
+  status: makeSelectStatus(),
+  start: makeSelectStart(),
+  end: makeSelectEnd(),
+  role: makeSelectRole(),
 });
 
 export function mapDispatchToProps(dispatch) {
@@ -381,10 +331,31 @@ export function mapDispatchToProps(dispatch) {
       dispatch(changeLimit(limit));
       dispatch(loadBookings());
     },
-    loadBookings: (status, hasFilterStatus, isFilterAll, isFilterUpcoming) => {
-      dispatch(
-        loadBookings(status, hasFilterStatus, isFilterAll, isFilterUpcoming),
-      );
+    handleStatusChange: stt => {
+      dispatch(changeStatus(stt));
+      dispatch(loadBookings());
+    },
+    handleSearchChange: search => {
+      dispatch(changeSearch(search));
+      dispatch(loadBookings());
+    },
+    handleStartChange: start => {
+      dispatch(changeStart(start));
+      dispatch(loadBookings());
+    },
+    handleEndChange: end => {
+      dispatch(changeEnd(end));
+      dispatch(loadBookings());
+    },
+    handleIspaidChange: isPaid => {
+      dispatch(changeIspaid(isPaid));
+      dispatch(loadBookings());
+    },
+    handleRoleChange: role => {
+      dispatch(changeRole(role));
+    },
+    loadBookings: () => {
+      dispatch(loadBookings());
     },
   };
 }
@@ -397,4 +368,4 @@ const withConnect = connect(
 export default compose(
   withConnect,
   memo,
-)(Orders);
+)(AllBookings);

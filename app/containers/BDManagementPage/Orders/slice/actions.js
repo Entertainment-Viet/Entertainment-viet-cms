@@ -5,12 +5,49 @@ import {
   CHANGE_LIMIT,
   LOAD_BOOKINGS,
   LOAD_BOOKINGS_SUCCESS,
+  CHANGE_ROLE,
 } from './constants';
 
 export function changePage(page) {
   return {
     type: CHANGE_PAGE,
     page,
+  };
+}
+export function changeRole(role) {
+  return {
+    type: CHANGE_ROLE,
+    role,
+  };
+}
+export function changeStatus(stt) {
+  return {
+    type: CHANGE_PAGE,
+    stt,
+  };
+}
+export function changeStart(start) {
+  return {
+    type: CHANGE_PAGE,
+    start,
+  };
+}
+export function changeEnd(end) {
+  return {
+    type: CHANGE_PAGE,
+    end,
+  };
+}
+export function changeIspaid(isPaid) {
+  return {
+    type: CHANGE_PAGE,
+    isPaid,
+  };
+}
+export function changeSearch(search) {
+  return {
+    type: CHANGE_PAGE,
+    search,
   };
 }
 

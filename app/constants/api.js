@@ -6,3 +6,5 @@ export const API_LOGIN = '/auth/realms/ve-sso/protocol/openid-connect/token';
 export const API_LOGOUT = '/auth/realms/ve-sso/protocol/openid-connect/logout';
 /* ACCOUNT */
 export const API_ORG_LIST = '/api/admins/:id1/organizers';
+/* BD */
+export const API_LIST_BOOKING_BD = '/api/admins/:id1/bookings';
