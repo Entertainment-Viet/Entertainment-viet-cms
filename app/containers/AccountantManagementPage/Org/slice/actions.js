@@ -5,12 +5,6 @@ import {
   CHANGE_LIMIT,
   LOAD_BOOKINGS,
   LOAD_BOOKINGS_SUCCESS,
-  CHANGE_ROLE,
-  CHANGE_STATUS,
-  CHANGE_START,
-  CHANGE_END,
-  CHANGE_ISPAID,
-  CHANGE_SEARCH,
 } from './constants';
 
 export function changePage(page) {
@@ -21,37 +15,37 @@ export function changePage(page) {
 }
 export function changeRole(role) {
   return {
-    type: CHANGE_ROLE,
+    type: CHANGE_PAGE,
     role,
   };
 }
 export function changeStatus(stt) {
   return {
-    type: CHANGE_STATUS,
+    type: CHANGE_PAGE,
     stt,
   };
 }
 export function changeStart(start) {
   return {
-    type: CHANGE_START,
+    type: CHANGE_PAGE,
     start,
   };
 }
 export function changeEnd(end) {
   return {
-    type: CHANGE_END,
+    type: CHANGE_PAGE,
     end,
   };
 }
 export function changeIspaid(isPaid) {
   return {
-    type: CHANGE_ISPAID,
+    type: CHANGE_PAGE,
     isPaid,
   };
 }
 export function changeSearch(search) {
   return {
-    type: CHANGE_SEARCH,
+    type: CHANGE_PAGE,
     search,
   };
 }

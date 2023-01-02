@@ -1,7 +1,7 @@
 import { createSelector } from 'reselect';
 import { initialState } from './reducer';
 
-const selectState = state => state.AllBookings || initialState;
+const selectState = state => state.Org || initialState;
 
 const makeSelectDetailLoading = () =>
   createSelector(
@@ -37,41 +37,10 @@ const makeSelectData = () =>
     selectState,
     State => State.data,
   );
-const makeSelectFee = () =>
-  createSelector(
-    selectState,
-    State => State.fees,
-  );
 const makeSelectSearch = () =>
   createSelector(
     selectState,
     State => State.search,
-  );
-const makeSelectStart = () =>
-  createSelector(
-    selectState,
-    State => State.start,
-  );
-const makeSelectEnd = () =>
-  createSelector(
-    selectState,
-    State => State.end,
-  );
-
-const makeSelectStatus = () =>
-  createSelector(
-    selectState,
-    State => State.status,
-  );
-const makeSelectIsPaid = () =>
-  createSelector(
-    selectState,
-    State => State.isPaid,
-  );
-const makeSelectRole = () =>
-  createSelector(
-    selectState,
-    State => State.role,
   );
 
 export {
@@ -82,10 +51,4 @@ export {
   makeSelectLimit,
   makeSelectData,
   makeSelectSearch,
-  makeSelectEnd,
-  makeSelectIsPaid,
-  makeSelectStart,
-  makeSelectStatus,
-  makeSelectFee,
-  makeSelectRole,
 };

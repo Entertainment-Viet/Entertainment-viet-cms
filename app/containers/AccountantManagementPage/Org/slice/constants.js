@@ -1,0 +1,12 @@
+export const CHANGE_PAGE = 'App/AccountantManagementPage/Org/CHANGE_PAGE';
+export const CHANGE_LIMIT = 'App/AccountantManagementPage/Org/CHANGE_LIMIT';
+export const CHANGE_ROLE = 'App/AccountantManagementPage/Org/CHANGE_ROLE';
+export const CHANGE_SEARCH = 'App/AccountantManagementPage/Org/CHANGE_SEARCH';
+export const CHANGE_STATUS = 'App/AccountantManagementPage/Org/CHANGE_STATUS';
+export const CHANGE_ISPAID = 'App/AccountantManagementPage/Org/CHANGE_ISPAID';
+export const CHANGE_START = 'App/AccountantManagementPage/Org/CHANGE_START';
+export const CHANGE_END = 'App/AccountantManagementPage/Org/CHANGE_END';
+export const LOAD_INFO_SUCCESS = 'App/AccountantManagementPage/Org/LOAD_INFO_SUCCESS';
+export const LOAD_BOOKINGS = 'App/AccountantManagementPage/Org/LOAD_PACKAGE';
+export const LOAD_BOOKINGS_SUCCESS = 'App/AccountantManagementPage/Org/LOAD_PACKAGE_SUCCESS';
+export const LOAD_INFO_ERROR = 'App/AccountantManagementPage/Org/LOAD_INFO_ERROR';

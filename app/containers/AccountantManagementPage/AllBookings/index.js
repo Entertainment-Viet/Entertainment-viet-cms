@@ -9,10 +9,14 @@ import {
   Input,
   InputLeftElement,
 } from '@chakra-ui/react';
+import { PDFDownloadLink } from '@react-pdf/renderer';
+import { DateTimeCustom } from 'components/Controls';
 import { SearchIcon } from '@chakra-ui/icons';
 import { useTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
 import PageSpinner from 'components/PageSpinner';
+import SelectCustom from 'components/Controls/SelectCustom';
+import PDFView from 'containers/PDFViewer/Accountant';
 import {
   PRI_TEXT_COLOR,
   TEXT_GREEN,
@@ -27,9 +31,11 @@ import { compose } from 'redux';
 import { createStructuredSelector } from 'reselect';
 import { useInjectReducer } from 'utils/injectReducer';
 import { useInjectSaga } from 'utils/injectSaga';
+import { put } from 'utils/request';
 // import SelectCustom from 'components/Controls/SelectCustom';
 // import { ROUTE_BOOKING_DETAIL_MANAGER } from 'constants/routes';
 import { Link } from 'react-router-dom';
+import { API_UPDATE } from '../../../constants/api';
 import { messages } from '../messages';
 import {
   changePage,
@@ -52,8 +58,13 @@ import {
   makeSelectPage,
   makeSelectLimit,
   makeSelectSearch,
+  makeSelectEnd,
+  makeSelectIsPaid,
+  makeSelectStart,
+  makeSelectStatus,
+  makeSelectFee,
 } from './slice/selectors';
-// import { numberWithCommas } from '../../../utils/helpers';
+import { numberWithCommas } from '../../../utils/helpers';
 const StatusCell = styled(Text)`
   text-align: center;
   padding: 5px;
@@ -88,24 +99,36 @@ const StatusCell = styled(Text)`
 `;
 const bookingsColumns = [
   {
-    Header: 'Tên',
-    accessor: 'name',
+    Header: 'Booking code',
+    accessor: 'bookingCode',
   },
   {
-    Header: 'Liên hệ',
-    accessor: 'contact',
+    Header: 'Booking date',
+    accessor: 'createdAt',
   },
   {
-    Header: 'Số điện thoại',
-    accessor: 'phone',
+    Header: 'Perform date and time',
+    accessor: 'date',
   },
   {
-    Header: 'Công ty',
-    accessor: 'company',
+    Header: 'Organizer',
+    accessor: 'organizer',
+  },
+  {
+    Header: 'Talent',
+    accessor: 'talent',
+  },
+  {
+    Header: 'Status',
+    accessor: 'status',
+  },
+  {
+    Header: 'Price',
+    accessor: 'price',
   },
   {
     Header: '',
-    accessor: 'actions',
+    accessor: 'action',
   },
 ];
 
@@ -113,31 +136,95 @@ const key = 'AllBookings';
 const AllBookings = ({
   data,
   paging,
+  fee,
   handlePageChange,
   handleLimitChange,
   // eslint-disable-next-line no-shadow
   loadBookings,
   handleSearchChange,
+  handleStartChange,
+  handleEndChange,
+  handleStatusChange,
+  handleIspaidChange,
+  handleRoleChange,
 }) => {
   useInjectReducer({ key, reducer });
   useInjectSaga({ key, saga });
   const { t } = useTranslation();
-
+  const queryString = window.location.search;
+  const urlParams = new URLSearchParams(queryString);
+  const role = urlParams.get('role');
+  const entityUid = urlParams.get('uid');
   useEffect(() => {
+    if (role) handleRoleChange(role);
+    if (entityUid) handleSearchChange(entityUid);
     loadBookings();
   }, []);
-
+  const handleChangeIsPaid = uid => {
+    const myId = localStorage.getItem('uid');
+    put(
+      API_UPDATE,
+      {
+        isPaid: true,
+      },
+      myId,
+      uid,
+    );
+  };
   let tableBookings;
   if (data) {
     tableBookings = data.map(booking => ({
-      name: <Text>{booking.displayName}</Text>,
-      contact: <Text>{booking.email}</Text>,
-      phone: <Text>{booking.phoneNumber}</Text>,
-      company: <Text>{booking.companyName}</Text>,
-      actions: (
+      bookingCode: <Text>{booking.bookingCode}</Text>,
+      createdAt: (
+        <Text>{new Date(booking.createdAt).toLocaleDateString()}</Text>
+      ),
+      date: (
+        <Box>
+          <Box sx={{ marginBottom: '5px' }}>
+            <Text>
+              {new Date(
+                booking.jobDetail.performanceStartTime,
+              ).toLocaleDateString()}
+            </Text>
+          </Box>
+          <Text>
+            {`${new Date(
+              booking.jobDetail.performanceStartTime,
+            ).getHours()}:${new Date(
+              booking.jobDetail.performanceStartTime,
+            ).getMinutes()}:${new Date(
+              booking.jobDetail.performanceStartTime,
+            ).getSeconds()}`}{' '}
+            -
+            {`${new Date(
+              booking.jobDetail.performanceEndTime,
+            ).getHours()}:${new Date(
+              booking.jobDetail.performanceEndTime,
+            ).getMinutes()}:${new Date(
+              booking.jobDetail.performanceEndTime,
+            ).getSeconds()}`}
+          </Text>
+        </Box>
+      ),
+      organizer: <Text>{booking.organizerName}</Text>,
+      talent: <Text>{booking.talentName}</Text>,
+      status: (
+        <StatusCell type={booking.isPaid ? 'active' : 'disable'}>
+          {booking.isPaid ? 'Paid' : 'Unpaid'}
+        </StatusCell>
+      ),
+      price: `${numberWithCommas(booking.jobDetail.price.min)}`,
+      action: (
         <HStack>
-          <Link to="#">
-            <Button colorScheme="red" size="xs">
+          <Button
+            colorScheme="purple"
+            size="xs"
+            onClick={() => handleChangeIsPaid(booking.uid)}
+          >
+            {t(messages.done())}
+          </Button>
+          <Link>
+            <Button colorScheme="gray" size="xs">
               {t(messages.detail())}
             </Button>
           </Link>
@@ -152,52 +239,104 @@ const AllBookings = ({
   };
 
   return (
-    <Box color={PRI_TEXT_COLOR}>
-      <Box
-        display="d-flex"
-        justifyContent="space-between"
-        sx={{
-          marginBottom: '20px',
-        }}
-      >
-        {/* <HStack gap={4}> */}
-        <InputGroup w="100%">
-          <Input
-            // value={searchTerm}
-            onChange={e => handleSearchChange(e.target.value)}
-            bg="transparent"
-            placeholder="Search"
-            _placeholder={{ opacity: 1, color: `${TEXT_PURPLE}` }}
-            border={`1px solid ${TEXT_PURPLE}`}
-            borderRadius="2rem"
-          />
-          <InputLeftElement>
-            <SearchIcon color={TEXT_PURPLE} />
-          </InputLeftElement>
-        </InputGroup>
-        {/* </HStack> */}
-      </Box>
+    <>
       {!data ? (
         <PageSpinner />
       ) : (
-        <Flex zIndex={1} position="relative" gap={4}>
-          <Box w="100%" flexGrow={1}>
-            <AdvancedTable
-              columns={bookingsColumns}
-              data={tableBookings || []}
-              {...pageProps}
-              handlePageChange={handlePageChange}
-              setLimit={handleLimitChange}
-            />
+        <Box color={PRI_TEXT_COLOR}>
+          <Box
+            display="d-flex"
+            justifyContent="space-between"
+            sx={{
+              marginBottom: '20px',
+            }}
+          >
+            <HStack gap={4}>
+              <InputGroup w="50%">
+                <Input
+                  // value={searchTerm}
+                  onChange={e => handleSearchChange(e.target.value)}
+                  bg="transparent"
+                  placeholder="Search"
+                  _placeholder={{ opacity: 1, color: `${TEXT_PURPLE}` }}
+                  border={`1px solid ${TEXT_PURPLE}`}
+                  borderRadius="2rem"
+                />
+                <InputLeftElement>
+                  <SearchIcon color={TEXT_PURPLE} />
+                </InputLeftElement>
+              </InputGroup>
+              <Box>
+                <SelectCustom
+                  placeholder="Status"
+                  isSearchable
+                  onChange={val => handleStatusChange(val.target.value)}
+                >
+                  <option value="talent">Talent</option>
+                  <option value="organizer">Company</option>
+                </SelectCustom>
+              </Box>
+              <Box>
+                <SelectCustom
+                  placeholder="isPaid"
+                  isSearchable
+                  onChange={val => handleIspaidChange(val.target.value)}
+                >
+                  <option value="talent">Talent</option>
+                  <option value="organizer">Company</option>
+                </SelectCustom>
+              </Box>
+              <Text>Start time</Text>
+              <Box>
+                <DateTimeCustom
+                  template="datetime-picker right"
+                  name="end_vip_date"
+                  type="hm"
+                  message="Start date"
+                  handleDateChange={handleStartChange}
+                />
+              </Box>
+              <Text>End time</Text>
+              <Box>
+                <DateTimeCustom
+                  template="datetime-picker right"
+                  name="end_vip_date"
+                  type="hm"
+                  message="End date"
+                  handleDateChange={handleEndChange}
+                />
+              </Box>
+              <PDFDownloadLink
+                document={<PDFView bookings={data} fee={fee} />}
+                fileName="test.pdf"
+              >
+                {({ loading }) =>
+                  loading ? 'Loading document...' : 'Download now!'
+                }
+              </PDFDownloadLink>
+            </HStack>
           </Box>
-        </Flex>
+
+          <Flex zIndex={1} position="relative" gap={4}>
+            <Box w="100%" flexGrow={1}>
+              <AdvancedTable
+                columns={bookingsColumns}
+                data={tableBookings || []}
+                {...pageProps}
+                handlePageChange={handlePageChange}
+                setLimit={handleLimitChange}
+              />
+            </Box>
+          </Flex>
+        </Box>
       )}
-    </Box>
+    </>
   );
 };
 
 AllBookings.propTypes = {
   match: PropTypes.object,
+  fee: PropTypes.object,
   paging: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
   handlePageChange: PropTypes.func,
   handleLimitChange: PropTypes.func,
@@ -214,7 +353,6 @@ AllBookings.propTypes = {
     PropTypes.array,
   ]),
   data: PropTypes.oneOfType([PropTypes.array, PropTypes.bool]),
-  unpaidSum: PropTypes.oneOfType([PropTypes.number, PropTypes.bool]),
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -225,6 +363,11 @@ const mapStateToProps = createStructuredSelector({
   page: makeSelectPage(),
   limit: makeSelectLimit(),
   search: makeSelectSearch(),
+  isPaid: makeSelectIsPaid(),
+  status: makeSelectStatus(),
+  start: makeSelectStart(),
+  end: makeSelectEnd(),
+  fee: makeSelectFee(),
 });
 
 export function mapDispatchToProps(dispatch) {
@@ -239,7 +382,6 @@ export function mapDispatchToProps(dispatch) {
     },
     handleRoleChange: role => {
       dispatch(changeRole(role));
-      dispatch();
     },
     handleStatusChange: stt => {
       dispatch(changeStatus(stt));

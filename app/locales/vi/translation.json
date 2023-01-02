@@ -185,7 +185,8 @@
   },
   "AccountManagementPage": {
     "talentTab": "Talent",
-    "orgTab": "Organizer"
+    "orgTab": "Organizer",
+    "allBookings": "All bookings"
   },
   "TalentProfile": {
     "fullName": "Full Name",

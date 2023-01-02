@@ -11,6 +11,8 @@ import { t } from 'utils/messages';
 export const messages = {
   profile: () => t(translations.BDManagementPage.profile),
   talentTab: () => t(translations.AccountManagementPage.talentTab),
+  orgTab: () => t(translations.AccountManagementPage.orgTab),
+  allBookings: () => t(translations.AccountManagementPage.allBookings),
   schedule: () => t(translations.BDManagementPage.schedule),
   myAccount: () => t(translations.BDManagementPage.myAccount),
   back: () => t(translations.BDManagementPage.back),

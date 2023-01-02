@@ -19,6 +19,8 @@ import { TEXT_GREEN, TEXT_PURPLE } from 'constants/styles';
 import { H1 } from 'components/Elements';
 import { messages } from './messages';
 
+import Org from './Org';
+import Talent from './Talent';
 import AllBookings from './AllBookings';
 // import Orders from './Orders';
 
@@ -42,12 +44,20 @@ export function ManagementPage() {
       <Tabs mb="12" isLazy>
         <TabList color={TEXT_PURPLE}>
           {/* <CustomTab>{t(messages.achievement())}</CustomTab> */}
+          <CustomTab>{t(messages.allBookings())}</CustomTab>
+          <CustomTab>{t(messages.orgTab())}</CustomTab>
           <CustomTab>{t(messages.talentTab())}</CustomTab>
           {/* <CustomTab>By customer</CustomTab> */}
         </TabList>
         <TabPanels>
           <TabPanel>
             <AllBookings />
+          </TabPanel>
+          <TabPanel>
+            <Org />
+          </TabPanel>
+          <TabPanel>
+            <Talent />
           </TabPanel>
         </TabPanels>
       </Tabs>

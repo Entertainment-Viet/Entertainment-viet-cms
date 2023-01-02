@@ -21,12 +21,6 @@ export const initialState = {
   paging: ENUM_PAGGING,
   data: false,
   search: '',
-  status: '',
-  isPaid: false,
-  start: '',
-  end: '',
-  fees: {},
-  role: '',
 };
 
 /* eslint-disable default-case, no-param-reassign */
@@ -55,33 +49,15 @@ const pageReducer = (state = initialState, action) =>
         draft.data = false;
         break;
       case LOAD_BOOKINGS_SUCCESS:
+        console.log('data: ', action.payload.paging);
         draft.loading = false;
-        console.log(action.payload.content);
-        draft.paging = action.payload.bookings.paging;
-        draft.data = action.payload.bookings.content;
-        draft.fees.fee = action.payload.fee;
-        draft.fees.price = action.payload.price;
-        draft.fees.tax = action.payload.tax;
-        draft.fees.total = action.payload.total;
-        draft.fees.unpaidSum = action.payload.unpaidSum;
+        // draft.bookings = action.payload;
+        draft.paging = action.payload.paging;
+        draft.data = action.payload.content;
         break;
       case CHANGE_SEARCH:
         draft.search = action.search;
         break;
-      case CHANGE_ROLE:
-        draft.role = action.role;
-        break;
-      case CHANGE_ISPAID:
-        draft.isPaid = action.isPaid;
-        break;
-      case CHANGE_STATUS:
-        draft.status = action.status;
-        break;
-      case CHANGE_END:
-        draft.end = action.end;
-        break;
-      case CHANGE_START:
-        draft.start = action.start;
     }
   });
 
