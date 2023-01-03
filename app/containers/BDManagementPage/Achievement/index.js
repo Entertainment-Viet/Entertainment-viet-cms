@@ -46,16 +46,18 @@ const Achievement = ({ data, loading, onLoadData }) => {
     setAchievementList(data);
   }, [data]);
   const onSubmit = async () => {
-    let achievementData = achievement && achievement;
-    achievementData =
+    let newAchievementData = achievement && achievement;
+    newAchievementData =
       achievement &&
       // eslint-disable-next-line no-shadow
-      achievementData.map(({ key, value }) => ({
+      newAchievementData.map(({ key, value }) => ({
         name: key,
         rate: value,
       }));
+    const conCattedAchievement = achievementList.concat(newAchievementData);
+    setAchievementList(conCattedAchievement);
     return Promise.all(
-      achievementData.map(achievementItem =>
+      newAchievementData.map(achievementItem =>
         post(`${API_ACHIEVEMENT}`, achievementItem, userId).then(res => {
           if (res >= 400 && res <= 500) {
             alert("Try again! Can't add achievement");
@@ -63,7 +65,6 @@ const Achievement = ({ data, loading, onLoadData }) => {
           }
         }),
       ),
-      onLoadData(),
     );
   };
 
