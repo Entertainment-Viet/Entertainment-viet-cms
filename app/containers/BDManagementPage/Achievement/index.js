@@ -10,7 +10,7 @@ import { createStructuredSelector } from 'reselect';
 import { useInjectReducer } from 'utils/injectReducer';
 import { useInjectSaga } from 'utils/injectSaga';
 import { API_ACHIEVEMENT } from 'constants/api';
-import { post } from 'utils/request';
+import { post, del } from 'utils/request';
 import { useForm } from 'react-hook-form';
 import Form from 'components/Form';
 import DynamicInput from 'components/DynamicInputFormV2';
@@ -67,17 +67,18 @@ const Achievement = ({ data, loading, onLoadData }) => {
     );
   };
 
-  function handleDelete(indexSelected) {
+  async function handleDelete(indexSelected) {
     const removedData = achievementList.filter(
       (_, index) => index !== indexSelected,
     );
-    setAchievementList(removedData);
-    // del(`${API_ACHIEVEMENT}/${id}`, {}, userId).then(res1 => {
-    //   console.log(res1);
-    //   if (res1 > 300) {
-    //     console.log('error');
-    //   }
-    // });
+    const id = achievementList[indexSelected].uid;
+    await del(`${API_ACHIEVEMENT}/${id}`, {}, userId).then(res1 => {
+      if (res1 > 400) {
+        console.log('error');
+      } else {
+        setAchievementList(removedData);
+      }
+    });
   }
   return !loading && data ? (
     <SimpleGrid
@@ -100,7 +101,9 @@ const Achievement = ({ data, loading, onLoadData }) => {
                 <InputCustomV2 name="name" value={item.name} />
                 <Box marginRight="4px" marginLeft="4px" />
                 <InputCustomV2 name="rate" type="number" value={item.rate} />
-                <TrashCan size="80px" onClick={() => handleDelete(index)} />
+                <Box _hover={{ cursor: 'pointer' }}>
+                  <TrashCan size="2.5rem" onClick={() => handleDelete(index)} />
+                </Box>
               </Flex>
             ))}
         </Form>
