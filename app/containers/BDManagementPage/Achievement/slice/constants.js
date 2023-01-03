@@ -1,9 +1,4 @@
-export const LOAD_PACKAGES = 'App/MyPackage/LOAD_PACKAGES';
-export const LOAD_BOOKING_PACKAGES = 'App/MyPackage/LOAD_BOOKING_PACKAGES';
-export const CHANGE_PAGE = 'App/MyPackage/CHANGE_PAGE';
-export const CHANGE_LIMIT = 'App/MyPackage/CHANGE_LIMIT';
-export const CHANGE_MODE = 'App/TalentManagementPage/CHANGE_MODE';
-export const LOAD_INFO_SUCCESS = 'App/MyPackage/LOAD_INFO_SUCCESS';
-export const LOAD_PACKAGE = 'App/MyPackage/LOAD_PACKAGE';
-export const LOAD_PACKAGE_SUCCESS = 'App/MyPackage/LOAD_PACKAGE_SUCCESS';
-export const LOAD_INFO_ERROR = 'App/MyPackage/LOAD_INFO_ERROR';
+export const CREATE_ACHIEVEMENT = 'App/MyApp/CREATE_ACHIEVEMENT';
+export const LOAD_ACHIEVEMENT = 'App/MyApp/LOAD_ACHIEVEMENT';
+export const LOAD_ACHIEVEMENT_SUCCESS = 'App/MyApp/LOAD_ACHIEVEMENT_SUCCESS';
+export const LOAD_ACHIEVEMENT_ERROR = 'App/MyApp/LOAD_ACHIEVEMENT_ERROR';

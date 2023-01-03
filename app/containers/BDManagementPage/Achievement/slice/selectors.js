@@ -1,68 +1,21 @@
 import { createSelector } from 'reselect';
 import { initialState } from './reducer';
 
-const selectState = state => state.MyPackage || initialState;
-
-const makeSelectDetailLoading = () =>
+const selectState = state => state.Achievement || initialState;
+const makeSelectLoading = () =>
   createSelector(
     selectState,
     State => State.loading,
   );
-const makeSelectPage = () =>
-  createSelector(
-    selectState,
-    State => State.page,
-  );
-
-const makeSelectLimit = () =>
-  createSelector(
-    selectState,
-    State => State.limit,
-  );
-
-const makeSelectMode = () =>
-  createSelector(
-    selectState,
-    State => State.mode,
-  );
-
-const makeSelectDetailError = () =>
-  createSelector(
-    selectState,
-    State => State.error,
-  );
-
-const makeSelectDetail = () =>
+const makeSelectData = () =>
   createSelector(
     selectState,
     State => State.data,
   );
 
-const makeSelectPackage = () =>
+const makeSelectError = () =>
   createSelector(
     selectState,
-    State => State.packageId,
+    State => State.error,
   );
-
-const makeSelectPaging = () =>
-  createSelector(
-    selectState,
-    State => State.paging,
-  );
-
-const makeSelectPackageInfo = () =>
-  createSelector(
-    selectState,
-    State => State.packageInfo,
-  );
-export {
-  makeSelectDetailLoading,
-  makeSelectDetailError,
-  makeSelectDetail,
-  makeSelectPage,
-  makeSelectPackage,
-  makeSelectMode,
-  makeSelectPaging,
-  makeSelectLimit,
-  makeSelectPackageInfo,
-};
+export { makeSelectLoading, makeSelectError, makeSelectData };

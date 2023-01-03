@@ -48,6 +48,7 @@ function DynamicInput(props) {
           <Box marginRight="4px" marginLeft="4px" />
           <InputCustomV2
             name="value"
+            type="number"
             placeholder="Enter score"
             onChange={event => handleFormChange(event, index)}
             value={form.value}
@@ -55,6 +56,7 @@ function DynamicInput(props) {
           <Image
             src={trashCan}
             alt="trash"
+            _hover={{ cursor: 'pointer' }}
             onClick={() => removeFields(index)}
           />
         </Box>
