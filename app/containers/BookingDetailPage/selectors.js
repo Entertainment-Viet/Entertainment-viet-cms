@@ -15,10 +15,10 @@ const makeSelectError = () =>
     State => State.error,
   );
 
-const makeSelectCategories = () =>
+const makeSelectData = () =>
   createSelector(
     selectState,
-    State => State.categories,
+    State => State.data,
   );
 
-export { makeSelectError, makeSelectLoading, makeSelectCategories };
+export { makeSelectError, makeSelectLoading, makeSelectData };

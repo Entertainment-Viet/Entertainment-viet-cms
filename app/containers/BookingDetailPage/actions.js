@@ -1,10 +1,9 @@
 import { LOAD_DATA, LOAD_DATA_SUCCESS, LOAD_DATA_ERROR } from './constants';
 
-export function loadData(id, talentId) {
+export function loadData(id) {
   return {
     type: LOAD_DATA,
     id,
-    talentId,
   };
 }
 

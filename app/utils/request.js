@@ -1,6 +1,7 @@
 import cRequest from 'utils/server';
 import { removeEmptyObj } from 'utils/helpers';
 import axios from 'axios';
+import { SEND_FILE_AWS } from 'constants/api';
 function parseJSON(response) {
   if (response.status === 204 || response.status === 205) {
     return null;
@@ -78,6 +79,13 @@ export function put(url, params, id1, id2, id3) {
     .put(replaceUrl, params)
     .then(checkStatus)
     .then(parseJSON);
+}
+
+export function sendFileToAWS(file, isPublic = true) {
+  const formData = new FormData();
+  formData.append('file', file);
+  formData.append('public', isPublic);
+  return post(`${SEND_FILE_AWS}`, formData);
 }
 
 export function getUrl(url, params) {

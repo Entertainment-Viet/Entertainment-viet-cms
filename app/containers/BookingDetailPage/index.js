@@ -14,7 +14,7 @@ import {
   Divider,
   Image,
   Input,
-  Checkbox,
+  useToast,
 } from '@chakra-ui/react';
 import { useForm, Controller } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
@@ -23,24 +23,23 @@ import { useAnimation } from 'framer-motion';
 import { useInjectReducer } from 'utils/injectReducer';
 import { useInjectSaga } from 'utils/injectSaga';
 import Metadata from 'components/Metadata';
-import { toIsoString, getResStatus, cacthResponse } from 'utils/helpers';
-import { API_GET_PACKAGE_INFO } from 'constants/api';
-import { post } from 'utils/request';
-import { H1 } from 'components/Elements';
 import { messages } from './messages';
 import saga from './saga';
 import reducer from './reducer';
 import placeholder from './assets/placeholder.png';
-import InputCustomV2 from '../../components/Controls/InputCustomV2';
-import SelectCustom from '../../components/Controls/SelectCustom';
+import PageSpinner from '../../components/PageSpinner';
+import NotificationProvider from '../../components/NotificationProvider';
+
 import {
   PRI_BACKGROUND,
   TEXT_PURPLE,
   SUB_BLU_COLOR,
   TEXT_GREEN,
 } from '../../constants/styles';
-import { makeSelectCategories } from './selectors';
-import { loadCategories } from './actions';
+import { makeSelectData } from './selectors';
+import { loadData } from './actions';
+import { API_UPDATE } from '../../constants/api';
+import { put, sendFileToAWS } from '../../utils/request';
 
 const CustomBox = chakra(Box, {
   baseStyle: {
@@ -65,7 +64,16 @@ const Content = chakra(Text, {
 });
 const key = 'BookingDetailPage';
 
-export function BookingDetailPage({ match }) {
+export function BookingDetailPage({ match, data, getData }) {
+  const toast = useToast();
+  const notify = title => {
+    toast({
+      position: 'top-right',
+      duration: 3000,
+      render: () => <NotificationProvider title={title} />,
+    });
+  };
+
   const { t } = useTranslation();
   const controls = useAnimation();
   const startAnimation = () => controls.start('hover');
@@ -79,21 +87,23 @@ export function BookingDetailPage({ match }) {
   } = useForm();
   useInjectReducer({ key, reducer });
   useInjectSaga({ key, saga });
-  const [fileProof, setFileProof] = useState({});
+  const [fileProof, setFileProof] = useState(null);
   const [urlProof, setUrlProof] = useState(placeholder);
-
+  const bookingId = match.params.id;
+  const myId = localStorage.getItem('uid');
   useEffect(() => {
-    // getCategories();
+    getData(bookingId);
   }, []);
 
   const handleUploadProofImg = item => {
     if (item) {
+      console.log(item);
       setFileProof(item);
       setUrlProof(URL.createObjectURL(item));
     }
   };
 
-  const onSubmit = async data => {
+  const onSubmit = async () => {
     // const talentId = window.localStorage.getItem('uid');
     // const val = {
     //   name: getValues('name'),
@@ -113,185 +123,211 @@ export function BookingDetailPage({ match }) {
     //     extensions: 'string',
     //   },
     // };
-    console.log(data);
-    console.log(fileProof);
-    // post(API_GET_PACKAGE_INFO, val, talentId).then(res1 => {
-    //   const status1 = getResStatus(res1);
-    //   if (status1 === '201') {
-    //     // console.log('ok')
-    //   } else if (status1 === '400') {
-    //     // console.log('error')
-    //   } else {
-    //     cacthResponse(res1);
-    //   }
-    // });
+    let fileCode = '';
+    if (fileProof) {
+      fileCode = await sendFileToAWS(fileProof, true);
+    }
+    put(
+      API_UPDATE,
+      { finishProof: [fileCode], isPaid: data.isPaid },
+      myId,
+      bookingId,
+    ).then(res => {
+      if (res > 300) {
+        notify('Thêm thất bại, vui lòng kiểm tra lại thông tin và thử lại sau');
+        return;
+      }
+      notify('Thêm thành công');
+    });
   };
 
   return (
     <>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <Grid templateColumns="repeat(3, 1fr)" gap={6}>
-          <Metadata />
-          <GridItem colSpan={2}>
-            <CustomBox>
-              <Box
-                color={TEXT_GREEN}
-                fontWeight="600"
-                fontSize="25px"
-                sx={{
-                  marginBottom: '25px',
-                }}
-              >
-                Booking Information
-              </Box>
-              <Box>
-                <Title>ID:&nbsp;</Title>
-                <Content>abcxyz</Content>
-              </Box>
-              <Box>
-                <Title>Booking Date:&nbsp;</Title>
-                <Content>{new Date().toLocaleString()}</Content>
-              </Box>
-              <Box>
-                <Title>Perform Date and Time:&nbsp;</Title>
-                <Content>{new Date().toLocaleString()}</Content>
-              </Box>
-              <Box mt={4}>
-                <Title>Talent:&nbsp;</Title>
-                <Content>BAO</Content>
-              </Box>
-              <Box>
+      {!data ? (
+        <PageSpinner />
+      ) : (
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <Grid templateColumns="repeat(3, 1fr)" gap={6}>
+            <Metadata />
+            <GridItem colSpan={2}>
+              <CustomBox>
+                <Box
+                  color={TEXT_GREEN}
+                  fontWeight="600"
+                  fontSize="25px"
+                  sx={{
+                    marginBottom: '25px',
+                  }}
+                >
+                  Booking Information
+                </Box>
+                <Box>
+                  <Title>ID:&nbsp;</Title>
+                  <Content>{data.bookingCode}</Content>
+                </Box>
+                <Box>
+                  <Title>Booking Date:&nbsp;</Title>
+                  <Content>{new Date(data.createdAt).toLocaleString()}</Content>
+                </Box>
+                <Box>
+                  <Title>Perform Date and Time:&nbsp;</Title>
+                  <Content>
+                    {new Date(
+                      data.jobDetail.performanceStartTime,
+                    ).toLocaleString()}{' '}
+                    -{' '}
+                    {new Date(
+                      data.jobDetail.performanceEndTime,
+                    ).toLocaleString()}
+                  </Content>
+                </Box>
+                <Box mt={4}>
+                  <Title>Talent:&nbsp;</Title>
+                  <Content>{data.talentName}</Content>
+                </Box>
+                {/* <Box>
                 <Title>Talent contact:&nbsp;</Title>
                 <Content>09333123123123</Content>
-              </Box>
-              <Box mt={4}>
-                <Title>Organizer:&nbsp;</Title>
-                <Content>TANG</Content>
-              </Box>
-              <Box>
+              </Box> */}
+                <Box mt={4}>
+                  <Title>Organizer:&nbsp;</Title>
+                  <Content>{data.organizerName}</Content>
+                </Box>
+                {/* <Box>
                 <Title>Organizer contact:&nbsp;</Title>
                 <Content>09333123123123</Content>
-              </Box>
-              <Box mt={4}>
-                <Title>Package:&nbsp;</Title>
-                <Content>Premium</Content>
-              </Box>
-              <Box>
-                <Title>Hình thức thanh toán:&nbsp;</Title>
-                <Content>Trả trước</Content>
-              </Box>
-            </CustomBox>
-            <CustomBox>
-              <Grid templateColumns="repeat(5, 1fr)" gap={6}>
-                <GridItem>
-                  <Title>Giá tiền:&nbsp;</Title>
-                </GridItem>
-                <GridItem>
-                  <Content>Premium</Content>
-                </GridItem>
-                <GridItem colSpan={3} textAlign="end">
-                  <Title color={TEXT_GREEN}>$5000</Title>
-                </GridItem>
-              </Grid>
-              <Grid templateColumns="repeat(5, 1fr)" gap={6}>
-                <GridItem>
-                  <Title>VAT/PIT:&nbsp;</Title>
-                </GridItem>
-                <GridItem>
-                  <Content>8%/10%</Content>
-                </GridItem>
-                <GridItem colSpan={3} textAlign="end">
-                  <Title color={TEXT_GREEN}>$500</Title>
-                </GridItem>
-              </Grid>
-              <Divider my={4} />
-              <SimpleGrid justifyContent="space-between" columns={2}>
-                <Title>Total cost:</Title>
-                <Title color={TEXT_GREEN} textAlign="end">
-                  $5500
-                </Title>
-              </SimpleGrid>
-              <Box>
-                <Title>Status:&nbsp;</Title>
-                <Content color={TEXT_PURPLE}>Đã thanh toán</Content>
-                <Controller
-                  control={control}
-                  name="isPaid"
-                  key="isPaid"
-                  defaultValue={false}
-                  render={({ field: { onChange, value, ref } }) => (
-                    <Checkbox
-                      onChange={onChange}
-                      textTransform="capitalize"
-                      ref={ref}
-                      isChecked={value}
-                    >
-                      Is paid ?
-                    </Checkbox>
-                  )}
+              </Box> */}
+                <Box mt={4}>
+                  <Title>Package:&nbsp;</Title>
+                  <Content>{data.packageName && data.packageName}</Content>
+                </Box>
+                <Box>
+                  <Title>Hình thức thanh toán:&nbsp;</Title>
+                  <Content>
+                    {data.paymentType === 'payment.offline'
+                      ? 'Trả sau'
+                      : 'Trả trước'}
+                  </Content>
+                </Box>
+              </CustomBox>
+              <CustomBox>
+                <Grid templateColumns="repeat(5, 1fr)" gap={6}>
+                  <GridItem>
+                    <Title>Giá tiền:&nbsp;</Title>
+                  </GridItem>
+                  <GridItem>
+                    <Content>{data.packageName && data.packageName}</Content>
+                  </GridItem>
+                  <GridItem colSpan={3} textAlign="end">
+                    <Title color={TEXT_GREEN}>
+                      ${data.jobDetail.price.min}
+                    </Title>
+                  </GridItem>
+                </Grid>
+                {/* <Grid templateColumns="repeat(5, 1fr)" gap={6}>
+                  <GridItem>
+                    <Title>VAT/PIT:&nbsp;</Title>
+                  </GridItem>
+                  <GridItem>
+                    <Content>8%/10%</Content>
+                  </GridItem>
+                  <GridItem colSpan={3} textAlign="end">
+                    <Title color={TEXT_GREEN}>$500</Title>
+                  </GridItem>
+                </Grid>
+                <Divider my={4} />
+                <SimpleGrid justifyContent="space-between" columns={2}>
+                  <Title>Total cost:</Title>
+                  <Title color={TEXT_GREEN} textAlign="end">
+                    $5500
+                  </Title>
+                </SimpleGrid> */}
+                <Box>
+                  <Title>Status:&nbsp;</Title>
+                  <Content color={TEXT_PURPLE}>
+                    {data.isPaid ? 'Đã thanh toán' : 'Chưa thanh toán'}
+                    {` lúc ${data.paidAt &&
+                      new Date(data.paidAt).toLocaleString()}`}
+                  </Content>
+                  {/* <Controller
+                    control={control}
+                    name="isPaid"
+                    key="isPaid"
+                    defaultValue={false}
+                    render={({ field: { onChange, value, ref } }) => (
+                      <Checkbox
+                        onChange={onChange}
+                        textTransform="capitalize"
+                        ref={ref}
+                        isChecked={value}
+                      >
+                        Is paid ?
+                      </Checkbox>
+                    )}
+                  /> */}
+                </Box>
+              </CustomBox>
+            </GridItem>
+            <GridItem>
+              <Box position="relative">
+                <Image
+                  src={data.finishProof ? data.finishProof : urlProof}
+                  borderRadius="5px"
+                  height="75vh"
+                  width="100%"
+                />
+                <Input
+                  type="file"
+                  top="0"
+                  left="0"
+                  opacity="0"
+                  onDragEnter={startAnimation}
+                  onDragLeave={stopAnimation}
+                  position="absolute"
+                  width="100%"
+                  height="75vh"
+                  onChange={e => handleUploadProofImg(e.target.files[0])}
                 />
               </Box>
-            </CustomBox>
-          </GridItem>
-          <GridItem>
-            <Box position="relative">
-              <Image
-                src={urlProof}
-                borderRadius="5px"
-                height="75vh"
-                width="100%"
-              />
-              <Input
-                type="file"
-                top="0"
-                left="0"
-                opacity="0"
-                onDragEnter={startAnimation}
-                onDragLeave={stopAnimation}
-                position="absolute"
-                width="100%"
-                height="75vh"
-                onChange={e => handleUploadProofImg(e.target.files[0])}
-              />
-            </Box>
-          </GridItem>
-        </Grid>
-        <Box display="flex" justifyContent="end">
-          <Button
-            sx={{
-              justifyContent: 'center',
-              alignContent: 'center',
-              marginTop: '20px',
-              marginBottom: '100px',
-              background: TEXT_GREEN,
-              width: '235px',
-              height: '48px',
-            }}
-            color={SUB_BLU_COLOR}
-            type="submit"
-            isLoading={isSubmitting}
-          >
-            Save
-          </Button>
-        </Box>
-      </form>
+            </GridItem>
+          </Grid>
+          <Box display="flex" justifyContent="end">
+            <Button
+              sx={{
+                justifyContent: 'center',
+                alignContent: 'center',
+                marginTop: '20px',
+                marginBottom: '100px',
+                background: TEXT_GREEN,
+                width: '235px',
+                height: '48px',
+              }}
+              color={SUB_BLU_COLOR}
+              type="submit"
+              isLoading={isSubmitting}
+            >
+              Save
+            </Button>
+          </Box>
+        </form>
+      )}
     </>
   );
 }
 
 BookingDetailPage.propTypes = {
   match: PropTypes.object,
-  getCategories: PropTypes.func,
-  categories: PropTypes.oneOfType([PropTypes.array, PropTypes.bool]),
+  data: PropTypes.any,
+  getData: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
-  categories: makeSelectCategories(),
+  data: makeSelectData(),
 });
 export function mapDispatchToProps(dispatch) {
   return {
-    getCategories: () => {
-      dispatch(loadCategories());
+    getData: id => {
+      dispatch(loadData(id));
     },
   };
 }

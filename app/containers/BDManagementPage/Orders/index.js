@@ -15,11 +15,11 @@ import PropTypes from 'prop-types';
 import PageSpinner from 'components/PageSpinner';
 import {
   PRI_TEXT_COLOR,
-  TEXT_GREEN,
-  RED_COLOR,
+  // TEXT_GREEN,
+  // RED_COLOR,
   TEXT_PURPLE,
 } from 'constants/styles';
-import styled from 'styled-components';
+// import styled from 'styled-components';
 import AdvancedTable from 'components/AdvancedTable';
 import { DateTimeCustom } from 'components/Controls';
 import { connect } from 'react-redux';
@@ -61,38 +61,38 @@ import {
 import { ENUM_BOOKING_STATUS } from '../../../constants/enums';
 import { handleAddress, convertReadableTime } from '../../../utils/helpers';
 // import { numberWithCommas } from '../../../utils/helpers';
-const StatusCell = styled(Text)`
-  text-align: center;
-  padding: 5px;
-  background: ${props => {
-    switch (props.type) {
-      case 'UPCOMING':
-        return '#00C2FF';
-      case 'waiting':
-        return '#999999';
-      case 'booking.status.talent-pending':
-        return '#DBB325';
-      case 'booking.status.organizer-pending':
-        return '#DBB325';
-      case 'pendingTransaction':
-        return '#4527A0';
-      case 'request-user':
-        return 'rgb(225 29 72)';
-      default:
-        return 'transparent';
-    }
-  }};
-  color: ${props => {
-    switch (props.type) {
-      case 'disable':
-        return `${RED_COLOR}!important`;
-      case 'active':
-        return `${TEXT_GREEN}!important`;
-      default:
-        return 'black !important';
-    }
-  }};
-`;
+// const StatusCell = styled(Text)`
+//   text-align: center;
+//   padding: 5px;
+//   background: ${props => {
+//     switch (props.type) {
+//       case 'UPCOMING':
+//         return '#00C2FF';
+//       case 'waiting':
+//         return '#999999';
+//       case 'booking.status.talent-pending':
+//         return '#DBB325';
+//       case 'booking.status.organizer-pending':
+//         return '#DBB325';
+//       case 'pendingTransaction':
+//         return '#4527A0';
+//       case 'request-user':
+//         return 'rgb(225 29 72)';
+//       default:
+//         return 'transparent';
+//     }
+//   }};
+//   color: ${props => {
+//     switch (props.type) {
+//       case 'disable':
+//         return `${RED_COLOR}!important`;
+//       case 'active':
+//         return `${TEXT_GREEN}!important`;
+//       default:
+//         return 'black !important';
+//     }
+//   }};
+// `;
 const bookingsColumns = [
   {
     Header: 'Confirm At',
@@ -168,7 +168,7 @@ const AllBookings = ({
       status: <Text>{booking.status}</Text>,
       actions: (
         <HStack>
-          <Link to="#">
+          <Link to={`/booking/${booking.uid}`}>
             <Button colorScheme="red" size="xs">
               {t(messages.detail())}
             </Button>
