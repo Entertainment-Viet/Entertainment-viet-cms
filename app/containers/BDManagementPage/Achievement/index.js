@@ -1,62 +1,33 @@
 import React, { memo, useEffect, useState } from 'react';
-import {
-  HStack,
-  Text,
-  Flex,
-  Box,
-  Link,
-  Button,
-  SimpleGrid,
-} from '@chakra-ui/react';
-import { useTranslation } from 'react-i18next';
+import { SimpleGrid, Flex, Box } from '@chakra-ui/react';
+// import { useTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
 import PageSpinner from 'components/PageSpinner';
-import { PRI_TEXT_COLOR, TEXT_GREEN, PRI_BACKGROUND } from 'constants/styles';
-import styled from 'styled-components';
-import AdvancedTable from 'components/AdvancedTable';
-
+// import AdvancedTable from 'components/AdvancedTable';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { createStructuredSelector } from 'reselect';
 import { useInjectReducer } from 'utils/injectReducer';
 import { useInjectSaga } from 'utils/injectSaga';
-import { API_GET_PACKAGE_INFO } from 'constants/api';
-import { del } from 'utils/request';
+import { API_ACHIEVEMENT } from 'constants/api';
+import { post, del } from 'utils/request';
 import { useForm } from 'react-hook-form';
-import {
-  changePage,
-  loadPackages,
-  changeMode,
-  changeLimit,
-  loadPackageInfo,
-} from './slice/actions';
+import Form from 'components/Form';
+import DynamicInput from 'components/DynamicInputFormV2';
+import InputCustomV2 from 'components/Controls/InputCustomV2';
+import TrashCan from 'components/Icon/TrashCan';
+import { loadAchievement } from './slice/actions';
 import saga from './slice/saga';
 import reducer from './slice/reducer';
 import {
-  makeSelectDetailLoading,
-  makeSelectDetailError,
-  makeSelectDetail,
-  makeSelectPackage,
-  makeSelectMode,
-  makeSelectPaging,
-  makeSelectPackageInfo,
+  makeSelectLoading,
+  makeSelectError,
+  makeSelectData,
 } from './slice/selectors';
-import { globalMessages } from '../../App/globalMessage';
-import Form from '../../../components/Form';
-import DynamicInput from '../../../components/DynamicInputFormV2';
+// import { globalMessages } from '../../App/globalMessage';
 
 const key = 'Achievement';
-const Achievement = ({
-  data,
-  mode,
-  onLoadData,
-  handleModeChange,
-  paging,
-  handlePageChange,
-  handleLimitchange,
-  loadPackage,
-  packageInfo,
-}) => {
+const Achievement = ({ data, loading, onLoadData }) => {
   const {
     handleSubmit,
     formState: { isSubmitting },
@@ -64,29 +35,53 @@ const Achievement = ({
 
   useInjectReducer({ key, reducer });
   useInjectSaga({ key, saga });
-  const { t } = useTranslation();
+  // const { t } = useTranslation();
   const [achievement, setAchievement] = useState();
-
-  const onSubmit = async values => {
-    console.log(achievement)
-  };
-
+  const [achievementList, setAchievementList] = useState([]);
+  const userId = window.localStorage.getItem('uid');
   useEffect(() => {
     onLoadData();
   }, []);
-  const userId = window.localStorage.getItem('uid');
-  function handleDelete(id) {
-    del(`${API_GET_PACKAGE_INFO}/${id}`, {}, userId).then(res1 => {
-      console.log(res1);
-      if (res1 > 300) {
+  useEffect(() => {
+    setAchievementList(data);
+  }, [data]);
+  const onSubmit = async () => {
+    let newAchievementData = achievement && achievement;
+    newAchievementData =
+      achievement &&
+      // eslint-disable-next-line no-shadow
+      newAchievementData.map(({ key, value }) => ({
+        name: key,
+        rate: value,
+      }));
+    const conCattedAchievement = achievementList.concat(newAchievementData);
+    setAchievementList(conCattedAchievement);
+    return Promise.all(
+      newAchievementData.map(achievementItem =>
+        post(`${API_ACHIEVEMENT}`, achievementItem, userId).then(res => {
+          if (res >= 400 && res <= 500) {
+            alert("Try again! Can't add achievement");
+            console.log('Error code', res);
+          }
+        }),
+      ),
+    );
+  };
+
+  async function handleDelete(indexSelected) {
+    const removedData = achievementList.filter(
+      (_, index) => index !== indexSelected,
+    );
+    const id = achievementList[indexSelected].uid;
+    await del(`${API_ACHIEVEMENT}/${id}`, {}, userId).then(res1 => {
+      if (res1 > 400) {
         console.log('error');
       } else {
-        onLoadData(userId);
+        setAchievementList(removedData);
       }
     });
   }
-
-  return (
+  return !loading && data ? (
     <SimpleGrid
       sx={{
         justifyContent: 'center',
@@ -96,52 +91,46 @@ const Achievement = ({
       <form onSubmit={handleSubmit(onSubmit)}>
         <Form title="Achievement" isSubmitting={isSubmitting}>
           <DynamicInput setDynamicData={setAchievement} />
+          {achievementList.length > 0 &&
+            achievementList.map((item, index) => (
+              <Flex
+                height="40px"
+                alignItems="center"
+                marginTop="20px"
+                key={`achievement_${item.id}`}
+              >
+                <InputCustomV2 name="name" value={item.name} />
+                <Box marginRight="4px" marginLeft="4px" />
+                <InputCustomV2 name="rate" type="number" value={item.rate} />
+                <Box _hover={{ cursor: 'pointer' }}>
+                  <TrashCan size="2.5rem" onClick={() => handleDelete(index)} />
+                </Box>
+              </Flex>
+            ))}
         </Form>
       </form>
     </SimpleGrid>
+  ) : (
+    <PageSpinner />
   );
 };
 
 Achievement.propTypes = {
   data: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
-  mode: PropTypes.number,
   onLoadData: PropTypes.func,
-  loadPackage: PropTypes.func,
-  handleModeChange: PropTypes.func,
-  paging: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
-  handlePageChange: PropTypes.func,
-  handleLimitchange: PropTypes.func,
-  packageInfo: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
+  loading: PropTypes.bool,
 };
 
 const mapStateToProps = createStructuredSelector({
-  loading: makeSelectDetailLoading(),
-  error: makeSelectDetailError(),
-  data: makeSelectDetail(),
-  packageId: makeSelectPackage(),
-  mode: makeSelectMode(),
-  paging: makeSelectPaging(),
-  packageInfo: makeSelectPackageInfo(),
+  loading: makeSelectLoading(),
+  error: makeSelectError(),
+  data: makeSelectData(),
 });
 
 export function mapDispatchToProps(dispatch) {
   return {
-    onLoadData: id => {
-      dispatch(loadPackages(id));
-    },
-    handlePageChange: page => {
-      dispatch(changePage(page));
-      dispatch(loadPackages());
-    },
-    handleModeChange: mode => {
-      dispatch(changeMode(mode));
-    },
-    handleLimitchange: limit => {
-      dispatch(changeLimit(limit));
-      dispatch(loadPackages());
-    },
-    loadPackage: (id, talentId) => {
-      dispatch(loadPackageInfo(id, talentId));
+    onLoadData: () => {
+      dispatch(loadAchievement());
     },
   };
 }

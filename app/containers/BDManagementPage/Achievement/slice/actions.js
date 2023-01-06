@@ -1,73 +1,30 @@
 import {
-  LOAD_PACKAGES,
-  CHANGE_PAGE,
-  LOAD_INFO_SUCCESS,
-  LOAD_INFO_ERROR,
-  LOAD_BOOKING_PACKAGES,
-  CHANGE_MODE,
-  CHANGE_LIMIT,
-  LOAD_PACKAGE,
-  LOAD_PACKAGE_SUCCESS,
+  CREATE_ACHIEVEMENT,
+  LOAD_ACHIEVEMENT,
+  LOAD_ACHIEVEMENT_SUCCESS,
+  LOAD_ACHIEVEMENT_ERROR,
 } from './constants';
 
-export function loadPackages(id) {
+export function createAchievement(id) {
   return {
-    type: LOAD_PACKAGES,
+    type: CREATE_ACHIEVEMENT,
     id,
   };
 }
-
-export function loadBookingPackages(packageId) {
+export function loadAchievement() {
   return {
-    type: LOAD_BOOKING_PACKAGES,
-    packageId,
+    type: LOAD_ACHIEVEMENT,
   };
 }
-
-export function changePage(page) {
+export function loadAchievementSuccess(data) {
   return {
-    type: CHANGE_PAGE,
-    page,
-  };
-}
-
-export function changeLimit(limit) {
-  return {
-    type: CHANGE_LIMIT,
-    limit,
-  };
-}
-export function changeMode(mode) {
-  return {
-    type: CHANGE_MODE,
-    mode,
-  };
-}
-
-export function loadInfoSuccess(data, paging) {
-  return {
-    type: LOAD_INFO_SUCCESS,
+    type: LOAD_ACHIEVEMENT_SUCCESS,
     data,
-    paging,
   };
 }
-export function loadInfoError(error) {
+export function loadAchievementError(error) {
   return {
-    type: LOAD_INFO_ERROR,
+    type: LOAD_ACHIEVEMENT_ERROR,
     error,
-  };
-}
-
-export function loadPackageInfo(id, talentId) {
-  return {
-    type: LOAD_PACKAGE,
-    id,
-    talentId,
-  };
-}
-export function loadPackageInfoSuccess(payload) {
-  return {
-    type: LOAD_PACKAGE_SUCCESS,
-    payload,
   };
 }
