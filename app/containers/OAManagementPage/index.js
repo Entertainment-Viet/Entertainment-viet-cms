@@ -122,7 +122,6 @@ const OAManagementPage = ({
   const [active, setActive] = useState(0);
   const [dataColumns, setDataColumns] = useState(talentColumns);
   // eslint-disable-next-line no-console
-  console.log(paging);
 
   useEffect(() => {
     const isGetDataTalent = active === 0;
@@ -156,11 +155,11 @@ const OAManagementPage = ({
           </Link>
         ),
         representative: <Text>{org.representative}</Text>,
-        gmail: <Text>{org.gmail}</Text>,
+        gmail: <Text>{org.email}</Text>,
         phoneNumber: <Text>{org.phoneNumber}</Text>,
         status: (
-          <StatusCell type={org.status}>
-            {t(globalMessages[org.status])}
+          <StatusCell type={org.userState}>
+            {t(globalMessages[org.userState])}
           </StatusCell>
         ),
         action: (
@@ -188,12 +187,12 @@ const OAManagementPage = ({
             {talent.displayName}
           </Link>
         ),
-        position: <Text>{talent.position}</Text>,
-        gmail: <Text>{talent.gmail}</Text>,
+        position: <Text>{talent.userType}</Text>,
+        gmail: <Text>{talent.email}</Text>,
         phoneNumber: <Text>{talent.phoneNumber}</Text>,
         status: (
-          <StatusCell type={talent.status}>
-            {t(globalMessages[talent.status])}
+          <StatusCell type={talent.userState}>
+            {t(globalMessages[talent.userState])}
           </StatusCell>
         ),
         action: (
@@ -215,17 +214,11 @@ const OAManagementPage = ({
       }));
     }
   }
-  // const pageProps = {
-  //   total: paging.totalElements,
-  //   pageNumber: paging.pageNumber, // pageNumber
-  //   limit: paging.pageSize, // pageSize
-  //   isLast: paging.last,
-  // };
   const pageProps = {
-    total: 0,
-    pageNumber: 1, // pageNumber
-    limit: 23, // pageSize
-    isLast: true,
+    total: paging.totalElements,
+    pageNumber: paging.pageNumber, // pageNumber
+    limit: paging.pageSize, // pageSize
+    isLast: paging.last,
   };
 
   return (
@@ -315,9 +308,11 @@ export function mapDispatchToProps(dispatch) {
   return {
     handlePageChange: page => {
       dispatch(changePage(page));
+      dispatch(loadData());
     },
     handleLimitChange: limit => {
       dispatch(changeLimit(limit));
+      dispatch(loadData());
     },
     loadData: isGetDataTalent => {
       dispatch(loadData(isGetDataTalent));

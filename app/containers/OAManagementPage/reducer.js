@@ -43,7 +43,7 @@ const pageReducer = (state = initialState, action) =>
         break;
       case LOAD_DATA_SUCCESS:
         draft.loading = false;
-        draft.data = action.payload;
+        draft.data = action.payload.content;
         draft.paging = action.payload.paging;
         break;
     }

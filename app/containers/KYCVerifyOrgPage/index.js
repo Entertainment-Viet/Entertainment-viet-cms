@@ -1,4 +1,4 @@
-import React, { useEffect, memo } from 'react';
+import React, { useState, useEffect, memo } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { createStructuredSelector } from 'reselect';
@@ -13,6 +13,7 @@ import {
   SimpleGrid,
   FormLabel,
   Image,
+  useToast,
 } from '@chakra-ui/react';
 
 import { useInjectReducer } from 'utils/injectReducer';
@@ -22,7 +23,6 @@ import PropTypes from 'prop-types';
 import saga from './saga';
 import reducer from './reducer';
 import InputCustomV2 from '../../components/Controls/InputCustomV2';
-import { QWERTYEditor } from '../../components/Controls';
 import example from './image/example.png';
 import {
   LIGHT_ORANGE,
@@ -35,8 +35,10 @@ import Metadata from '../../components/Metadata';
 import { makeSelectOrg } from './selectors';
 import { loadOrgInfo } from './actions';
 import PageSpinner from '../../components/PageSpinner';
+import NotificationProvider from '../../components/NotificationProvider';
 import { globalMessages } from '../App/globalMessage';
-
+import { del, getFileFromAWS, post } from '../../utils/request';
+import { API_ORG_DETAIL } from '../../constants/api';
 const CustomFormLabel = chakra(FormLabel, {
   baseStyle: {
     my: '4',
@@ -45,20 +47,72 @@ const CustomFormLabel = chakra(FormLabel, {
 
 const key = 'KYCVerifyOrgPage';
 export function KYCVerifyOrgPage({ organizerInfo, loadOrganizer, match }) {
+  const toast = useToast();
+
   useInjectReducer({ key, reducer });
   useInjectSaga({ key, saga });
   const { t } = useTranslation();
   const organizerId = match.params.id;
+  const myId = localStorage.getItem('uid');
+  const [urlAvtar, setUrlAvatar] = useState('https://bit.ly/sage-adebayo');
+  const [urlCCCD1, setUrlCCCD1] = useState(example);
+  const [urlCCCD2, setUrlCCCD2] = useState(example);
+
+  const notify = title => {
+    toast({
+      position: 'top-right',
+      duration: 3000,
+      render: () => <NotificationProvider title={title} />,
+    });
+  };
 
   useEffect(() => {
     loadOrganizer(organizerId);
-  }, [organizerId]);
+  }, []);
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    if (organizerInfo && organizerInfo.avatar) {
+      getFileFromAWS(organizerInfo.avatar).then(res => {
+        setUrlAvatar(res);
+      });
+    }
+    if (
+      organizerInfo &&
+      organizerInfo.businessPaper &&
+      organizerInfo.businessPaper[0]
+    ) {
+      getFileFromAWS(organizerInfo.businessPaper[0]).then(res => {
+        setUrlCCCD1(res);
+      });
+    }
+    if (
+      organizerInfo &&
+      organizerInfo.businessPaper &&
+      organizerInfo.businessPaper[1]
+    ) {
+      getFileFromAWS(organizerInfo.businessPaper[1]).then(res => {
+        setUrlCCCD2(res);
+      });
+    }
+  }, [organizerInfo]);
 
-  const onSubmit = async () => {};
+  const onSubmit = async () => {
+    post(API_ORG_DETAIL, { uid: organizerId }, myId, organizerId).then(res => {
+      if (res > 300) {
+        notify('Thất bại');
+      }
+      notify('Thành công');
+    });
+  };
 
-  const onCancel = async () => {};
+  const onCancel = async () => {
+    del(API_ORG_DETAIL, { uid: organizerId }, myId, organizerId).then(res => {
+      if (res > 300) {
+        notify('Thất bại');
+      }
+      notify('Thành công');
+    });
+  };
 
   return (
     <>
@@ -90,7 +144,7 @@ export function KYCVerifyOrgPage({ organizerInfo, loadOrganizer, match }) {
                 <Box textAlign="center">
                   <Avatar
                     size="2xl"
-                    src="https://bit.ly/sage-adebayo"
+                    src={urlAvtar}
                     borderColor="transparent"
                     showBorder
                   />
@@ -102,7 +156,7 @@ export function KYCVerifyOrgPage({ organizerInfo, loadOrganizer, match }) {
                     id="type"
                     size="md"
                     value={
-                      t(globalMessages[organizerInfo.accountType]) ||
+                      t(globalMessages[organizerInfo.userType]) ||
                       'No information'
                     }
                   />
@@ -162,7 +216,14 @@ export function KYCVerifyOrgPage({ organizerInfo, loadOrganizer, match }) {
                 </FormControl>
                 <FormControl>
                   <CustomFormLabel>{t(messages.street())}</CustomFormLabel>
-                  <InputCustomV2 id="street" type="text" size="md" />
+                  <InputCustomV2
+                    id="street"
+                    type="text"
+                    size="md"
+                    value={
+                      organizerInfo.address ? organizerInfo.address.name : null
+                    }
+                  />
                 </FormControl>
                 <FormControl>
                   <SimpleGrid columns={2} spacing={2}>
@@ -170,17 +231,33 @@ export function KYCVerifyOrgPage({ organizerInfo, loadOrganizer, match }) {
                       <CustomFormLabel>
                         {t(messages.district())}
                       </CustomFormLabel>
-                      <InputCustomV2 id="district" size="md" />
+                      <InputCustomV2
+                        id="district"
+                        size="md"
+                        value={
+                          organizerInfo.address
+                            ? organizerInfo.address.parent.name
+                            : null
+                        }
+                      />
                     </Box>
                     <Box>
                       <CustomFormLabel>
                         {t(messages.province())}
                       </CustomFormLabel>
-                      <InputCustomV2 id="province" size="md" />
+                      <InputCustomV2
+                        id="province"
+                        size="md"
+                        value={
+                          organizerInfo.address
+                            ? organizerInfo.address.parent.parent.name
+                            : null
+                        }
+                      />
                     </Box>
                   </SimpleGrid>
                 </FormControl>
-                <FormControl>
+                {/* <FormControl>
                   <CustomFormLabel htmlFor="introduce">
                     {t(messages.introduce())}
                   </CustomFormLabel>
@@ -190,7 +267,7 @@ export function KYCVerifyOrgPage({ organizerInfo, loadOrganizer, match }) {
                     required
                     val="Pass the variant prop to change the visual appearance of the input component. Chakra UI input variant types are: outline, filled, flushed and unstyled"
                   />
-                </FormControl>
+                </FormControl> */}
                 <FormControl>
                   <CustomFormLabel>
                     {t(messages.accountNameOwner())}
@@ -234,7 +311,7 @@ export function KYCVerifyOrgPage({ organizerInfo, loadOrganizer, match }) {
                   <SimpleGrid columns={2} spacing={2}>
                     <Box>
                       <Image
-                        src={example}
+                        src={urlCCCD1}
                         borderRadius="5px"
                         height="127px"
                         width="100%"
@@ -242,7 +319,7 @@ export function KYCVerifyOrgPage({ organizerInfo, loadOrganizer, match }) {
                     </Box>
                     <Box>
                       <Image
-                        src={example}
+                        src={urlCCCD2}
                         borderRadius="5px"
                         height="127px"
                         width="100%"
