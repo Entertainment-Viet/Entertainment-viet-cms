@@ -1,4 +1,4 @@
-import React, { useEffect, memo } from 'react';
+import React, { useState, useEffect, memo } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { createStructuredSelector } from 'reselect';
@@ -13,17 +13,17 @@ import {
   SimpleGrid,
   FormLabel,
   Image,
+  useToast,
 } from '@chakra-ui/react';
 
 import { useInjectReducer } from 'utils/injectReducer';
 import { useInjectSaga } from 'utils/injectSaga';
 import { H1 } from 'components/Elements';
-import { put } from 'utils/request';
+import { getFileFromAWS, del, post } from 'utils/request';
 import PropTypes from 'prop-types';
 import saga from './saga';
 import reducer from './reducer';
 import InputCustomV2 from '../../components/Controls/InputCustomV2';
-import { QWERTYEditor } from '../../components/Controls';
 import example from './image/example.png';
 import {
   LIGHT_ORANGE,
@@ -32,12 +32,13 @@ import {
   TEXT_GREEN,
 } from '../../constants/styles';
 import { messages } from './messages';
-import { cacthError } from '../../utils/helpers';
 import Metadata from '../../components/Metadata';
 import { makeSelectTalent } from './selectors';
 import { loadTalentInfo } from './actions';
 import PageSpinner from '../../components/PageSpinner';
 import { globalMessages } from '../App/globalMessage';
+import { API_TALENT_DETAIL } from '../../constants/api';
+import NotificationProvider from '../../components/NotificationProvider';
 
 const CustomFormLabel = chakra(FormLabel, {
   baseStyle: {
@@ -47,14 +48,45 @@ const CustomFormLabel = chakra(FormLabel, {
 
 const key = 'KYCVerifyTalentPage';
 export function KYCVerifyTalentPage({ talentInfo, loadTalent, match }) {
+  const [urlAvtar, setUrlAvatar] = useState('https://bit.ly/sage-adebayo');
+  const [urlCCCD1, setUrlCCCD1] = useState(example);
+  const [urlCCCD2, setUrlCCCD2] = useState(example);
+  const toast = useToast();
+
   useInjectReducer({ key, reducer });
   useInjectSaga({ key, saga });
   const { t } = useTranslation();
   const talentId = match.params.id;
-
+  const myId = localStorage.getItem('uid');
   useEffect(() => {
     loadTalent(talentId);
   }, []);
+
+  const notify = title => {
+    toast({
+      position: 'top-right',
+      duration: 3000,
+      render: () => <NotificationProvider title={title} />,
+    });
+  };
+
+  useEffect(() => {
+    if (talentInfo && talentInfo.avatar) {
+      getFileFromAWS(talentInfo.avatar).then(res => {
+        setUrlAvatar(res);
+      });
+    }
+    if (talentInfo && talentInfo.citizenPaper && talentInfo.citizenPaper[0]) {
+      getFileFromAWS(talentInfo.citizenPaper[0]).then(res => {
+        setUrlCCCD1(res);
+      });
+    }
+    if (talentInfo && talentInfo.citizenPaper && talentInfo.citizenPaper[1]) {
+      getFileFromAWS(talentInfo.citizenPaper[1]).then(res => {
+        setUrlCCCD2(res);
+      });
+    }
+  }, [talentInfo]);
 
   const songs = [
     {
@@ -74,43 +106,39 @@ export function KYCVerifyTalentPage({ talentInfo, loadTalent, match }) {
     },
   ];
 
-  const rewards = [
-    {
-      scoreTypeId: 0,
-      scoreTypeName: 'string',
-      achievement: 'string',
-      approved: true,
-      proof: ['string'],
-    },
-    {
-      scoreTypeId: 0,
-      scoreTypeName: 'string',
-      achievement: 'string',
-      approved: true,
-      proof: ['string'],
-    },
-  ];
+  // const rewards = [
+  //   {
+  //     scoreTypeId: 0,
+  //     scoreTypeName: 'string',
+  //     achievement: 'string',
+  //     approved: true,
+  //     proof: ['string'],
+  //   },
+  //   {
+  //     scoreTypeId: 0,
+  //     scoreTypeName: 'string',
+  //     achievement: 'string',
+  //     approved: true,
+  //     proof: ['string'],
+  //   },
+  // ];
 
   const onSubmit = async () => {
-    const data = [];
-    put('API_TALENT_KYC', data, talentId)
-      .then(res => {
-        if (res) {
-          window.location.reload();
-        }
-      })
-      .catch(err => cacthError(err));
+    post(API_TALENT_DETAIL, { uid: talentId }, myId, talentId).then(res => {
+      if (res > 300) {
+        notify('Thất bại');
+      }
+      notify('Thành công');
+    });
   };
 
   const onCancel = async () => {
-    const data = [];
-    put('API_TALENT_KYC', data, talentId)
-      .then(res => {
-        if (res) {
-          window.location.reload();
-        }
-      })
-      .catch(err => cacthError(err));
+    del(API_TALENT_DETAIL, { uid: talentId }, myId, talentId).then(res => {
+      if (res > 300) {
+        notify('Thất bại');
+      }
+      notify('Thành công');
+    });
   };
   return (
     <>
@@ -142,7 +170,7 @@ export function KYCVerifyTalentPage({ talentInfo, loadTalent, match }) {
                 <Box textAlign="center">
                   <Avatar
                     size="2xl"
-                    src="https://bit.ly/sage-adebayo"
+                    src={urlAvtar}
                     borderColor="transparent"
                     showBorder
                   />
@@ -154,8 +182,7 @@ export function KYCVerifyTalentPage({ talentInfo, loadTalent, match }) {
                     id="type"
                     size="md"
                     value={
-                      t(globalMessages[talentInfo.accountType]) ||
-                      'No information'
+                      t(globalMessages[talentInfo.userType]) || 'No information'
                     }
                   />
                 </FormControl>
@@ -183,7 +210,7 @@ export function KYCVerifyTalentPage({ talentInfo, loadTalent, match }) {
                     id="phoneNumber"
                     type="tel"
                     size="md"
-                    value={talentInfo.phoneNumber || '0968175428'}
+                    value={talentInfo.phoneNumber || 'No information'}
                   />
                 </FormControl>
                 <FormControl>
@@ -192,14 +219,26 @@ export function KYCVerifyTalentPage({ talentInfo, loadTalent, match }) {
                     id="street"
                     type="text"
                     size="md"
-                    value="71 Tân Lập 1, Hiệp Phú"
+                    value={
+                      talentInfo.address && talentInfo.address.name
+                        ? talentInfo.address.name
+                        : null
+                    }
                   />
                 </FormControl>
                 <FormControl>
                   <SimpleGrid columns={2} spacing={2}>
                     <Box>
                       <CustomFormLabel>{t(messages.street())}</CustomFormLabel>
-                      <InputCustomV2 id="district" size="md" value="Thủ Đức" />
+                      <InputCustomV2
+                        id="district"
+                        size="md"
+                        value={
+                          talentInfo.address && talentInfo.address.parent
+                            ? talentInfo.address.parent.name
+                            : null
+                        }
+                      />
                     </Box>
                     <Box>
                       <CustomFormLabel>
@@ -208,12 +247,18 @@ export function KYCVerifyTalentPage({ talentInfo, loadTalent, match }) {
                       <InputCustomV2
                         id="province"
                         size="md"
-                        value="Thành Phố Hồ Chí Minh"
+                        value={
+                          talentInfo.address &&
+                          talentInfo.address.parent &&
+                          talentInfo.address.parent.parent
+                            ? talentInfo.address.parent.parent.name
+                            : null
+                        }
                       />
                     </Box>
                   </SimpleGrid>
                 </FormControl>
-                <FormControl>
+                {/* <FormControl>
                   <CustomFormLabel htmlFor="introduce">
                     {t(messages.introduce())}
                   </CustomFormLabel>
@@ -223,7 +268,7 @@ export function KYCVerifyTalentPage({ talentInfo, loadTalent, match }) {
                     required
                     val="Pass the variant prop to change the visual appearance of the input component. Chakra UI input variant types are: outline, filled, flushed and unstyled"
                   />
-                </FormControl>
+                </FormControl> */}
                 <FormControl>
                   <CustomFormLabel>
                     {t(messages.accountNameOwner())}
@@ -265,7 +310,7 @@ export function KYCVerifyTalentPage({ talentInfo, loadTalent, match }) {
                   <SimpleGrid columns={2} spacing={2}>
                     <Box>
                       <Image
-                        src={example}
+                        src={urlCCCD1}
                         borderRadius="5px"
                         height="127px"
                         width="100%"
@@ -273,7 +318,7 @@ export function KYCVerifyTalentPage({ talentInfo, loadTalent, match }) {
                     </Box>
                     <Box>
                       <Image
-                        src={example}
+                        src={urlCCCD2}
                         borderRadius="5px"
                         height="127px"
                         width="100%"
@@ -302,8 +347,8 @@ export function KYCVerifyTalentPage({ talentInfo, loadTalent, match }) {
                 </FormControl>
                 <FormControl>
                   <CustomFormLabel>{t(messages.yourReward())}</CustomFormLabel>
-                  {rewards &&
-                    rewards.map((form, index) => (
+                  {talentInfo.priorityScores &&
+                    talentInfo.priorityScores.map((form, index) => (
                       <Box
                         display="flex"
                         height="40px"

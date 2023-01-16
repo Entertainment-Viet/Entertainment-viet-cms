@@ -6,7 +6,8 @@ import { LOAD_TALENT } from './constants';
 
 export function* getTalentInfo(id) {
   try {
-    const payload = yield call(get, API_TALENT_DETAIL, {}, id.talentId);
+    const myId = localStorage.getItem('uid');
+    const payload = yield call(get, API_TALENT_DETAIL, {}, myId, id.talentId);
     yield put(loadTalentInfoSuccess(payload));
   } catch (err) {
     yield put(loadDataError(err));

@@ -70,8 +70,8 @@ export const ENUM_PAYMENT_TYPE = {
 };
 
 export const ENUM_ACCOUNT_TYPE = {
-  PERSONAL: 'account.type.individual',
-  COMPANY: 'account.type.company',
+  PERSONAL: 'user.type.individual',
+  COMPANY: 'user.type.company',
 };
 
 export const ENUM_USER_STATE = {

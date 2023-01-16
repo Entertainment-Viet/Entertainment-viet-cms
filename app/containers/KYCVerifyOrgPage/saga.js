@@ -6,7 +6,8 @@ import { LOAD_ORG } from './constants';
 
 export function* getOrgInfo(id) {
   try {
-    const payload = yield call(get, API_ORG_DETAIL, {}, id.organizerId);
+    const myId = localStorage.getItem('uid');
+    const payload = yield call(get, API_ORG_DETAIL, {}, myId, id.organizerId);
     yield put(loadOrgInfoSuccess(payload));
   } catch (err) {
     yield put(loadDataError(err));
