@@ -5,12 +5,20 @@ import {
   CHANGE_LIMIT,
   LOAD_DATA,
   LOAD_DATA_SUCCESS,
+  CHANGE_NAME,
 } from './constants';
 
 export function changePage(page) {
   return {
     type: CHANGE_PAGE,
     page,
+  };
+}
+
+export function changeName(name) {
+  return {
+    type: CHANGE_NAME,
+    name,
   };
 }
 

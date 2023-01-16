@@ -20,6 +20,12 @@ const makeSelectLimit = () =>
     State => State.limit,
   );
 
+const makeSelectName = () =>
+  createSelector(
+    selectState,
+    State => State.name,
+  );
+
 const makeSelectDetailError = () =>
   createSelector(
     selectState,
@@ -45,4 +51,5 @@ export {
   makeSelectPaging,
   makeSelectLimit,
   makeSelectData,
+  makeSelectName,
 };

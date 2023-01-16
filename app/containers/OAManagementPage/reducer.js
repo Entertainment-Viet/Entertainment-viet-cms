@@ -7,6 +7,7 @@ import {
   CHANGE_PAGE,
   LOAD_DATA,
   LOAD_DATA_SUCCESS,
+  CHANGE_NAME,
 } from './constants';
 
 export const initialState = {
@@ -14,6 +15,7 @@ export const initialState = {
   error: false,
   paging: ENUM_PAGGING,
   data: false,
+  name: '',
 };
 
 /* eslint-disable default-case, no-param-reassign */
@@ -45,6 +47,9 @@ const pageReducer = (state = initialState, action) =>
         draft.loading = false;
         draft.data = action.payload.content;
         draft.paging = action.payload.paging;
+        break;
+      case CHANGE_NAME:
+        draft.name = action.name;
         break;
     }
   });

@@ -2,7 +2,7 @@ import { put, select, takeEvery, call } from 'redux-saga/effects';
 import { get } from 'utils/request';
 import { LOAD_DATA } from './constants';
 import { loadInfoError, loadDataSuccess } from './actions';
-import { makeSelectLimit, makeSelectPage } from './selectors';
+import { makeSelectLimit, makeSelectName, makeSelectPage } from './selectors';
 import { API_ORG_LIST, API_TAL_LIST } from '../../constants/api';
 
 // const mockDataTalent = [
@@ -96,8 +96,8 @@ export function* getData(id) {
     const myId = localStorage.getItem('uid');
     const page = yield select(makeSelectPage());
     const size = yield select(makeSelectLimit());
+    const displayName = yield select(makeSelectName());
     // eslint-disable-next-line no-console
-    console.log(page, size);
     const { isGetDataTalent } = id;
     let payload;
     if (isGetDataTalent) {
@@ -107,6 +107,7 @@ export function* getData(id) {
         {
           page,
           size,
+          displayName,
         },
         myId,
       );
@@ -118,6 +119,7 @@ export function* getData(id) {
         {
           page,
           size,
+          displayName,
         },
         myId,
       );

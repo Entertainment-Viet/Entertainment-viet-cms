@@ -18,6 +18,7 @@ import { compose } from 'redux';
 import { createStructuredSelector } from 'reselect';
 import { useInjectReducer } from 'utils/injectReducer';
 import { useInjectSaga } from 'utils/injectSaga';
+import InputCustomV2 from '../../components/Controls/InputCustomV2';
 import { messages } from './messages';
 import saga from './saga';
 import reducer from './reducer';
@@ -27,7 +28,7 @@ import {
   makeSelectDetailLoading,
   makeSelectPaging,
 } from './selectors';
-import { changeLimit, changePage, loadData } from './actions';
+import { changeLimit, changePage, loadData, changeName } from './actions';
 import { H1 } from '../../components/Elements';
 import { globalMessages } from '../App/globalMessage';
 const StatusCell = styled(Text)`
@@ -115,6 +116,7 @@ const OAManagementPage = ({
   handleLimitChange,
   // eslint-disable-next-line no-shadow
   loadData,
+  handleNameChange,
 }) => {
   useInjectReducer({ key, reducer });
   useInjectSaga({ key, saga });
@@ -226,6 +228,13 @@ const OAManagementPage = ({
       <H1 color={TEXT_GREEN} fontSize="30px">
         {t(messages.header())}
       </H1>
+      <InputCustomV2
+        id="displayName"
+        type="text"
+        size="md"
+        placeholder="Enter organizer name"
+        onChange={e => handleNameChange(e.target.value)}
+      />
       <Box color={PRI_TEXT_COLOR}>
         <Box
           display="d-flex"
@@ -288,6 +297,7 @@ OAManagementPage.propTypes = {
   paging: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
   handlePageChange: PropTypes.func,
   handleLimitChange: PropTypes.func,
+  handleNameChange: PropTypes.func,
   loadData: PropTypes.func,
   bookings: PropTypes.oneOfType([
     PropTypes.object,
@@ -312,6 +322,10 @@ export function mapDispatchToProps(dispatch) {
     },
     handleLimitChange: limit => {
       dispatch(changeLimit(limit));
+      dispatch(loadData());
+    },
+    handleNameChange: name => {
+      dispatch(changeName(name));
       dispatch(loadData());
     },
     loadData: isGetDataTalent => {
