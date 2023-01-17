@@ -19,7 +19,7 @@ import {
 import { useInjectReducer } from 'utils/injectReducer';
 import { useInjectSaga } from 'utils/injectSaga';
 import { H1 } from 'components/Elements';
-import { getFileFromAWS, del, post } from 'utils/request';
+import { getFileFromAWS, del, post, put } from 'utils/request';
 import PropTypes from 'prop-types';
 import saga from './saga';
 import reducer from './reducer';
@@ -30,6 +30,7 @@ import {
   PRI_TEXT_COLOR,
   SUB_BLU_COLOR,
   TEXT_GREEN,
+  TEXT_PURPLE,
 } from '../../constants/styles';
 import { messages } from './messages';
 import Metadata from '../../components/Metadata';
@@ -125,6 +126,19 @@ export function KYCVerifyTalentPage({ talentInfo, loadTalent, match }) {
 
   const onSubmit = async () => {
     post(API_TALENT_DETAIL, { uid: talentId }, myId, talentId).then(res => {
+      if (res > 300) {
+        notify('Thất bại');
+      }
+      notify('Thành công');
+    });
+  };
+  const onEditorChoice = async () => {
+    put(
+      API_TALENT_DETAIL,
+      { editorChoice: talentInfo.editorChoice !== true },
+      myId,
+      talentId,
+    ).then(res => {
       if (res > 300) {
         notify('Thất bại');
       }
@@ -389,7 +403,11 @@ export function KYCVerifyTalentPage({ talentInfo, loadTalent, match }) {
                 {t(messages.approve())}
               </Button>
             </Box>
-            <Box>
+            <Box
+              sx={{
+                marginBottom: '10px',
+              }}
+            >
               <Button
                 bg={LIGHT_ORANGE}
                 color={SUB_BLU_COLOR}
@@ -398,6 +416,19 @@ export function KYCVerifyTalentPage({ talentInfo, loadTalent, match }) {
                 onClick={onCancel}
               >
                 {t(messages.cancel())}
+              </Button>
+            </Box>
+            <Box>
+              <Button
+                bg={TEXT_PURPLE}
+                color={SUB_BLU_COLOR}
+                type="submit"
+                width="196px"
+                onClick={onEditorChoice}
+              >
+                {talentInfo.editorChoice === true
+                  ? 'Đang quảng cáo'
+                  : 'Quảng cáo'}
               </Button>
             </Box>
           </Box>
