@@ -34,7 +34,7 @@ import { useInjectSaga } from 'utils/injectSaga';
 import { put } from 'utils/request';
 // import SelectCustom from 'components/Controls/SelectCustom';
 // import { ROUTE_BOOKING_DETAIL_MANAGER } from 'constants/routes';
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
 import { API_UPDATE } from '../../../constants/api';
 import { messages } from '../messages';
 import {
@@ -223,11 +223,11 @@ const AllBookings = ({
           >
             {t(messages.done())}
           </Button>
-          <Link>
+          {/* <Link>
             <Button colorScheme="gray" size="xs">
               {t(messages.detail())}
             </Button>
-          </Link>
+          </Link> */}
         </HStack>
       ),
     }));
@@ -282,8 +282,8 @@ const AllBookings = ({
                   isSearchable
                   onChange={val => handleIspaidChange(val.target.value)}
                 >
-                  <option value="talent">Talent</option>
-                  <option value="organizer">Company</option>
+                  <option value="true">true</option>
+                  <option value="false">false</option>
                 </SelectCustom>
               </Box>
               <Text>Start time</Text>

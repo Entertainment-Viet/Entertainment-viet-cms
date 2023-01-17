@@ -22,7 +22,7 @@ export const initialState = {
   data: false,
   search: '',
   status: '',
-  isPaid: false,
+  isPaid: '',
   start: '',
   end: '',
   fees: {},
