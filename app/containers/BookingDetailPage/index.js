@@ -5,25 +5,23 @@ import { compose } from 'redux';
 import { createStructuredSelector } from 'reselect';
 import {
   Box,
-  SimpleGrid,
   chakra,
   Text,
   Button,
   Grid,
   GridItem,
-  Divider,
   Image,
   Input,
   useToast,
 } from '@chakra-ui/react';
-import { useForm, Controller } from 'react-hook-form';
-import { useTranslation } from 'react-i18next';
+import { useForm } from 'react-hook-form';
+// import { useTranslation } from 'react-i18next';
 import { useAnimation } from 'framer-motion';
 
 import { useInjectReducer } from 'utils/injectReducer';
 import { useInjectSaga } from 'utils/injectSaga';
 import Metadata from 'components/Metadata';
-import { messages } from './messages';
+// import { messages } from './messages';
 import saga from './saga';
 import reducer from './reducer';
 import placeholder from './assets/placeholder.png';
@@ -39,7 +37,7 @@ import {
 import { makeSelectData } from './selectors';
 import { loadData } from './actions';
 import { API_UPDATE } from '../../constants/api';
-import { put, sendFileToAWS } from '../../utils/request';
+import { getFileFromAWS, put, sendFileToAWS } from '../../utils/request';
 
 const CustomBox = chakra(Box, {
   baseStyle: {
@@ -74,16 +72,13 @@ export function BookingDetailPage({ match, data, getData }) {
     });
   };
 
-  const { t } = useTranslation();
+  // const { t } = useTranslation();
   const controls = useAnimation();
   const startAnimation = () => controls.start('hover');
   const stopAnimation = () => controls.stop();
   const {
-    control,
     handleSubmit,
-    register,
-    getValues,
-    formState: { errors, isSubmitting },
+    formState: { isSubmitting },
   } = useForm();
   useInjectReducer({ key, reducer });
   useInjectSaga({ key, saga });
@@ -94,6 +89,14 @@ export function BookingDetailPage({ match, data, getData }) {
   useEffect(() => {
     getData(bookingId);
   }, []);
+
+  useEffect(() => {
+    if (data && data.finishProof) {
+      getFileFromAWS(data.finishProof).then(res => {
+        setUrlProof(res);
+      });
+    }
+  }, [data]);
 
   const handleUploadProofImg = item => {
     if (item) {
@@ -271,7 +274,7 @@ export function BookingDetailPage({ match, data, getData }) {
             <GridItem>
               <Box position="relative">
                 <Image
-                  src={data.finishProof ? data.finishProof : urlProof}
+                  src={urlProof}
                   borderRadius="5px"
                   height="75vh"
                   width="100%"
