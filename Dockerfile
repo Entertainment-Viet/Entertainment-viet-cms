@@ -15,7 +15,7 @@ COPY . .
 RUN npm install --force
 RUN npm run build
 
-EXPOSE 3000
+EXPOSE 3005
 CMD [ "npx", "serve", "build" ]
 
 # production stage
