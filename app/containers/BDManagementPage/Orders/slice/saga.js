@@ -39,6 +39,7 @@ export function* getBookings() {
         talent: role === 'talent' ? search : null,
         organizer: role === 'organizer' ? search : null,
         status,
+        bookingCode: role === 'code' ? search : null,
       },
       myId,
     );

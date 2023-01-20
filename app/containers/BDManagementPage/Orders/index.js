@@ -59,7 +59,11 @@ import {
   makeSelectRole,
 } from './slice/selectors';
 import { ENUM_BOOKING_STATUS } from '../../../constants/enums';
-import { handleAddress, convertReadableTime } from '../../../utils/helpers';
+import {
+  handleAddress,
+  convertReadableTime,
+  toIsoString,
+} from '../../../utils/helpers';
 // import { numberWithCommas } from '../../../utils/helpers';
 // const StatusCell = styled(Text)`
 //   text-align: center;
@@ -97,6 +101,10 @@ const bookingsColumns = [
   {
     Header: 'Confirm At',
     accessor: 'confirmAt',
+  },
+  {
+    Header: 'Booking Code',
+    accessor: 'bookingCode',
   },
   {
     Header: 'Perform date',
@@ -154,7 +162,8 @@ const AllBookings = ({
   let tableBookings;
   if (data) {
     tableBookings = data.map(booking => ({
-      confirmAt: <Text>{booking.confirmedAt}</Text>,
+      confirmAt: <Text>{convertReadableTime(booking.confirmedAt)}</Text>,
+      bookingCode: <Text>{booking.bookingCode}</Text>,
       performDate: (
         <Text>
           {convertReadableTime(booking.jobDetail.performanceStartTime)}-
@@ -209,12 +218,14 @@ const AllBookings = ({
           </InputGroup>
           <Box>
             <SelectCustom
-              placeholder="Role"
+              placeholder="By"
               isSearchable
               onChange={val => handleRoleChange(val.target.value)}
+              defaultValue="code"
             >
               <option value="talent">Talent</option>
-              <option value="organizer">Company</option>
+              <option value="organizer">Organizer</option>
+              <option value="code">Booking code</option>
             </SelectCustom>
           </Box>
           <Box>
@@ -340,11 +351,11 @@ export function mapDispatchToProps(dispatch) {
       dispatch(loadBookings());
     },
     handleStartChange: start => {
-      dispatch(changeStart(start));
+      dispatch(changeStart(toIsoString(start)));
       dispatch(loadBookings());
     },
     handleEndChange: end => {
-      dispatch(changeEnd(end));
+      dispatch(changeEnd(toIsoString(end)));
       dispatch(loadBookings());
     },
     handleIspaidChange: isPaid => {
