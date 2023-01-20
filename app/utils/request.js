@@ -1,4 +1,7 @@
+// TODO: resolve dependency cycle
+// eslint-disable-next-line import/no-cycle
 import cRequest from 'utils/server';
+// eslint-disable-next-line import/no-cycle
 import { removeEmptyObj } from 'utils/helpers';
 import axios from 'axios';
 import { SEND_FILE_AWS, API_GET_FILE } from 'constants/api';

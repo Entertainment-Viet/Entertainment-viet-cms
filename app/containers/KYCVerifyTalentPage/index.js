@@ -40,6 +40,9 @@ import PageSpinner from '../../components/PageSpinner';
 import { globalMessages } from '../App/globalMessage';
 import { API_TALENT_DETAIL } from '../../constants/api';
 import NotificationProvider from '../../components/NotificationProvider';
+import TalentRewardDocs from '../../components/TalentRewardDocs';
+import useThumbnailImgs from '../../components/ImageUploadInput/useThumbnailImgs';
+// import ImageUploadInput from '../../components/ImageUploadInput';
 
 const CustomFormLabel = chakra(FormLabel, {
   baseStyle: {
@@ -59,6 +62,7 @@ export function KYCVerifyTalentPage({ talentInfo, loadTalent, match }) {
   const { t } = useTranslation();
   const talentId = match.params.id;
   const myId = localStorage.getItem('uid');
+  const thumbnailComposable = useThumbnailImgs(5);
   useEffect(() => {
     loadTalent(talentId);
   }, []);
@@ -87,42 +91,10 @@ export function KYCVerifyTalentPage({ talentInfo, loadTalent, match }) {
         setUrlCCCD2(res);
       });
     }
+    if (talentInfo && talentInfo.descriptionImg) {
+      thumbnailComposable.initImagesFromResponse(talentInfo.descriptionImg);
+    }
   }, [talentInfo]);
-
-  const songs = [
-    {
-      achievement: 'string',
-      approved: true,
-      proof: 'string',
-    },
-    {
-      achievement: 'string',
-      approved: true,
-      proof: 'string',
-    },
-    {
-      achievement: 'string',
-      approved: true,
-      proof: 'string',
-    },
-  ];
-
-  // const rewards = [
-  //   {
-  //     scoreTypeId: 0,
-  //     scoreTypeName: 'string',
-  //     achievement: 'string',
-  //     approved: true,
-  //     proof: ['string'],
-  //   },
-  //   {
-  //     scoreTypeId: 0,
-  //     scoreTypeName: 'string',
-  //     achievement: 'string',
-  //     approved: true,
-  //     proof: ['string'],
-  //   },
-  // ];
 
   const onSubmit = async () => {
     post(API_TALENT_DETAIL, { uid: talentId }, myId, talentId).then(res => {
@@ -342,8 +314,8 @@ export function KYCVerifyTalentPage({ talentInfo, loadTalent, match }) {
                 </FormControl>
                 <FormControl>
                   <CustomFormLabel>{t(messages.yourSong())}</CustomFormLabel>
-                  {songs &&
-                    songs.map((form, index) => (
+                  {talentInfo.songs &&
+                    talentInfo.songs.map((form, index) => (
                       <Box
                         display="flex"
                         height="40px"
@@ -359,6 +331,12 @@ export function KYCVerifyTalentPage({ talentInfo, loadTalent, match }) {
                       </Box>
                     ))}
                 </FormControl>
+                {/* <FormControl>
+                  <CustomFormLabel>
+                    {t(messages.imageThumbnails())}
+                  </CustomFormLabel>
+                  <ImageUploadInput thumbnailComposable={thumbnailComposable} />
+                </FormControl> */}
                 <FormControl>
                   <CustomFormLabel>{t(messages.yourReward())}</CustomFormLabel>
                   {talentInfo.priorityScores &&
@@ -377,6 +355,9 @@ export function KYCVerifyTalentPage({ talentInfo, loadTalent, match }) {
                         <InputCustomV2 name="proof" value={form.achievement} />
                       </Box>
                     ))}
+                  {talentInfo && talentInfo.rewards && (
+                    <TalentRewardDocs rewards={talentInfo.rewards} />
+                  )}
                 </FormControl>
               </Stack>
             </form>
