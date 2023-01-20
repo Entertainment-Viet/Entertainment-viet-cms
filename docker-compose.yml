@@ -2,7 +2,13 @@ version: "3.8"
 
 services:
   app:
-    image: docker-learning/react:v1
+    container_name: vietentertainment-viet-cms
+    image: vietentertainment2023/cms:latest
+    environment:
+      - REACT_APP_API=${REACT_APP_API}
+      - REACT_APP_MOCK_API=${REACT_APP_MOCK_API}
+      - REACT_APP_ENV=${REACT_APP_ENV}
+      - REACT_KEYCLOAK_API=${REACT_KEYCLOAK_API}
     ports:
-      - "3000:80"
+      - "3005:80"
     restart: unless-stopped
