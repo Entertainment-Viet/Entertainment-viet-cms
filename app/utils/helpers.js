@@ -1,7 +1,11 @@
 /* eslint-disable no-restricted-syntax */
 /* eslint-disable no-param-reassign */
+
 import * as Paths from 'constants/routes';
 import * as Storages from 'constants/storage';
+// TODO: resolve dependency cycle
+// eslint-disable-next-line import/no-cycle
+import { getFile } from './request';
 // import { useHistory } from 'react-router-dom';
 // import { getCookie } from 'utils/cookie';
 
@@ -212,4 +216,44 @@ export function handleAddress(addr) {
 
 export function convertReadableTime(timestamp) {
   return new Date(timestamp).toLocaleString();
+}
+
+export async function downloadBase64File(fileKey) {
+  const imgExtensions = ['png', 'jpeg', 'jpg'];
+  const applicationExtensions = ['pdf'];
+  const extensionConfig = {
+    image: {
+      type: 'image',
+      extensions: imgExtensions,
+      extension: null,
+    },
+    application: {
+      type: 'application',
+      extensions: applicationExtensions,
+      extension: null,
+    },
+  };
+
+  const getBase64FileFromAWS = async keyFile => {
+    const response = await getFile(keyFile);
+    return Buffer.from(response.data, 'binary').toString('base64');
+  };
+
+  const downloadFile = (fileBase64, fileConfig, fileName) => {
+    const linkSource = `data:${fileConfig.type}/${
+      fileConfig.extension
+    };base64,${fileBase64}`;
+    const downloadLink = document.createElement('a');
+    downloadLink.href = linkSource;
+    downloadLink.download = fileName;
+    downloadLink.click();
+  };
+
+  const base64Str = await getBase64FileFromAWS(fileKey);
+  const [name, extension] = fileKey.split('.');
+  let fileConfig = extensionConfig.application;
+  if (imgExtensions.includes(extension)) fileConfig = extensionConfig.image;
+  fileConfig.extension = extension;
+  // triggerBase64Download(base64File, name);
+  downloadFile(base64Str, fileConfig, name);
 }

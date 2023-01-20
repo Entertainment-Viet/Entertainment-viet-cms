@@ -40,6 +40,9 @@ import PageSpinner from '../../components/PageSpinner';
 import { globalMessages } from '../App/globalMessage';
 import { API_TALENT_DETAIL } from '../../constants/api';
 import NotificationProvider from '../../components/NotificationProvider';
+import TalentRewardDocs from '../../components/TalentRewardDocs';
+import useThumbnailImgs from '../../components/ImageUploadInput/useThumbnailImgs';
+import ImageUploadInput from '../../components/ImageUploadInput';
 
 const CustomFormLabel = chakra(FormLabel, {
   baseStyle: {
@@ -59,6 +62,7 @@ export function KYCVerifyTalentPage({ talentInfo, loadTalent, match }) {
   const { t } = useTranslation();
   const talentId = match.params.id;
   const myId = localStorage.getItem('uid');
+  const thumbnailComposable = useThumbnailImgs(5);
   useEffect(() => {
     loadTalent(talentId);
   }, []);
@@ -86,6 +90,9 @@ export function KYCVerifyTalentPage({ talentInfo, loadTalent, match }) {
       getFileFromAWS(talentInfo.citizenPaper[1]).then(res => {
         setUrlCCCD2(res);
       });
+    }
+    if (talentInfo && talentInfo.descriptionImg) {
+      thumbnailComposable.initImagesFromResponse(talentInfo.descriptionImg);
     }
   }, [talentInfo]);
 
@@ -360,6 +367,12 @@ export function KYCVerifyTalentPage({ talentInfo, loadTalent, match }) {
                     ))}
                 </FormControl>
                 <FormControl>
+                  <CustomFormLabel>
+                    {t(messages.imageThumbnails())}
+                  </CustomFormLabel>
+                  <ImageUploadInput thumbnailComposable={thumbnailComposable} />
+                </FormControl>
+                <FormControl>
                   <CustomFormLabel>{t(messages.yourReward())}</CustomFormLabel>
                   {talentInfo.priorityScores &&
                     talentInfo.priorityScores.map((form, index) => (
@@ -377,6 +390,9 @@ export function KYCVerifyTalentPage({ talentInfo, loadTalent, match }) {
                         <InputCustomV2 name="proof" value={form.achievement} />
                       </Box>
                     ))}
+                  {talentInfo && talentInfo.rewards && (
+                    <TalentRewardDocs rewards={talentInfo.rewards} />
+                  )}
                 </FormControl>
               </Stack>
             </form>

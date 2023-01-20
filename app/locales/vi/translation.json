@@ -208,7 +208,9 @@
     "avatar": "Your avatar",
     "type": "Công ty/ Cá nhân",
     "approve": "Approve",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "download": "Download",
+    "imageThumbnails": "Ảnh Thumbnails"
   },
   "OrgProfile": {
     "companyName": "Company Name",

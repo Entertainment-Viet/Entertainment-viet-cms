@@ -22,4 +22,6 @@ export const messages = {
   type: () => t(translations.TalentProfile.type),
   approve: () => t(translations.TalentProfile.approve),
   cancel: () => t(translations.TalentProfile.cancel),
+  download: () => t(translations.TalentProfile.download),
+  imageThumbnails: () => t(translations.TalentProfile.imageThumbnails),
 };
