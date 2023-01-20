@@ -5,6 +5,7 @@ import {
   CHANGE_LIMIT,
   LOAD_BOOKINGS,
   LOAD_BOOKINGS_SUCCESS,
+  CHANGE_SEARCH,
 } from './constants';
 
 export function changePage(page) {
@@ -45,7 +46,7 @@ export function changeIspaid(isPaid) {
 }
 export function changeSearch(search) {
   return {
-    type: CHANGE_PAGE,
+    type: CHANGE_SEARCH,
     search,
   };
 }

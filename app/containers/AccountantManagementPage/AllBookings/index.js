@@ -64,7 +64,7 @@ import {
   makeSelectStatus,
   makeSelectFee,
 } from './slice/selectors';
-import { numberWithCommas } from '../../../utils/helpers';
+import { numberWithCommas, toIsoString } from '../../../utils/helpers';
 const StatusCell = styled(Text)`
   text-align: center;
   padding: 5px;
@@ -144,7 +144,7 @@ const AllBookings = ({
   handleSearchChange,
   handleStartChange,
   handleEndChange,
-  handleStatusChange,
+  // handleStatusChange,
   handleIspaidChange,
   handleRoleChange,
 }) => {
@@ -240,72 +240,78 @@ const AllBookings = ({
 
   return (
     <>
-      {!data ? (
-        <PageSpinner />
-      ) : (
-        <Box color={PRI_TEXT_COLOR}>
-          <Box
-            display="d-flex"
-            justifyContent="space-between"
-            sx={{
-              marginBottom: '20px',
-            }}
-          >
-            <HStack gap={4}>
-              <InputGroup w="50%">
-                <Input
-                  // value={searchTerm}
-                  onChange={e => handleSearchChange(e.target.value)}
-                  bg="transparent"
-                  placeholder="Search"
-                  _placeholder={{ opacity: 1, color: `${TEXT_PURPLE}` }}
-                  border={`1px solid ${TEXT_PURPLE}`}
-                  borderRadius="2rem"
-                />
-                <InputLeftElement>
-                  <SearchIcon color={TEXT_PURPLE} />
-                </InputLeftElement>
-              </InputGroup>
-              <Box>
-                <SelectCustom
-                  placeholder="Status"
-                  isSearchable
-                  onChange={val => handleStatusChange(val.target.value)}
-                >
-                  <option value="talent">Talent</option>
-                  <option value="organizer">Company</option>
-                </SelectCustom>
-              </Box>
-              <Box>
-                <SelectCustom
-                  placeholder="isPaid"
-                  isSearchable
-                  onChange={val => handleIspaidChange(val.target.value)}
-                >
-                  <option value="true">true</option>
-                  <option value="false">false</option>
-                </SelectCustom>
-              </Box>
-              <Text>Start time</Text>
-              <Box>
-                <DateTimeCustom
-                  template="datetime-picker right"
-                  name="end_vip_date"
-                  type="hm"
-                  message="Start date"
-                  handleDateChange={handleStartChange}
-                />
-              </Box>
-              <Text>End time</Text>
-              <Box>
-                <DateTimeCustom
-                  template="datetime-picker right"
-                  name="end_vip_date"
-                  type="hm"
-                  message="End date"
-                  handleDateChange={handleEndChange}
-                />
-              </Box>
+      <Box color={PRI_TEXT_COLOR}>
+        <Box
+          display="d-flex"
+          justifyContent="space-between"
+          sx={{
+            marginBottom: '20px',
+          }}
+        >
+          <HStack gap={4}>
+            <InputGroup w="50%">
+              <Input
+                // value={searchTerm}
+                onChange={e => handleSearchChange(e.target.value)}
+                bg="transparent"
+                placeholder="Search"
+                _placeholder={{ opacity: 1, color: `${TEXT_PURPLE}` }}
+                border={`1px solid ${TEXT_PURPLE}`}
+                borderRadius="2rem"
+              />
+              <InputLeftElement>
+                <SearchIcon color={TEXT_PURPLE} />
+              </InputLeftElement>
+            </InputGroup>
+            {/* <Box>
+              <SelectCustom
+                placeholder="Status"
+                isSearchable
+                onChange={val => handleStatusChange(val.target.value)}
+              >
+                <option value={ENUM_BOOKING_STATUS.ORG_PENDING}>
+                  Pending organizer
+                </option>
+                <option value={ENUM_BOOKING_STATUS.TALENT_PENDING}>
+                  Pending talent
+                </option>
+                <option value={ENUM_BOOKING_STATUS.CONFIRMED}>Confirmed</option>
+                <option value={ENUM_BOOKING_STATUS.FINISHED}>Finished</option>
+                <option value={ENUM_BOOKING_STATUS.CANCELLED}>Cancelled</option>
+                <option value={ENUM_BOOKING_STATUS.ARCHIVED}>Archived</option>
+              </SelectCustom>
+            </Box> */}
+            <Box>
+              <SelectCustom
+                placeholder="isPaid"
+                isSearchable
+                onChange={val => handleIspaidChange(val.target.value)}
+              >
+                <option value="true">true</option>
+                <option value="false">false</option>
+              </SelectCustom>
+            </Box>
+            <Text>Start time</Text>
+            <Box>
+              <DateTimeCustom
+                template="datetime-picker right"
+                name="end_vip_date"
+                type="hm"
+                message="Start date"
+                handleDateChange={handleStartChange}
+              />
+            </Box>
+            <Text>End time</Text>
+            <Box>
+              <DateTimeCustom
+                template="datetime-picker right"
+                name="end_vip_date"
+                type="hm"
+                message="End date"
+                handleDateChange={handleEndChange}
+              />
+            </Box>
+            {!data ? null : (
               <PDFDownloadLink
                 document={<PDFView bookings={data} fee={fee} />}
                 fileName="test.pdf"
@@ -314,9 +320,12 @@ const AllBookings = ({
                   loading ? 'Loading document...' : 'Download now!'
                 }
               </PDFDownloadLink>
-            </HStack>
-          </Box>
-
+            )}
+          </HStack>
+        </Box>
+        {!data ? (
+          <PageSpinner />
+        ) : (
           <Flex zIndex={1} position="relative" gap={4}>
             <Box w="100%" flexGrow={1}>
               <AdvancedTable
@@ -328,8 +337,8 @@ const AllBookings = ({
               />
             </Box>
           </Flex>
-        </Box>
-      )}
+        )}
+      </Box>
     </>
   );
 };
@@ -392,11 +401,11 @@ export function mapDispatchToProps(dispatch) {
       dispatch(loadBookings());
     },
     handleStartChange: start => {
-      dispatch(changeStart(start));
+      dispatch(changeStart(toIsoString(start)));
       dispatch(loadBookings());
     },
     handleEndChange: end => {
-      dispatch(changeEnd(end));
+      dispatch(changeEnd(toIsoString(end)));
       dispatch(loadBookings());
     },
     handleIspaidChange: isPaid => {

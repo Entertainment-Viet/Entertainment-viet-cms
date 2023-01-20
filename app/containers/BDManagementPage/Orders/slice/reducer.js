@@ -21,9 +21,9 @@ export const initialState = {
   paging: ENUM_PAGGING,
   data: false,
   search: '',
-  role: '',
+  role: 'code',
   status: '',
-  isPaid: false,
+  isPaid: '',
   start: '',
   end: '',
 };
@@ -54,7 +54,6 @@ const pageReducer = (state = initialState, action) =>
         draft.data = false;
         break;
       case LOAD_BOOKINGS_SUCCESS:
-        console.log('data: ', action.payload.bookings);
         draft.loading = false;
         // draft.bookings = action.payload;
         draft.paging = action.payload.bookings.paging;
@@ -76,7 +75,7 @@ const pageReducer = (state = initialState, action) =>
         draft.isPaid = action.isPaid;
         break;
       case CHANGE_STATUS:
-        draft.status = action.status;
+        draft.status = action.stt;
         break;
     }
   });
