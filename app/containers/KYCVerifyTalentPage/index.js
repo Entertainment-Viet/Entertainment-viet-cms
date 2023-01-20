@@ -42,7 +42,7 @@ import { API_TALENT_DETAIL } from '../../constants/api';
 import NotificationProvider from '../../components/NotificationProvider';
 import TalentRewardDocs from '../../components/TalentRewardDocs';
 import useThumbnailImgs from '../../components/ImageUploadInput/useThumbnailImgs';
-import ImageUploadInput from '../../components/ImageUploadInput';
+// import ImageUploadInput from '../../components/ImageUploadInput';
 
 const CustomFormLabel = chakra(FormLabel, {
   baseStyle: {
@@ -95,41 +95,6 @@ export function KYCVerifyTalentPage({ talentInfo, loadTalent, match }) {
       thumbnailComposable.initImagesFromResponse(talentInfo.descriptionImg);
     }
   }, [talentInfo]);
-
-  const songs = [
-    {
-      achievement: 'string',
-      approved: true,
-      proof: 'string',
-    },
-    {
-      achievement: 'string',
-      approved: true,
-      proof: 'string',
-    },
-    {
-      achievement: 'string',
-      approved: true,
-      proof: 'string',
-    },
-  ];
-
-  // const rewards = [
-  //   {
-  //     scoreTypeId: 0,
-  //     scoreTypeName: 'string',
-  //     achievement: 'string',
-  //     approved: true,
-  //     proof: ['string'],
-  //   },
-  //   {
-  //     scoreTypeId: 0,
-  //     scoreTypeName: 'string',
-  //     achievement: 'string',
-  //     approved: true,
-  //     proof: ['string'],
-  //   },
-  // ];
 
   const onSubmit = async () => {
     post(API_TALENT_DETAIL, { uid: talentId }, myId, talentId).then(res => {
@@ -349,8 +314,8 @@ export function KYCVerifyTalentPage({ talentInfo, loadTalent, match }) {
                 </FormControl>
                 <FormControl>
                   <CustomFormLabel>{t(messages.yourSong())}</CustomFormLabel>
-                  {songs &&
-                    songs.map((form, index) => (
+                  {talentInfo.songs &&
+                    talentInfo.songs.map((form, index) => (
                       <Box
                         display="flex"
                         height="40px"
@@ -366,12 +331,12 @@ export function KYCVerifyTalentPage({ talentInfo, loadTalent, match }) {
                       </Box>
                     ))}
                 </FormControl>
-                <FormControl>
+                {/* <FormControl>
                   <CustomFormLabel>
                     {t(messages.imageThumbnails())}
                   </CustomFormLabel>
                   <ImageUploadInput thumbnailComposable={thumbnailComposable} />
-                </FormControl>
+                </FormControl> */}
                 <FormControl>
                   <CustomFormLabel>{t(messages.yourReward())}</CustomFormLabel>
                   {talentInfo.priorityScores &&
