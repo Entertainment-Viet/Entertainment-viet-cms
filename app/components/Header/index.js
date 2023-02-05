@@ -1,22 +1,11 @@
-import React, { useState, useEffect, memo } from 'react';
-import { useTranslation } from 'react-i18next';
+import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { createStructuredSelector } from 'reselect';
 import { useInjectReducer } from 'utils/injectReducer';
 import { useInjectSaga } from 'utils/injectSaga';
-import {
-  Flex,
-  Box,
-  Input,
-  HStack,
-  Link,
-  InputGroup,
-  InputLeftElement,
-} from '@chakra-ui/react';
-import { SearchIcon } from '@chakra-ui/icons';
-import { redirectTo } from 'utils/helpers';
+import { Flex, Box, Link, Text } from '@chakra-ui/react';
 
 import { changeSearch, loadData } from 'containers/SearchResultPage/actions';
 import {
@@ -29,12 +18,9 @@ import { loadDataHeader } from './actions';
 import reducer from './reducer';
 import saga from './saga';
 
-import { messages } from './messages';
 import { Wrapper } from './styles';
-import Notification from './Notification';
-import Cart from './Cart';
-import ProfileAvatar from './ProfileAvatar';
 import { makeSelectCartData } from './selectors';
+import { logout } from '../../utils/auth';
 function HeaderButton({ text, href, isExternal = false }) {
   return (
     <Link href={href} isExternal={isExternal}>
@@ -53,10 +39,9 @@ function HeaderButton({ text, href, isExternal = false }) {
 }
 
 const key = 'Header';
-function Header({ handleSubmit, handleRefresh, cartData }) {
+function Header() {
   useInjectReducer({ key, reducer });
   useInjectSaga({ key, saga });
-  const { t } = useTranslation();
 
   return (
     <Wrapper>
@@ -64,10 +49,11 @@ function Header({ handleSubmit, handleRefresh, cartData }) {
         <Flex alignItems="center">
           <Box width="50%" />
         </Flex>
+        <Text onClick={logout}>Đăng xuất</Text>
         {/* <Box>
           <HStack spacing={8}>
             <form
-              style={{}}
+              styles={{}}
               onSubmit={e => {
                 e.preventDefault();
                 if (window.location.pathname === '/search') {
@@ -112,11 +98,7 @@ function Header({ handleSubmit, handleRefresh, cartData }) {
   );
 }
 
-Header.propTypes = {
-  handleSubmit: PropTypes.func,
-  handleRefresh: PropTypes.func,
-  cartData: PropTypes.oneOfType([PropTypes.array, PropTypes.bool]),
-};
+Header.propTypes = {};
 
 HeaderButton.propTypes = {
   text: PropTypes.string,

@@ -8,6 +8,7 @@ import { getLocalRole } from 'utils/auth';
 
 import PageWrapper from 'components/PageWrapper';
 import { Flex } from '@chakra-ui/react';
+import { ENUM_ROLES } from 'constants/enums';
 import Sidebar from '../Header/Sidebar/Sidebar';
 function PrivateRoute({ children, isAuthenticated, roles, ...rest }) {
   const getRole = getLocalRole();
@@ -23,9 +24,25 @@ function PrivateRoute({ children, isAuthenticated, roles, ...rest }) {
               if (isAuthenticated && roles.includes(getRole)) {
                 return React.cloneElement(children, { match, location });
               }
-              if (isAuthenticated && roles.includes(getRole)) {
+              if (isAuthenticated && getRole === ENUM_ROLES.OA) {
                 return (
-                  <Redirect to={{ pathname: '/', state: { from: location } }} />
+                  <Redirect
+                    to={{ pathname: '/oa-home', state: { from: location } }}
+                  />
+                );
+              }
+              if (isAuthenticated && getRole === ENUM_ROLES.BD) {
+                return (
+                  <Redirect
+                    to={{ pathname: '/bd-home', state: { from: location } }}
+                  />
+                );
+              }
+              if (isAuthenticated && getRole === ENUM_ROLES.ACCOUNTANT) {
+                return (
+                  <Redirect
+                    to={{ pathname: '/acc-home', state: { from: location } }}
+                  />
                 );
               }
               return (
