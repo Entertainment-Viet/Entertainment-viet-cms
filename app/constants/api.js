@@ -15,5 +15,6 @@ export const API_TAL_LIST = '/api/admins/:id1/talents';
 export const API_BOOKING_LIST = '/api/admins/:id1/bookings';
 /* BD */
 export const API_LIST_BOOKING_BD = '/api/admins/:id1/bookings';
-/* ACHIEVEMENT */
+/* OFFICE ADMIN */
 export const API_ACHIEVEMENT = '/api/admin/:id1/scoreTypes';
+export const API_COMISSION_FEE = '/api/users/:id1/fee';

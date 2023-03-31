@@ -21,6 +21,7 @@ import { useInjectSaga } from 'utils/injectSaga';
 import { H1 } from 'components/Elements';
 import { getFileFromAWS, del, post, put } from 'utils/request';
 import PropTypes from 'prop-types';
+import { useForm } from 'react-hook-form';
 import saga from './saga';
 import reducer from './reducer';
 import InputCustomV2 from '../../components/Controls/InputCustomV2';
@@ -38,7 +39,7 @@ import { makeSelectTalent } from './selectors';
 import { loadTalentInfo } from './actions';
 import PageSpinner from '../../components/PageSpinner';
 import { globalMessages } from '../App/globalMessage';
-import { API_TALENT_DETAIL } from '../../constants/api';
+import { API_TALENT_DETAIL, API_COMISSION_FEE } from '../../constants/api';
 import NotificationProvider from '../../components/NotificationProvider';
 import TalentRewardDocs from '../../components/TalentRewardDocs';
 import useThumbnailImgs from '../../components/ImageUploadInput/useThumbnailImgs';
@@ -56,6 +57,13 @@ export function KYCVerifyTalentPage({ talentInfo, loadTalent, match }) {
   const [urlCCCD1, setUrlCCCD1] = useState(example);
   const [urlCCCD2, setUrlCCCD2] = useState(example);
   const toast = useToast();
+
+  const {
+    handleSubmit,
+    register,
+    getValues,
+    // formState: { errors, isSubmitting },
+  } = useForm();
 
   useInjectReducer({ key, reducer });
   useInjectSaga({ key, saga });
@@ -126,6 +134,20 @@ export function KYCVerifyTalentPage({ talentInfo, loadTalent, match }) {
       notify('Thành công');
     });
   };
+
+  const onSubmitComFee = async () => {
+    post(
+      API_COMISSION_FEE,
+      { feeRate: parseFloat(getValues('feeRate')) },
+      talentId,
+    ).then(res => {
+      if (res > 300) {
+        notify('Thất bại');
+      }
+      notify('Thành công');
+    });
+  };
+
   return (
     <>
       <Metadata />
@@ -412,6 +434,27 @@ export function KYCVerifyTalentPage({ talentInfo, loadTalent, match }) {
                   : 'Quảng cáo'}
               </Button>
             </Box>
+            <form onSubmit={handleSubmit(onSubmitComFee)}>
+              <FormControl my="1rem">
+                <InputCustomV2
+                  id="feeRate"
+                  type="text"
+                  size="md"
+                  {...register('feeRate', {
+                    required: 'This is required',
+                  })}
+                />
+              </FormControl>
+            </form>
+            <Button
+              bg={TEXT_GREEN}
+              color={SUB_BLU_COLOR}
+              type="submit"
+              width="196px"
+              onClick={onSubmitComFee}
+            >
+              Set commission rate
+            </Button>
           </Box>
         </SimpleGrid>
       ) : (
